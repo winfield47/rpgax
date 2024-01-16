@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		F329C9A92B5123550078A42B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F329C9A82B5123550078A42B /* main.cpp */; };
+		F34CD4422B573275000E64A0 /* Character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F34CD4402B573275000E64A0 /* Character.cpp */; };
+		F34CD4492B57337B000E64A0 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F34CD4472B57337B000E64A0 /* Utils.cpp */; };
+		F34CD44C2B573888000E64A0 /* Weapon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F34CD44A2B573888000E64A0 /* Weapon.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,12 @@
 /* Begin PBXFileReference section */
 		F329C9A52B5123550078A42B /* rpgax */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rpgax; sourceTree = BUILT_PRODUCTS_DIR; };
 		F329C9A82B5123550078A42B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		F34CD4402B573275000E64A0 /* Character.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cpp; sourceTree = "<group>"; };
+		F34CD4412B573275000E64A0 /* Character.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Character.hpp; sourceTree = "<group>"; };
+		F34CD4472B57337B000E64A0 /* Utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
+		F34CD4482B57337B000E64A0 /* Utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Utils.hpp; sourceTree = "<group>"; };
+		F34CD44A2B573888000E64A0 /* Weapon.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Weapon.cpp; sourceTree = "<group>"; };
+		F34CD44B2B573888000E64A0 /* Weapon.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Weapon.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +67,32 @@
 			isa = PBXGroup;
 			children = (
 				F329C9A82B5123550078A42B /* main.cpp */,
+				F34CD4432B573307000E64A0 /* utils */,
+				F34CD4392B573144000E64A0 /* classes */,
 			);
 			path = rpgax;
 			sourceTree = "<group>";
+		};
+		F34CD4392B573144000E64A0 /* classes */ = {
+			isa = PBXGroup;
+			children = (
+				F34CD4402B573275000E64A0 /* Character.cpp */,
+				F34CD4412B573275000E64A0 /* Character.hpp */,
+				F34CD44A2B573888000E64A0 /* Weapon.cpp */,
+				F34CD44B2B573888000E64A0 /* Weapon.hpp */,
+			);
+			path = classes;
+			sourceTree = "<group>";
+		};
+		F34CD4432B573307000E64A0 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				F34CD4472B57337B000E64A0 /* Utils.cpp */,
+				F34CD4482B57337B000E64A0 /* Utils.hpp */,
+			);
+			name = utils;
+			path = rpgax/utils;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -120,6 +152,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F329C9A92B5123550078A42B /* main.cpp in Sources */,
+				F34CD44C2B573888000E64A0 /* Weapon.cpp in Sources */,
+				F34CD4492B57337B000E64A0 /* Utils.cpp in Sources */,
+				F34CD4422B573275000E64A0 /* Character.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
