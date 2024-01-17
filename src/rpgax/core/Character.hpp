@@ -13,26 +13,23 @@
 class Character
 {
 public:
-    // Accessible attributes
-    Weapon weapon;
-    
     // Constructor
-    Character(std::string asciiArt, int hp, std::string description, std::string weaponName, int weaponDamage);
-
-    // Common methods
-    void displayInfo() const;
+    Character(std::string asciiArt, int hp, int armor, int resistance, std::string description, std::string weaponName, int weaponDamage);
 
     // Accessors
     std::string getAsciiArt() const;
     int getHP() const;
     std::string getDescription() const;
-    Weapon getWeapon() const;
+    const Weapon& getWeapon() const;
 
 protected:
     // Common attributes
     std::string asciiArt;
     int hp;
+    int armor;
+    int resistance;
     std::string description;
+    Weapon weapon;
 };
 
 #endif /* Character_hpp */

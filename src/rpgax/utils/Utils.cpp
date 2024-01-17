@@ -5,6 +5,7 @@
 //  Created by Kyle Winfield Burnham on 1/16/24.
 //
 
+#include "../core/Player.hpp"
 #include "Utils.hpp"
 #include <iostream>
 using namespace std;
@@ -14,9 +15,17 @@ void mainLoop()
     char continueKey = 'y';
     while (continueKey == 'y')
     {
-        
-        
+        cout << "Welcome to rpgax!" << endl;
+        gameLoop();
         continueKey = getContinueKey();
+    }
+}
+
+void gameLoop()
+{
+    while (true)
+    {
+        Player player;
     }
 }
 

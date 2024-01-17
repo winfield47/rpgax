@@ -11,6 +11,7 @@
 #include <string>
 
 void mainLoop();
+void gameLoop();
 char getContinueKey(std::string = "Continue? (y/n): ");
 
 #endif /* Utils_hpp */

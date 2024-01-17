@@ -8,10 +8,12 @@
 #include "Character.hpp"
 using namespace std;
 
-Character::Character(string asciiArt, int hp, string description, string weaponName, int weaponDamage)
+Character::Character(string asciiArt, int hp, int armor, int resistance, string description, string weaponName, int weaponDamage)
 {
     this->asciiArt = asciiArt;
     this->hp = hp;
+    this->armor = armor;
+    this->resistance = resistance;
     this->description = description;
     this->weapon = Weapon(weaponName, weaponDamage);
 }
@@ -31,7 +33,7 @@ string Character::getDescription() const
     return description;
 }
 
-Weapon Character::getWeapon() const
+const Weapon& Character::getWeapon() const
 {
     return weapon;
 }
