@@ -6,7 +6,6 @@
 //
 
 #include <iostream>
-#include "classes/Character.hpp"
 #include "utils/Utils.hpp"
 using namespace std;
 
