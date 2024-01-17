@@ -8,8 +8,9 @@
 #ifndef Utils_hpp
 #define Utils_hpp
 
-#include <stdio.h>
+#include <string>
 
-
+void mainLoop();
+char getContinueKey(std::string = "Continue? (y/n): ");
 
 #endif /* Utils_hpp */

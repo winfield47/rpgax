@@ -6,16 +6,13 @@
 //
 
 #include <iostream>
-#include <string>
+#include "classes/Character.hpp"
+#include "utils/Utils.hpp"
 using namespace std;
 
 int main()
 {
-    string input;
-    cout << "Please enter a number: ";
-    cin >> input;
-    
-    cout << "Your number is: " << input << endl;
+    mainLoop();
     
     return 0;
 }

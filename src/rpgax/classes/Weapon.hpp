@@ -10,14 +10,15 @@
 
 #include <string>
 
-class Weapon {
+class Weapon
+{
 private:
     std::string name;
     int damage;
 public:
-    Weapon(std::string name, int damage);
-    std::string getName();
-    int getDamage();
+    Weapon(std::string name = "none", int damage = 0);
+    std::string getName() const;
+    int getDamage() const;
 };
 
 #endif /* Weapon_hpp */

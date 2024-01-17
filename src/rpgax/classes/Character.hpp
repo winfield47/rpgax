@@ -10,24 +10,23 @@
 
 #include "Weapon.hpp"
 
-class Character {
+class Character
+{
 public:
-    // Accessible Attributes
+    // Accessible attributes
     Weapon weapon;
     
     // Constructor
-    Character(std::string asciiArt, int hp, Weapon weapon, std::string description);
-
-    // Virtual destructor to ensure proper cleanup
-    virtual ~Character();
+    Character(std::string asciiArt, int hp, std::string description, std::string weaponName, int weaponDamage);
 
     // Common methods
     void displayInfo() const;
 
     // Accessors
-    std::string getArt() const;
+    std::string getAsciiArt() const;
     int getHP() const;
-    std::string getDescription();
+    std::string getDescription() const;
+    Weapon getWeapon() const;
 
 protected:
     // Common attributes
