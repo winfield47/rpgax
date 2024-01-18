@@ -7,7 +7,6 @@
 
 #include "Player.hpp"
 
-Player::Player() : Character("\\o/", 20, 0, 0, "You", "none", 3)
-{
-    
-}
+
+
+

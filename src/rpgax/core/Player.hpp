@@ -10,15 +10,17 @@
 
 #include "Character.hpp"
 
+enum Origin
+{
+    brute, rogue, wizard, inquisitor, nomad
+};
+
 class Player : public Character
 {
 private:
-    int souls = 0;
-    int strength = 75;
-    int dexterity = 75;
-    int intelligence = 75;
-    int faith = 75;
-    
+    Origin origin;
+    int souls;
+    int level;
 public:
     Player();
 };

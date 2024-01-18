@@ -10,15 +10,22 @@
 
 #include <string>
 
+enum WeaponType
+{
+    physical, magic
+};
+
 class Weapon
 {
 private:
     std::string name;
     int damage;
+    WeaponType type;
 public:
-    Weapon(std::string name = "none", int damage = 0);
+    Weapon(std::string name = "none", int damage = 0, WeaponType type = physical);
     std::string getName() const;
     int getDamage() const;
+    WeaponType getType() const;
 };
 
 #endif /* Weapon_hpp */

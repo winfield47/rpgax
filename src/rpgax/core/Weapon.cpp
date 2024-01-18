@@ -8,10 +8,11 @@
 #include "Weapon.hpp"
 using namespace std;
 
-Weapon::Weapon(string name, int damage)
+Weapon::Weapon(string name, int damage, WeaponType type)
 {
     this->name = name;
     this->damage = damage;
+    this->type = type;
 }
 
 string Weapon::getName() const
@@ -22,4 +23,9 @@ string Weapon::getName() const
 int Weapon::getDamage() const
 {
     return damage;
+}
+
+WeaponType Weapon::getType() const
+{
+    return type;
 }
