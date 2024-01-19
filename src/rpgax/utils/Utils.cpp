@@ -25,7 +25,7 @@ void gameLoop()
 {
     while (true)
     {
-        Player player;
+        
     }
 }
 

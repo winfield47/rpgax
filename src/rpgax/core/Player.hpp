@@ -9,6 +9,7 @@
 #define Player_hpp
 
 #include "Character.hpp"
+#include "Items.hpp"
 
 enum Origin
 {
@@ -19,10 +20,14 @@ class Player : public Character
 {
 private:
     Origin origin;
+    std::string name;
     int souls;
     int level;
+    Apparel apparel;
+    Cloak cloak;
+    Potion potion;
 public:
-    Player();
+    Player(Origin origin, std::string playerName);
 };
 
 #endif /* Player_hpp */

@@ -11,6 +11,7 @@ using namespace std;
 
 int main()
 {
+    srand(static_cast<unsigned int>(time(NULL)));
     mainLoop();
     return 0;
 }

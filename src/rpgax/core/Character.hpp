@@ -14,7 +14,8 @@ class Character
 {
 public:
     // Constructor
-    Character(std::string asciiArt, int hp, int armor, int resistance, std::string description, std::string weaponName, int weaponDamage, WeaponType type, int strength, int dexterity, int intelligence, int faith);
+    Character();
+    Character(std::string asciiArt, int hp, WeaponType weaponType, int weaponGrade, int armor, int resistance, std::string description, int strength, int dexterity, int intelligence, int faith);
 
     // Accessors
     std::string getAsciiArt() const;

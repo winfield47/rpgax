@@ -8,14 +8,16 @@
 #include "Character.hpp"
 using namespace std;
 
-Character::Character(string asciiArt, int hp, int armor, int resistance, string description, string weaponName, int weaponDamage, WeaponType type, int strength, int dexterity, int intelligence, int faith)
+Character::Character(){};
+
+Character::Character(string asciiArt, int hp, WeaponType weaponType, int weaponGrade, int armor, int resistance, string description, int strength, int dexterity, int intelligence, int faith)
 {
     this->asciiArt = asciiArt;
     this->hp = hp;
     this->armor = armor;
     this->resistance = resistance;
     this->description = description;
-    this->weapon = Weapon(weaponName, weaponDamage, type);
+    this->weapon = Weapon(weaponType, weaponGrade);
     this->strength = strength;
     this->dexterity = dexterity;
     this->intelligence = intelligence;

@@ -9,23 +9,53 @@
 #define Weapon_hpp
 
 #include <string>
+#include <vector>
+
+static const unsigned short TOTAL_WEAPON_TYPES = 8;
 
 enum WeaponType
 {
+    zweihander, flail, estoc, bow, spellbook, magicstaff, talisman, lightningspear, unarmed, randomized
+};
+
+static const std::string weaponTypes[] =
+{
+    "Zweihander", "Flail", "Estoc", "Bow", "Spellbook", "Magic Staff", "Talisman", "Lightning Spear", "Unarmed"
+};
+
+enum WeaponMoveAttribute
+{
+    strength, dexterity, intelligence, faith, none
+};
+
+enum WeaponDamageType
+{
     physical, magic
+};
+
+struct WeaponMove
+{
+    int amountOfChecks;
+    WeaponMoveAttribute usedAttribute;
+    float percentageOfMainDamageAsDamage; // 0 -> 1 :: 0% -> 100%
+    // if usedAttribute == none, accuracy will be 100%
+    WeaponMove(int amountOfChecks = 0, WeaponMoveAttribute usedAttribute = none, float percentageOfMainDamageAsDamage = 1);
 };
 
 class Weapon
 {
 private:
-    std::string name;
-    int damage;
     WeaponType type;
+    std::string name;
+    WeaponDamageType damageType; // physical or magic
+    int damage; // base damage
+    int grade; // this is a static increase to the base damage
+    std::vector<WeaponMove> moves;
 public:
-    Weapon(std::string name = "none", int damage = 0, WeaponType type = physical);
+    Weapon(WeaponType type = unarmed, int grade = 0);
     std::string getName() const;
     int getDamage() const;
-    WeaponType getType() const;
+    WeaponDamageType getType() const;
 };
 
 #endif /* Weapon_hpp */

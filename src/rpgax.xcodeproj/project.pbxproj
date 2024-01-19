@@ -27,6 +27,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F31BB5162B5AA2CF009C255D /* Items.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Items.hpp; sourceTree = "<group>"; };
 		F31BCCF62B579109001BD9FF /* Character.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cpp; sourceTree = "<group>"; };
 		F31BCCF72B579109001BD9FF /* Weapon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Weapon.cpp; sourceTree = "<group>"; };
 		F31BCCF82B579109001BD9FF /* Character.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Character.hpp; sourceTree = "<group>"; };
@@ -57,6 +58,7 @@
 				F31BCCF82B579109001BD9FF /* Character.hpp */,
 				F31BCCF72B579109001BD9FF /* Weapon.cpp */,
 				F31BCCF92B579109001BD9FF /* Weapon.hpp */,
+				F31BB5162B5AA2CF009C255D /* Items.hpp */,
 				F31BCCFC2B57A8AF001BD9FF /* Player.cpp */,
 				F31BCCFD2B57A8AF001BD9FF /* Player.hpp */,
 			);
