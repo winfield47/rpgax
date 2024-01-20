@@ -94,6 +94,11 @@ Weapon::Weapon(WeaponType type, int grade)
     this->damage += grade;
 }
 
+WeaponDamageType Weapon::getDamageType() const
+{
+    return damageType;
+}
+
 string Weapon::getName() const
 {
     return name;
@@ -104,7 +109,7 @@ int Weapon::getDamage() const
     return damage;
 }
 
-WeaponDamageType Weapon::getType() const
+int Weapon::getGrade() const
 {
-    return damageType;
+    return grade;
 }

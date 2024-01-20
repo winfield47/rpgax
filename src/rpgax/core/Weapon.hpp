@@ -54,13 +54,14 @@ private:
     std::string name;
     WeaponDamageType damageType; // physical or magic
     int damage; // base damage
-    int grade; // this is a static increase to the base damage
+    int grade; // this is a quality/rarity value for the weapon
     std::vector<WeaponMove> moves;
 public:
     Weapon(WeaponType type = unarmed, int grade = 0);
+    WeaponDamageType getDamageType() const;
     std::string getName() const;
     int getDamage() const;
-    WeaponDamageType getType() const;
+    int getGrade() const;
 };
 
 #endif /* Weapon_hpp */

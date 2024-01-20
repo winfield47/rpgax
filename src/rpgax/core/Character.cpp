@@ -14,6 +14,7 @@ Character::Character(string asciiArt, int hp, WeaponType weaponType, int weaponG
 {
     this->asciiArt = asciiArt;
     this->hp = hp;
+    this->hpMax = hp;
     this->armor = armor;
     this->resistance = resistance;
     this->description = description;
@@ -28,8 +29,10 @@ string Character::getAsciiArt() const {return asciiArt;}
 string Character::getDescription() const {return description;}
 const Weapon& Character::getWeapon() const {return weapon;}
 int Character::getHP() const {return hp;}
+int Character::getHPMax() const {return hpMax;}
 int Character::getArmor() const {return armor;}
 int Character::getResistance() const {return resistance;}
 int Character::getStrength() const {return strength;}
 int Character::getDexterity() const {return dexterity;}
 int Character::getIntelligence() const {return intelligence;}
+int Character::getFaith() const {return faith;}

@@ -22,6 +22,7 @@ public:
     std::string getDescription() const;
     const Weapon& getWeapon() const;
     int getHP() const;
+    int getHPMax() const;
     int getArmor() const;
     int getResistance() const;
     int getStrength() const;
@@ -35,6 +36,7 @@ protected:
     std::string description;
     Weapon weapon;
     int hp;
+    int hpMax;
     int armor;
     int resistance;
     int strength;

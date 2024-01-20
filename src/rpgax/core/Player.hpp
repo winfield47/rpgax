@@ -20,7 +20,6 @@ class Player : public Character
 {
 private:
     Origin origin;
-    std::string name;
     int souls;
     int level;
     Apparel apparel;
@@ -29,6 +28,7 @@ private:
 public:
     Player();
     Player(Origin origin, std::string playerName);
+    int getSouls() const;
 };
 
 #endif /* Player_hpp */

@@ -54,13 +54,13 @@
 		F31BCCF52B579109001BD9FF /* core */ = {
 			isa = PBXGroup;
 			children = (
-				F31BCCF62B579109001BD9FF /* Character.cpp */,
-				F31BCCF82B579109001BD9FF /* Character.hpp */,
-				F31BCCF72B579109001BD9FF /* Weapon.cpp */,
-				F31BCCF92B579109001BD9FF /* Weapon.hpp */,
 				F31BB5162B5AA2CF009C255D /* Items.hpp */,
-				F31BCCFC2B57A8AF001BD9FF /* Player.cpp */,
+				F31BCCF92B579109001BD9FF /* Weapon.hpp */,
+				F31BCCF72B579109001BD9FF /* Weapon.cpp */,
+				F31BCCF82B579109001BD9FF /* Character.hpp */,
+				F31BCCF62B579109001BD9FF /* Character.cpp */,
 				F31BCCFD2B57A8AF001BD9FF /* Player.hpp */,
+				F31BCCFC2B57A8AF001BD9FF /* Player.cpp */,
 			);
 			name = core;
 			path = rpgax/core;
@@ -95,8 +95,8 @@
 		F34CD4432B573307000E64A0 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				F34CD4472B57337B000E64A0 /* Utils.cpp */,
 				F34CD4482B57337B000E64A0 /* Utils.hpp */,
+				F34CD4472B57337B000E64A0 /* Utils.cpp */,
 			);
 			name = utils;
 			path = rpgax/utils;

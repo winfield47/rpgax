@@ -16,9 +16,10 @@ Player::Player()
 Player::Player(Origin origin, string playerName)
 {
     this->origin = origin;
-    name = playerName;
-    description = "You";
+    description = playerName;
     level = 0;
+    armor = 0;
+    resistance = 0;
     weapon = Weapon();
     apparel = Apparel();
     cloak = Cloak();
@@ -33,7 +34,7 @@ Player::Player(Origin origin, string playerName)
             intelligence = 65;
             faith = 71;
             souls = 2;
-            weapon = Weapon();
+            weapon = Weapon(zweihander);
             apparel = Apparel("Hide", 2);
             break;
             
@@ -44,7 +45,7 @@ Player::Player(Origin origin, string playerName)
             intelligence = 67;
             faith = 70;
             souls = 5;
-            weapon = Weapon();
+            weapon = Weapon(estoc);
             apparel = Apparel("Leather", 1);
             cloak = Cloak("Tattered", 1);
             break;
@@ -56,7 +57,7 @@ Player::Player(Origin origin, string playerName)
             intelligence = 75;
             faith = 68;
             souls = 4;
-            weapon = Weapon();
+            weapon = Weapon(spellbook);
             cloak = Cloak("Hooded", 2);
             potion = Potion("Healing", 5);
             break;
@@ -68,7 +69,7 @@ Player::Player(Origin origin, string playerName)
             intelligence = 68;
             faith = 75;
             souls = 1;
-            weapon = Weapon();
+            weapon = Weapon(talisman);
             apparel = Apparel("Leather", 1);
             cloak = Cloak("Tattered", 1);
             potion = Potion("Healing", 5);
@@ -85,19 +86,12 @@ Player::Player(Origin origin, string playerName)
             break;
     }
     
-    hp = (strength - 70) * 2;
+    hpMax = hp = 20 + (strength - 70) * 2;
     
-    
-    //asciiArt;
-    //description;
-    //weapon;
-    //hp;
-    //armor;
-    //resistance;
-    //strength;
-    //dexterity;
-    //intelligence;
-    //faith;
-    
+}
+
+int Player::getSouls() const
+{
+    return souls;
 }
 
