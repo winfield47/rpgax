@@ -17,16 +17,33 @@ void mainLoop()
     {
         cout << "Welcome to rpgax!" << endl;
         gameLoop();
-        continueKey = getContinueKey();
+        continueKey = getContinueKey("Play again? (y/n): ");
     }
 }
 
 void gameLoop()
 {
-    while (true)
+    string originStr = getLineFromPrompt("Origin: ");
+    
+    Player player;
+    Origin playerOrigin;
+    
+    if (originStr == "nomad")
     {
-        
+        playerOrigin = nomad;
     }
+    else
+    {
+        cout << "you will play as nomad anyways" << endl;
+        playerOrigin = inquisitor;
+    }
+    
+    string playerName = getLineFromPrompt("Name: ");
+    
+    player = Player(playerOrigin, playerName);
+    
+    cout << player.getAsciiArt() << endl;
+    
 }
 
 char getContinueKey(string prompt)
@@ -63,4 +80,42 @@ char getContinueKey(string prompt)
     
     cout << endl;
     return input;
+}
+
+char lowercase(char c)
+{
+    char lowerChar;
+    if (c <= 'Z' && c >= 'A')
+    {
+        lowerChar = c + ('a' - 'A');
+    }
+    else
+    {
+        lowerChar = c;
+    }
+    return lowerChar;
+}
+
+string lowercase(string str)
+{
+    string lowerStr = "";
+    for (char c: str)
+    {
+        lowerStr += lowercase(c);
+    }
+    
+    return lowerStr;
+}
+
+string getLineFromPrompt(string prompt)
+{
+    string line;
+    cout << prompt;
+    getline(cin, line);
+    if (cin.bad())
+    {
+        cout << "You broke the code!" << endl;
+        return "";
+    }
+    return line;
 }

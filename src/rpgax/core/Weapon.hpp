@@ -35,11 +35,16 @@ enum WeaponDamageType
 
 struct WeaponMove
 {
+    // Properties
+    std::string name;
     int amountOfChecks;
     WeaponMoveAttribute usedAttribute;
     float percentageOfMainDamageAsDamage; // 0 -> 1 :: 0% -> 100%
     // if usedAttribute == none, accuracy will be 100%
-    WeaponMove(int amountOfChecks = 0, WeaponMoveAttribute usedAttribute = none, float percentageOfMainDamageAsDamage = 1);
+    
+    // Constructors
+    WeaponMove(std::string name);
+    WeaponMove(std::string name, int amountOfChecks, WeaponMoveAttribute usedAttribute, float percentageOfMainDamageAsDamage);
 };
 
 class Weapon

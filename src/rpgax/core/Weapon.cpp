@@ -8,8 +8,17 @@
 #include "Weapon.hpp"
 using namespace std;
 
-WeaponMove::WeaponMove(int amountOfChecks, WeaponMoveAttribute usedAttribute, float percentageOfMainDamageAsDamage)
+WeaponMove::WeaponMove(string name)
 {
+    this->name = name;
+    this->amountOfChecks = 0;
+    this->usedAttribute = none;
+    this->percentageOfMainDamageAsDamage = 0.6;
+}
+
+WeaponMove::WeaponMove(string name, int amountOfChecks, WeaponMoveAttribute usedAttribute, float percentageOfMainDamageAsDamage)
+{
+    this->name = name;
     this->amountOfChecks = amountOfChecks;
     this->usedAttribute = usedAttribute;
     if (this->usedAttribute == none)
@@ -37,7 +46,7 @@ Weapon::Weapon(WeaponType type, int grade)
         case zweihander:
             this->damageType = physical;
             this->damage = 12;
-            // ADD MOVES
+            moves.push_back(WeaponMove("Great Slash", 4, strength, 1));
             break;
         case flail:
             this->damageType = physical;
@@ -78,11 +87,11 @@ Weapon::Weapon(WeaponType type, int grade)
             this->damageType = physical;
             this->damage = 5;
             this->grade = 0;
-            // ADD MOVES
+            moves.push_back(WeaponMove("Punch"));
+            moves.push_back(WeaponMove("Kick", 2, strength, 1));
             break;
     }
     this->damage += grade;
-    
 }
 
 string Weapon::getName() const

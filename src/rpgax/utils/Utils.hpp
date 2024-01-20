@@ -13,5 +13,8 @@
 void mainLoop();
 void gameLoop();
 char getContinueKey(std::string = "Continue? (y/n): ");
+char lowercase(char);
+std::string lowercase(std::string);
+std::string getLineFromPrompt(std::string);
 
 #endif /* Utils_hpp */

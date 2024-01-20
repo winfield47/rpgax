@@ -27,6 +27,7 @@ private:
     Cloak cloak;
     Potion potion;
 public:
+    Player();
     Player(Origin origin, std::string playerName);
 };
 
