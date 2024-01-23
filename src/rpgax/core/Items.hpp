@@ -16,7 +16,7 @@ struct Apparel
     std::string name;
     int grade;
     // Constructors
-    Apparel() : name(""), grade(0) {}
+    Apparel() : name("None"), grade(0) {}
     Apparel(const std::string& n, int g) : name(n), grade(g) {}
 };
 
@@ -26,7 +26,7 @@ struct Cloak
     std::string name;
     int grade;
     // Constructors
-    Cloak() : name(""), grade(0) {}
+    Cloak() : name("None"), grade(0) {}
     Cloak(const std::string& n, int g) : name(n), grade(g) {}
 };
 
@@ -36,7 +36,7 @@ struct Potion
     std::string name;
     int grade;
     // Constructors
-    Potion() : name(""), grade(0) {}
+    Potion() : name("None"), grade(0) {}
     Potion(const std::string& n, int g) : name(n), grade(g) {}
 };
 

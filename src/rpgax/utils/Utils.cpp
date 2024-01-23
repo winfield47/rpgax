@@ -24,6 +24,8 @@ void gameLoop()
 {
     Player player = createNewPlayer();
     
+    
+    // display hug (needs to be a function)
     cout << endl;
     cout << "Souls: " << player.getSouls() << endl;
     cout << endl;

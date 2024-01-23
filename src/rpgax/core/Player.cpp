@@ -18,6 +18,7 @@ Player::Player(Origin origin, string playerName)
     this->origin = origin;
     description = playerName;
     level = 0;
+    vigor = 0;
     armor = 0;
     resistance = 0;
     weapon = Weapon();
@@ -75,8 +76,8 @@ Player::Player(Origin origin, string playerName)
             potion = Potion("Healing", 5);
             break;
             
-        case nomad:
         default:
+        case nomad:
             asciiArt = "\\o/";//   \o/
             strength = 70;
             dexterity = 70;
@@ -90,8 +91,72 @@ Player::Player(Origin origin, string playerName)
     
 }
 
+Origin Player::getOrigin() const
+{
+    return origin;
+}
+
 int Player::getSouls() const
 {
     return souls;
+}
+
+int Player::getLevel() const
+{
+    return level;
+}
+
+Apparel Player::getApparel() const
+{
+    return apparel;
+}
+
+Cloak Player::getCloak() const
+{
+    return cloak;
+}
+
+Potion Player::getPotion() const
+{
+    return potion;
+}
+
+int Player::spendSouls(int soulsSpent)
+{
+    souls -= soulsSpent;
+    return soulsSpent;
+}
+
+void Player::consumeSouls(int soulsSpent)
+{
+    souls -= soulsSpent;
+    vigor += soulsSpent;
+}
+
+void Player::addSouls(int soulsAdded)
+{
+    souls += soulsAdded;
+}
+
+void Player::replaceApparel(Apparel newApparel)
+{
+    apparel = newApparel;
+}
+
+void Player::replaceCloak(Cloak newCloak)
+{
+    cloak = newCloak;
+}
+
+void Player::replacePotion(Potion newPotion)
+{
+    potion = newPotion;
+}
+
+Potion Player::popPotion(Potion)
+{
+    Potion usedPotion = potion;
+    potion = Potion();
+    return usedPotion;
 }
 
