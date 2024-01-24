@@ -39,7 +39,7 @@ void gameLoop()
 
 void psuedoClearScreen()
 {
-    for (size_t i = 0; i < 50; i++)
+    for (size_t i = 0; i < 20; i++)
     {
         cout << "\n";
     }
@@ -120,7 +120,7 @@ string getLineFromPrompt(string prompt)
     return line;
 }
 
-Origin getOrigin(string prompt)
+Origin getOriginFromPrompt(string prompt)
 {
     while (true)
     {
@@ -177,25 +177,51 @@ Player createNewPlayer()
             cout << p.getAsciiArt() << " " << p.getDescription() << "\t" << endl << endl;
         }
         
-        inputOrigin = getOrigin();
-        Player tempPlayerChoice = Player(inputOrigin, "Starting stats:");
+        inputOrigin = getOriginFromPrompt();
+        string originDescription = "";
+        switch (inputOrigin)
+        {
+            case brute:
+                originDescription = "A strong warrior who can take a hit or two.";
+                break;
+            case rogue:
+                originDescription = "A quick skirmisher that likes to strike first.";
+                break;
+            case wizard:
+                originDescription = "A weak mage with hopes of powerful magic.";
+                break;
+            case inquisitor:
+                originDescription = "A vessel for a higher power's will.";
+                break;
+            default:
+            case nomad:
+                originDescription = "An exiled wanderer from a long-forgotten land.";
+                break;
+        }
+        Player tempPlayerChoice = Player(inputOrigin, originDescription);
         
         psuedoClearScreen();
+        //
+        // vvv DISPLAY ORIGIN vvv
+        //
         cout << "\n\n\n  " << tempPlayerChoice.getAsciiArt() << endl;
         cout << "\"" << tempPlayerChoice.getDescription() << "\"" << endl;
-        cout << "HP : " << tempPlayerChoice.getHP() << "/" << tempPlayerChoice.getHPMax() << endl;
+        cout << "STR~" << tempPlayerChoice.getStrength();
+        cout << "\tDEX~" << tempPlayerChoice.getDexterity();
+        cout << "\tINT~" << tempPlayerChoice.getIntelligence();
+        cout << "\tFAI~" << tempPlayerChoice.getFaith() << endl;
+        cout << "\nHP : " << tempPlayerChoice.getHP() << "/" << tempPlayerChoice.getHPMax() << endl;
         cout << "Weapon : " << tempPlayerChoice.getWeapon().getName();
         cout << " (" << tempPlayerChoice.getWeapon().getDamage() << " " << ((tempPlayerChoice.getWeapon().getDamageType() == physical) ? "physical" : "magic") << " damage)" << endl;
         cout << "Armor : " << tempPlayerChoice.getArmor() << endl;
         cout << "Resistance : " << tempPlayerChoice.getResistance() << endl;
-        cout << "STR~" << tempPlayerChoice.getStrength();
-        cout << "\tDEX~" << tempPlayerChoice.getDexterity();
-        cout << "\tINT~" << tempPlayerChoice.getIntelligence();
-        cout << "\tFAI~" << tempPlayerChoice.getFaith();
-        cout << "\n\nStarting souls : " << tempPlayerChoice.getSouls() << endl;
+        cout << "\nStarting souls : " << tempPlayerChoice.getSouls() << endl;
         cout << endl;
+        //
+        // ^^^ DISPLAY ORIGIN ^^^
+        //
         
-        continueKey = getContinueKey("Are you sure you want to play this class? (y/n): ");
+        continueKey = getContinueKey("Do you want to play this class? (y/n): ");
     }
     while (continueKey == 'n');
     inputName = getLineFromPrompt("Name: ");

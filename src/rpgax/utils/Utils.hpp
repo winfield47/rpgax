@@ -18,7 +18,7 @@ char getContinueKey(std::string = "Continue? (y/n): ");
 char lowercase(char);
 std::string lowercase(std::string);
 std::string getLineFromPrompt(std::string);
-Origin getOrigin(std::string = "Select Origin: ");
+Origin getOriginFromPrompt(std::string = "Inspect Origin: ");
 Player createNewPlayer();
 
 #endif /* Utils_hpp */

@@ -8,29 +8,6 @@
 #include "Weapon.hpp"
 using namespace std;
 
-WeaponMove::WeaponMove(string name)
-{
-    this->name = name;
-    this->amountOfChecks = 0;
-    this->usedAttribute = none;
-    this->percentageOfMainDamageAsDamage = 0.6;
-}
-
-WeaponMove::WeaponMove(string name, int amountOfChecks, WeaponMoveAttribute usedAttribute, float percentageOfMainDamageAsDamage)
-{
-    this->name = name;
-    this->amountOfChecks = amountOfChecks;
-    this->usedAttribute = usedAttribute;
-    if (this->usedAttribute == none)
-    {
-        this->percentageOfMainDamageAsDamage = 1;
-    }
-    else
-    {
-        this->percentageOfMainDamageAsDamage = percentageOfMainDamageAsDamage;
-    }
-}
-
 Weapon::Weapon(WeaponType type, int grade)
 {
     if (type == randomized)
@@ -45,58 +22,70 @@ Weapon::Weapon(WeaponType type, int grade)
         default:
         case zweihander:
             this->damageType = physical;
-            this->damage = 12;
-            moves.push_back(WeaponMove("Great Slash", 4, strength, 1));
+            this->baseDamage = 12;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Pommel Strike")); // creates a 60% dmg 100% accuracy move
+            moves.push_back(WeaponMove("Great Slash", 4, strength)); // name, checks, attr
             break;
         case flail:
             this->damageType = physical;
-            this->damage = 9;
-            // ADD MOVES
+            this->baseDamage = 8;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Reckless Attack", 0, none, 1)); // creates a 100% dmg 100% accuracy move
             break;
         case estoc:
             this->damageType = physical;
-            this->damage = 7;
-            // ADD MOVES
+            this->baseDamage = 7;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Lunge"));
+            // parry will block all damage AND reflect what would have been dealt to the attacker
+            moves.push_back(WeaponMove("Parry", 1, dexterity, 0)); // does no dmg, but has a special effect
             break;
         case bow:
             this->damageType = physical;
-            this->damage = 7;
-            // ADD MOVES
+            this->baseDamage = 6;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Called Shot"));
+            moves.push_back(WeaponMove("Triple Draw", 1, dexterity, 2));
             break;
         case spellbook:
             this->damageType = magic;
-            this->damage = 0;
-            // ADD MOVES
+            this->baseDamage = 0; // spell book gets damage from INT mod
+            moves.push_back(WeaponMove("Magic Missile"));
+            // oakskin will increase armor by up to the int mod for the combat
+            moves.push_back(WeaponMove("Oakskin", 3, intelligence, 0)); // does no dmg, but has a special effect
+            // Spellshield will increase resistance by up to the int mod for the combat
+            moves.push_back(WeaponMove("Spellshield", 3, intelligence, 0)); // does no dmg, but has a special effect
             break;
         case magicstaff:
             this->damageType = magic;
-            this->damage = 4;
-            // ADD MOVES
+            this->baseDamage = 4;
+            this->baseDamage += grade * 2;
+            moves.push_back(WeaponMove("Fireball", 5, intelligence, 1));
             break;
         case talisman:
             this->damageType = magic;
-            this->damage = 8;
-            // ADD MOVES
+            this->baseDamage = 8;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Judgement", 2, faith, 1));
+            // heal will heal the user for: FAI mod + grade
+            moves.push_back(WeaponMove("Heal", 0, none, 0)); // does no dmg, but has a special effect
             break;
         case lightningspear:
             this->damageType = magic;
-            this->damage = 12;
-            // ADD MOVES
+            this->baseDamage = 12;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Zap"));
+            moves.push_back(WeaponMove("Smite", 2, faith, 1));
             break;
         case unarmed:
             this->damageType = physical;
-            this->damage = 5;
+            this->baseDamage = 5;
             this->grade = 0;
-            moves.push_back(WeaponMove("Punch"));
-            moves.push_back(WeaponMove("Kick", 2, strength, 1));
+            moves.push_back(WeaponMove("Punch")); // creates a 60% dmg 100% accuracy move
+            moves.push_back(WeaponMove("Kick", 2, strength)); // creates a kick move with 2 checks that use STR at 100% damage
             break;
     }
-    this->damage += grade;
-}
-
-WeaponDamageType Weapon::getDamageType() const
-{
-    return damageType;
 }
 
 string Weapon::getName() const
@@ -104,12 +93,27 @@ string Weapon::getName() const
     return name;
 }
 
+WeaponType Weapon::getType() const
+{
+    return type;
+}
+
+WeaponDamageType Weapon::getDamageType() const
+{
+    return damageType;
+}
+
 int Weapon::getDamage() const
 {
-    return damage;
+    return baseDamage;
 }
 
 int Weapon::getGrade() const
 {
     return grade;
+}
+
+vector<WeaponMove> Weapon::getMoves() const
+{
+    return moves;
 }
