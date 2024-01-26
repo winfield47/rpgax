@@ -141,7 +141,6 @@ void displayHUD(const Player &player)
 
 void displayHUD(const Player &player, const Enemy &enemy)
 {
-    cout << "
     cout << "\n\n\n  " << player.getAsciiArt() << endl;
     cout << "\"" << player.getDescription() << "\"" << endl;
     cout << "STR~" << player.getStrength();
