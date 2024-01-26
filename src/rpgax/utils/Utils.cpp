@@ -7,6 +7,7 @@
 
 #include "Utils.hpp"
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 void mainLoop()
@@ -123,6 +124,24 @@ bool isSubset(const std::string &stringInQuestion, const std::string &superStrin
 
 void displayHUD(const Player &player)
 {
+    cout << "\n\n\n  " << player.getAsciiArt() << endl;
+    cout << "\"" << player.getDescription() << "\"" << endl;
+    cout << "STR~" << player.getStrength();
+    cout << "\tDEX~" << player.getDexterity();
+    cout << "\tINT~" << player.getIntelligence();
+    cout << "\tFAI~" << player.getFaith() << endl;
+    cout << "\nHP : " << player.getHP() << "/" << player.getHPMax() << endl;
+    cout << "Weapon : " << player.getWeapon().getName();
+    cout << " (" << player.getWeapon().getDamage() << " " << ((player.getWeapon().getDamageType() == physical) ? "physical" : "magic") << " damage)" << endl;
+    cout << "Armor : " << player.getArmor() << endl;
+    cout << "Resistance : " << player.getResistance() << endl;
+    cout << "\nStarting souls : " << player.getSouls() << endl;
+    cout << endl;
+}
+
+void displayHUD(const Player &player, const Enemy &enemy)
+{
+    cout << "
     cout << "\n\n\n  " << player.getAsciiArt() << endl;
     cout << "\"" << player.getDescription() << "\"" << endl;
     cout << "STR~" << player.getStrength();

@@ -16,12 +16,12 @@
 
 enum WeaponType
 {
-    zweihander, flail, estoc, bow, spellbook, magicstaff, talisman, lightningspear, unarmed, randomized, special
+    zweihander, flail, estoc, dagger, bow, spellbook, magicstaff, talisman, lightningspear, unarmed, randomized, special
 };
 
 static const std::string weaponTypes[] =
 {
-    "Zweihander", "Flail", "Estoc", "Bow", "Spellbook", "Magic Staff", "Talisman", "Lightning Spear", "Unarmed"
+    "Zweihander", "Flail", "Estoc", "Dagger", "Bow", "Spellbook", "Magic Staff", "Talisman", "Lightning Spear", "Unarmed"
 };
 
 enum WeaponDamageType

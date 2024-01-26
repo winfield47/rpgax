@@ -9,6 +9,7 @@
 #define Utils_hpp
 
 #include "../core/Player.hpp"
+#include "../core/Enemy.hpp"
 #include <string>
 
 // Loops
@@ -24,7 +25,7 @@ bool isSubset(const std::string&, const std::string&);
 
 // Game
 void displayHUD(const Player&);
-void displayHUD(Player, Character);
+void displayHUD(const Player&, const Enemy&);
 Origin getOriginFromPrompt(std::string = "Inspect Origin: ");
 Player createNewPlayer();
 

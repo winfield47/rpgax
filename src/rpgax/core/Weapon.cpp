@@ -39,12 +39,18 @@ Weapon::Weapon(WeaponType type, int grade)
             break;
         case estoc:
             this->damageType = physical;
-            this->baseDamage = 7;
+            this->baseDamage = 9;
             this->baseDamage += grade;
             moves.push_back(WeaponMove("Lunge"));
             // parry will block all damage AND reflect what would have been dealt to the attacker
             moves.push_back(WeaponMove("Parry", 1, dexterity, 0)); // does no dmg, but has a special effect
             break;
+        case dagger:
+            this->damageType = physical;
+            this->baseDamage = 2;
+            this->baseDamage += grade * 2;
+            moves.push_back(WeaponMove("Stab"));
+            moves.push_back(WeaponMove("Assassinate", 1, dexterity, 1));
         case bow:
             this->damageType = physical;
             this->baseDamage = 6;
