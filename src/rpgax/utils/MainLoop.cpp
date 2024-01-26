@@ -10,8 +10,8 @@
 
 void mainLoop()
 {
-    // Player player = Player(brute, "Winfield");
-    Player player = createNewPlayer();
+    Player player = Player(brute, "Winfield");
+    // Player player = createNewPlayer();
     Enemy enemyGoblin = Enemy(goblin);
     displayHUD(player, enemyGoblin);
 }

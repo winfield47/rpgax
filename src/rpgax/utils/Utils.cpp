@@ -33,23 +33,37 @@ void displayHUD(const Player &player)
     cout << "\nHP : " << player.getHP() << "/" << player.getHPMax() << endl;
     cout << "Weapon : " << player.getWeapon().getName();
     cout << " (" << player.getWeapon().getDamage() << " " << ((player.getWeapon().getDamageType() == physical) ? "physical" : "magic") << " damage)" << endl;
-    cout << "Armor : " << player.getArmor() << endl;
-    cout << "Resistance : " << player.getResistance() << endl;
+    cout << "Armor : " << player.getApparel().grade << endl;
+    cout << "Resistance : " << player.getCloak().grade << endl;
     cout << endl;
 }
 
 void displayHUD(const Player &player, const Enemy &enemy)
 {
     // Display Souls
-    cout << "Souls : " + to_string(player.getSouls()) << "\n\n" << endl;
+    cout << "Souls  : " + to_string(player.getSouls()) << endl;
     
-    // Display ASCII Art
+    // Display Potion
+    cout << "Potion : " + player.getPotion().name << "\n\n" << endl;
+    
+    // Display ASCII ART
     printWithFormattingHUD("  " + player.getAsciiArt(), enemy.getAsciiArt() + "  ", addPipes);
     
-    // Display Description
+    // Display DESCRIPTION
     string playerDescriptionDisplayStr = "\"" + player.getDescription() + "\"";
     string enemyDescriptionDisplayStr = "\"" + enemy.getDescription() + "\"";
     printWithFormattingHUD("\"" + player.getDescription() + "\"", "\"" + enemy.getDescription() + "\"", addVersus);
+    
+    // Display HP, WPN, AMR, RES
+    string playerHpWpnAmrResDisplayStr = player.getWeapon().getName();
+    playerHpWpnAmrResDisplayStr += ", RES~" + to_string(player.getCloak().grade);
+    playerHpWpnAmrResDisplayStr += ", AMR~" + to_string(player.getApparel().grade);
+    playerHpWpnAmrResDisplayStr += ", HP~" + to_string(player.getHP()) + "/" + to_string(player.getHPMax());
+    string enemyHpWpnAmrResDisplayStr = to_string(enemy.getHP()) + "/" + to_string(enemy.getHPMax()) + "~HP, ";
+    enemyHpWpnAmrResDisplayStr += to_string(enemy.getArmor()) + "~AMR, ";
+    enemyHpWpnAmrResDisplayStr += to_string(enemy.getResistance()) + "~RES, ";
+    enemyHpWpnAmrResDisplayStr += enemy.getWeapon().getName();
+    printWithFormattingHUD(playerHpWpnAmrResDisplayStr, enemyHpWpnAmrResDisplayStr, addPipes);
     
     // Display STATS
     string playerStatsDisplayStr = "STR~" + to_string(player.getStrength());
@@ -63,30 +77,8 @@ void displayHUD(const Player &player, const Enemy &enemy)
     printWithFormattingHUD(playerStatsDisplayStr, enemyStatsDisplayStr, addPipes);
     cout << endl;
     
-    // Display HP
-    string playerHealthDisplayStr = "HP : " + to_string(player.getHP()) + "/" + to_string(player.getHPMax());
-    string enemyHealthDisplayStr = "HP : " + to_string(enemy.getHP()) + "/" + to_string(enemy.getHPMax());
-    printWithFormattingHUD(playerHealthDisplayStr, enemyHealthDisplayStr);
-    
-    // Display Weapon
-    string playerWeaponDisplayStr = "Weapon : " + player.getWeapon().getName() + " (" + to_string(player.getWeapon().getDamage()) + " ";
-    playerWeaponDisplayStr += ((player.getWeapon().getDamageType() == physical) ? "physical" : "magic");
-    playerWeaponDisplayStr += " damage)";
-    string enemyWeaponDisplayStr = "Weapon : " + enemy.getWeapon().getName() + " (" + to_string(enemy.getWeapon().getDamage()) + " ";
-    enemyWeaponDisplayStr += ((enemy.getWeapon().getDamageType() == physical) ? "physical" : "magic");
-    enemyWeaponDisplayStr += " damage)";
-    printWithFormattingHUD(playerWeaponDisplayStr, enemyWeaponDisplayStr);
-    
-    // Display Armor
-    string playerArmorDisplayStr = "Armor : " + to_string(player.getArmor());
-    string enemyArmorDisplayStr = "Armor : " + to_string(enemy.getArmor());
-    printWithFormattingHUD(playerArmorDisplayStr, enemyArmorDisplayStr);
-    
-    // Display Resistance
-    string playerResistanceDisplayStr = "Resistance : " + to_string(player.getResistance());
-    string enemyResistanceDisplayStr = "Resistance : " + to_string(enemy.getResistance());
-    printWithFormattingHUD(playerResistanceDisplayStr, enemyResistanceDisplayStr);
-    cout << endl;
+    // Display MOVES
+    printWithFormattingHUD(player.getWeapon().getMoves().at(0).getName(), enemy.getWeapon().getMoves().at(0).getName());
 }
 
 void printWithFormattingHUD(const string &leftString, const string &rightString, const OptionSelectHUD optionSelectHUD)
