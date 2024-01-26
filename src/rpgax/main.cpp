@@ -11,13 +11,14 @@ using namespace std;
 
 int main()
 {
+    cout << "Welcome to rpgax!" << endl;
     srand(static_cast<unsigned int>(time(NULL)));
     char continueKey = 'y';
     while (continueKey == 'y')
     {
-        cout << "Welcome to rpgax!" << endl;
+        psuedoClearScreen();
         mainLoop();
-        continueKey = getContinueKey("Play again? (y/n): ");
+        continueKey = getContinueKey("\nPlay again? (y/n): ");
     }
     return 0;
 }

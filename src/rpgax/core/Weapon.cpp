@@ -9,8 +9,10 @@
 #include <iostream>
 using namespace std;
 
-Weapon::Weapon() {}
+int Weapon::playerIntelligenceModifier = 0;
 
+// Constructors
+Weapon::Weapon() {}
 Weapon::Weapon(WeaponType type, int grade)
 {
     if (type == randomized)
@@ -64,8 +66,8 @@ Weapon::Weapon(WeaponType type, int grade)
             break;
         case spellbook:
             this->damageType = magic;
-            this->baseDamage = 0; // spell book gets damage from INT mod
-            moves.push_back(WeaponMove("Magic Missile"));
+            this->baseDamage = 0 + playerIntelligenceModifier; // spell book gets damage from INT mod
+            moves.push_back(WeaponMove("Magic Missile", 0, noWeaponMoveAttribute, 1));
             // oakskin will increase armor by up to the int mod for the combat
             moves.push_back(WeaponMove("Oakskin", 3, intelligence, 0)); // does no dmg, but has a special effect
             // Spellshield will increase resistance by up to the int mod for the combat
@@ -101,7 +103,6 @@ Weapon::Weapon(WeaponType type, int grade)
             break;
     }
 }
-
 Weapon::Weapon(std::string name, WeaponDamageType damageType, int baseDamage, int grade, std::vector<WeaponMove> moves)
 {
     this->name = name;
@@ -112,32 +113,42 @@ Weapon::Weapon(std::string name, WeaponDamageType damageType, int baseDamage, in
     this->moves = moves;
 }
 
+// Accessors
+int Weapon::getPlayerIntelligenceModifier()
+{
+    return playerIntelligenceModifier;
+}
 string Weapon::getName() const
 {
     return name;
 }
-
 WeaponType Weapon::getType() const
 {
     return type;
 }
-
 WeaponDamageType Weapon::getDamageType() const
 {
     return damageType;
 }
-
 int Weapon::getDamage() const
 {
     return baseDamage;
 }
-
+int Weapon::getDamage(WeaponMove &move) const
+{
+    return move.getDamagePercentage() * baseDamage;
+}
 int Weapon::getGrade() const
 {
     return grade;
 }
-
 vector<WeaponMove> Weapon::getMoves() const
 {
     return moves;
+}
+
+// Setters
+void Weapon::setPlayerIntelligenceModifier(int currentIntelligenceModifier)
+{
+    playerIntelligenceModifier = currentIntelligenceModifier - 70;
 }

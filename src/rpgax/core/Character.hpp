@@ -23,8 +23,8 @@ public:
     const Weapon& getWeapon() const;
     int getHP() const;
     int getHPMax() const;
-    int getArmor() const;
-    int getResistance() const;
+    virtual int getArmor() const;
+    virtual int getResistance() const;
     int getStrength() const;
     int getDexterity() const;
     int getIntelligence() const;

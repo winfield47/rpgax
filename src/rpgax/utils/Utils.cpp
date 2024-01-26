@@ -11,7 +11,6 @@
 using namespace std;
 
 // DISPLAY
-
 void psuedoClearScreen()
 {
     for (size_t i = 0; i < 20; i++)
@@ -20,34 +19,38 @@ void psuedoClearScreen()
     }
     cout << endl;
 }
-
 void displayHUD(const Player &player)
 {
     cout << "Souls : " << player.getSouls() << endl;
-    cout << "\n\n\n" << player.getAsciiArt() <<endl;
+    cout << "\n  " << player.getAsciiArt() <<endl;
     cout << "\"" << player.getDescription() << "\"" << endl;
     cout << "STR~" << player.getStrength();
     cout << "\tDEX~" << player.getDexterity();
     cout << "\tINT~" << player.getIntelligence();
     cout << "\tFAI~" << player.getFaith() << endl;
-    cout << "\nHP : " << player.getHP() << "/" << player.getHPMax() << endl;
-    cout << "Weapon : " << player.getWeapon().getName();
+    cout << "\nHP: " << player.getHP() << "/" << player.getHPMax() << endl;
+    cout << "Weapon: " << player.getWeapon().getName();
     cout << " (" << player.getWeapon().getDamage() << " " << ((player.getWeapon().getDamageType() == physical) ? "physical" : "magic") << " damage)" << endl;
-    cout << "Armor : " << player.getApparel().grade << endl;
-    cout << "Resistance : " << player.getCloak().grade << endl;
+    if (player.getArmor() != 0)
+    {
+        cout << "Armor: " << player.getArmor() << endl;
+    }
+    if (player.getResistance() != 0)
+    {
+        cout << "Resistance: " << player.getResistance() << endl;
+    }
     cout << endl;
 }
-
 void displayHUD(const Player &player, const Enemy &enemy)
 {
     // Display Souls
     cout << "Souls  : " + to_string(player.getSouls()) << endl;
     
     // Display Potion
-    cout << "Potion : " + player.getPotion().name << "\n\n" << endl;
+    cout << "Potion : " + player.getPotion().name << "\n" << endl;
     
     // Display ASCII ART
-    printWithFormattingHUD("  " + player.getAsciiArt(), enemy.getAsciiArt() + "  ", addPipes);
+    printWithFormattingHUD("  " + player.getAsciiArt(), "  " + enemy.getAsciiArt(), addPipes);
     
     // Display DESCRIPTION
     string playerDescriptionDisplayStr = "\"" + player.getDescription() + "\"";
@@ -55,55 +58,94 @@ void displayHUD(const Player &player, const Enemy &enemy)
     printWithFormattingHUD("\"" + player.getDescription() + "\"", "\"" + enemy.getDescription() + "\"", addVersus);
     
     // Display HP, WPN, AMR, RES
-    string playerHpWpnAmrResDisplayStr = player.getWeapon().getName();
-    playerHpWpnAmrResDisplayStr += ", RES~" + to_string(player.getCloak().grade);
-    playerHpWpnAmrResDisplayStr += ", AMR~" + to_string(player.getApparel().grade);
-    playerHpWpnAmrResDisplayStr += ", HP~" + to_string(player.getHP()) + "/" + to_string(player.getHPMax());
-    string enemyHpWpnAmrResDisplayStr = to_string(enemy.getHP()) + "/" + to_string(enemy.getHPMax()) + "~HP, ";
-    enemyHpWpnAmrResDisplayStr += to_string(enemy.getArmor()) + "~AMR, ";
-    enemyHpWpnAmrResDisplayStr += to_string(enemy.getResistance()) + "~RES, ";
-    enemyHpWpnAmrResDisplayStr += enemy.getWeapon().getName();
-    printWithFormattingHUD(playerHpWpnAmrResDisplayStr, enemyHpWpnAmrResDisplayStr, addPipes);
+    printWithFormattingHUD(getStringHpAmrRes(player), getStringHpAmrRes(enemy), addPipes);
     
-    // Display STATS
-    string playerStatsDisplayStr = "STR~" + to_string(player.getStrength());
-    playerStatsDisplayStr += ", DEX~" + to_string(player.getDexterity());
-    playerStatsDisplayStr += ", INT~" + to_string(player.getIntelligence());
-    playerStatsDisplayStr += ", FAI~" + to_string(player.getFaith());
-    string enemyStatsDisplayStr = "STR~" + to_string(enemy.getStrength());
-    enemyStatsDisplayStr += ", DEX~" + to_string(enemy.getDexterity());
-    enemyStatsDisplayStr += ", INT~" + to_string(enemy.getIntelligence());
-    enemyStatsDisplayStr += ", FAI~" + to_string(enemy.getFaith());
-    printWithFormattingHUD(playerStatsDisplayStr, enemyStatsDisplayStr, addPipes);
-    cout << endl;
+    // Display MORE INFO
+    printWithFormattingHUD(getStringAttributes(player), "Weapon: " + enemy.getWeapon().getName(), addPipes);
     
     // Display MOVES
-    printWithFormattingHUD(player.getWeapon().getMoves().at(0).getName(), enemy.getWeapon().getMoves().at(0).getName());
+    printWithFormattingHUD("\n<" + player.getWeapon().getName() + ">", "<Enemy Intent>");
+    printMovesWithFormattingHUD(player.getWeapon(), enemy);
 }
-
 void printWithFormattingHUD(const string &leftString, const string &rightString, const OptionSelectHUD optionSelectHUD)
 {
-    const int TOTAL_WIDTH = 50;
-    
+    const int TOTAL_WIDTH = 40;
+    cout << setw(TOTAL_WIDTH) << ((optionSelectHUD == addNothing) ? left : left) << leftString;
     switch (optionSelectHUD) {
         case addPipes:
-            cout << setw(TOTAL_WIDTH) << right << leftString << setw(2) << "|" << setw(10) << "| " << setw(TOTAL_WIDTH) << left << rightString << endl;
+            cout << right << setw(2) << "|" << setw(10) << "| ";
             break;
             
         case addVersus:
-            cout << setw(TOTAL_WIDTH) << right << leftString << " | VERSUS | " << setw(TOTAL_WIDTH) << left << rightString << endl;
+            cout << " | VERSUS | ";
             break;
             
         default:
         case addNothing:
             // int leftPadding = ((50 - static_cast<int>(leftString.length())) / 2) + static_cast<int>(leftString.length());
-            cout << setw(TOTAL_WIDTH) << right << leftString << setw(10) << "" << "  " << setw(TOTAL_WIDTH) << left << rightString << endl;
+            cout << setw(10) << "" << "  ";
             break;
+    }
+    cout << setw(TOTAL_WIDTH) << left << rightString << endl;
+}
+void printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &enemy)
+{
+    string leftString;
+    string rightString;
+    WeaponMove currentMove;
+    int currentMoveDamage;
+    for (size_t i = 0; i < playerWeapon.getMoves().size(); i++)
+    {
+        // Set both to nothing
+        leftString = rightString = "";
+        
+        // Player's current move
+        currentMove = playerWeapon.getMoves().at(i);
+        currentMoveDamage = static_cast<int>(playerWeapon.getDamage() * currentMove.getDamagePercentage());
+        
+        // Creating the display string
+        leftString = playerWeapon.getMoves().at(i).getName() + ": ";
+        if (currentMoveDamage != 0)
+        {
+            leftString += to_string(currentMoveDamage);
+            leftString += getStringForWeaponDamageType(playerWeapon.getDamageType()) + " dmg";
+            if (currentMove.getAmountOfChecks() != 0)
+            {
+                leftString += ", ";
+            }
+        }
+        if (currentMove.getAmountOfChecks() != 0)
+        {
+            leftString += getStringForAmountOfChecks(playerWeapon.getMoves().at(i).getAmountOfChecks());
+            leftString += " " + getStringForAttributeEnum(playerWeapon.getMoves().at(i).getUsedAttribute());
+        }
+        
+        // Enemy's NEXT MOVE display
+        if (i == 0)
+        {
+            WeaponMove chosenMove = enemy.getWeapon().getMoves().at(enemy.getMoveChooser());
+            int chosenMoveDamage = enemy.getWeapon().getDamage(chosenMove);
+            rightString = chosenMove.getName() + ": ";
+            if (chosenMoveDamage != 0)
+            {
+                rightString += to_string(static_cast<int>(chosenMoveDamage));
+                rightString += getStringForWeaponDamageType(enemy.getWeapon().getDamageType()) + " dmg";
+                if (chosenMove.getAmountOfChecks() != 0)
+                {
+                    rightString += ", ";
+                }
+            }
+            if (chosenMove.getAmountOfChecks() != 0)
+            {
+                rightString += getStringForAmountOfChecks(chosenMove.getAmountOfChecks());
+                rightString += " " + getStringForAttributeEnum(chosenMove.getUsedAttribute());
+            }
+        }
+        printWithFormattingHUD(leftString, rightString);
     }
 }
 
 // USER INPUT
-
 char getContinueKey(const string &prompt)
 {
     char input;
@@ -139,7 +181,6 @@ char getContinueKey(const string &prompt)
     cout << endl;
     return input;
 }
-
 string getLineFromPrompt(const string &prompt)
 {
     string line;
@@ -154,7 +195,6 @@ string getLineFromPrompt(const string &prompt)
 }
 
 // STRING MANIPULATION
-
 char lowercase(const char c)
 {
     char lowerChar;
@@ -168,7 +208,6 @@ char lowercase(const char c)
     }
     return lowerChar;
 }
-
 string lowercase(const string &str)
 {
     string lowerStr = "";
@@ -179,9 +218,8 @@ string lowercase(const string &str)
     
     return lowerStr;
 }
-
-bool isSubset(const std::string &stringInQuestion, const std::string &superString) {
-    
+bool isSubset(const std::string &stringInQuestion, const std::string &superString) 
+{
     bool currentCharIsInSuperString = false;
     for (char subChar : stringInQuestion)
     {
@@ -202,7 +240,6 @@ bool isSubset(const std::string &stringInQuestion, const std::string &superStrin
     
     return true;
 }
-
 Origin getOriginFromPrompt(const string prompt)
 {
     while (true)
@@ -236,6 +273,7 @@ Origin getOriginFromPrompt(const string prompt)
     }
 }
 
+// GAME
 Player createNewPlayer()
 {
     // Player choices
@@ -295,4 +333,81 @@ Player createNewPlayer()
     
     return Player(inputOrigin, inputName);
     
+}
+string getStringHpAmrRes(const Character &character)
+{
+    string str = "HP~" + to_string(character.getHP()) + "/" + to_string(character.getHPMax());
+    str += character.getArmor() == 0 ? "" : ", AMR~" + to_string(character.getArmor());
+    str += character.getResistance() == 0 ? "" : ", RES~" + to_string(character.getResistance());
+    return str;
+}
+string getStringAttributes(const Character &character)
+{
+    string str = "STR~" + to_string(character.getStrength());
+    str += ", DEX~" + to_string(character.getDexterity());
+    str += ", INT~" + to_string(character.getIntelligence());
+    str += ", FAI~" + to_string(character.getFaith());
+    return str;
+}
+string getStringForAttributeEnum(const int attrEnumIntValue)
+{
+    switch (attrEnumIntValue) {
+        case 0:
+            return "STR";
+            break;
+        case 1:
+            return "DEX";
+            break;
+        case 2:
+            return "INT";
+            break;
+        case 3:
+            return "FAI";
+            break;
+        default:
+            return "";
+            break;
+    }
+}
+std::string getStringForAmountOfChecks(const int amountOfChecks)
+{
+    string str = "";
+    if (amountOfChecks > 0)
+    {
+        for (short i = 0; i < amountOfChecks - 1; i++)
+        {
+            str += "[]~";
+        }
+        str += "[]";
+    }
+    return str;
+}
+std::string getStringForWeaponDamageType(const int type, const bool displayPhysical)
+{
+    switch (type)
+    {
+        case 0:
+            if (displayPhysical)
+            {
+                return "physical";
+            }
+            else
+            {
+                return "";
+            }
+            break;
+        case 1:
+            if (displayPhysical)
+            {
+                return "magic";
+            }
+            else
+            {
+                return " magic";
+            }
+            break;
+        default:
+            return "";
+            break;
+    }
 }

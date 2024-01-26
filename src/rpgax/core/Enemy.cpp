@@ -8,8 +8,8 @@
 #include "Enemy.hpp"
 using namespace std;
 
+// Constructors
 Enemy::Enemy() {}
-
 Enemy::Enemy(EnemyType type, int floorLevel)
 {
     this->floorLevel = floorLevel;
@@ -54,9 +54,10 @@ Enemy::Enemy(EnemyType type, int floorLevel)
     varyStats();
     
     hpMax = hp = 20 + ((floorLevel + 1) * 1.5) + (strength - 70) * 2;
+    
+    moveChooser = rand() % weapon.getMoves().size();
 }
-
-void Enemy::varyStats()
+void Enemy::varyStats() // This helps the constructor look prettier
 {
     strength += (rand() % variance / 2) - (rand() % variance / 2);
     dexterity += (rand() % variance) - (rand() % variance);
@@ -67,4 +68,10 @@ void Enemy::varyStats()
         armor += ((rand() % floorLevel) - rand() % floorLevel) <= 0 ? 0 : (rand() % floorLevel);
         resistance += (rand() % floorLevel) <= 0 ? 0 : (rand() % floorLevel);
     }
+}
+
+// Accessors
+size_t Enemy::getMoveChooser() const
+{
+    return moveChooser;
 }

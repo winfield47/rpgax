@@ -32,6 +32,8 @@ public:
     Origin getOrigin() const;
     int getSouls() const;
     int getLevel() const;
+    virtual int getArmor() const override;
+    virtual int getResistance() const override;
     Apparel getApparel() const;
     Cloak getCloak() const;
     Potion getPotion() const;

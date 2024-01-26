@@ -17,12 +17,18 @@ enum EnemyType {
 class Enemy : public Character
 {
 private:
-    int variance;
+    // Properties
     int floorLevel;
+    int variance;
+    size_t moveChooser;
 public:
+    // Constructors
     Enemy();
-    Enemy(EnemyType type, int floorLevel = 0); // default enemy is a Floor 0 Goblin
+    Enemy(EnemyType type, int floorLevel = 0); // default enemy should be a Floor 0 Goblin
     void varyStats();
+    
+    // Accessors
+    size_t getMoveChooser() const;
 };
 
 #endif /* Enemy_hpp */

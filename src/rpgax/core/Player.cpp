@@ -8,8 +8,8 @@
 #include "Player.hpp"
 using namespace std;
 
+// Constructors
 Player::Player() {}
-
 Player::Player(Origin origin, string playerName)
 {
     this->origin = origin;
@@ -52,6 +52,7 @@ Player::Player(Origin origin, string playerName)
             strength = 65;
             dexterity = 72;
             intelligence = 75;
+            weapon.setPlayerIntelligenceModifier(intelligence);
             faith = 68;
             souls = 4;
             weapon = Weapon(spellbook);
@@ -85,75 +86,78 @@ Player::Player(Origin origin, string playerName)
     }
     
     hpMax = hp = 20 + (strength - 70) * 2;
+    armor = apparel.grade;
+    resistance = cloak.grade;
+    weapon.setPlayerIntelligenceModifier(intelligence);
     
 }
 
+// Accessors
 Origin Player::getOrigin() const
 {
     return origin;
 }
-
 int Player::getSouls() const
 {
     return souls;
 }
-
 int Player::getLevel() const
 {
     return level;
 }
-
+int Player::getArmor() const
+{
+    return armor;
+}
+int Player::getResistance() const
+{
+    return resistance;
+}
 Apparel Player::getApparel() const
 {
     return apparel;
 }
-
 Cloak Player::getCloak() const
 {
     return cloak;
 }
-
 Potion Player::getPotion() const
 {
     return potion;
 }
 
+// Methods
 int Player::spendSouls(int soulsSpent)
 {
     souls -= soulsSpent;
     return soulsSpent;
 }
-
 void Player::consumeSouls(int soulsSpent)
 {
     souls -= soulsSpent;
     vigor += soulsSpent;
 }
-
 void Player::addSouls(int soulsAdded)
 {
     souls += soulsAdded;
 }
-
 void Player::replaceApparel(Apparel newApparel)
 {
     apparel = newApparel;
+    armor = apparel.grade;
 }
-
 void Player::replaceCloak(Cloak newCloak)
 {
     cloak = newCloak;
+    resistance = cloak.grade;
 }
-
 void Player::replacePotion(Potion newPotion)
 {
     potion = newPotion;
 }
-
 Potion Player::popPotion(Potion)
 {
     Potion usedPotion = potion;
     potion = Potion();
     return usedPotion;
 }
-

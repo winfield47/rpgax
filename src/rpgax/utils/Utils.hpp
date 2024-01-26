@@ -22,6 +22,7 @@ void psuedoClearScreen();
 void displayHUD(const Player&);
 void displayHUD(const Player&, const Enemy&);
 void printWithFormattingHUD(const std::string&, const std::string&, const OptionSelectHUD optionSelectHUD = addNothing);
+void printMovesWithFormattingHUD(const Weapon&, const Enemy&);
 
 // User Input
 char getContinueKey(const std::string& = "Continue? (y/n): ");
@@ -35,5 +36,10 @@ bool isSubset(const std::string&, const std::string&);
 // Game
 Origin getOriginFromPrompt(std::string = "Inspect Origin: ");
 Player createNewPlayer();
+std::string getStringHpAmrRes(const Character&);
+std::string getStringAttributes(const Character&);
+std::string getStringForAttributeEnum(const int);
+std::string getStringForAmountOfChecks(const int);
+std::string getStringForWeaponDamageType(const int, const bool = false);
 
 #endif /* Utils_hpp */
