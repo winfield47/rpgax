@@ -8,10 +8,7 @@
 #include "Player.hpp"
 using namespace std;
 
-Player::Player()
-{
-    
-}
+Player::Player() {}
 
 Player::Player(Origin origin, string playerName)
 {

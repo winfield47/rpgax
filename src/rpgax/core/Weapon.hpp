@@ -12,11 +12,11 @@
 #include <vector>
 #include "WeaponMove.hpp"
 
-static const unsigned short TOTAL_WEAPON_TYPES = 8;
+
 
 enum WeaponType
 {
-    zweihander, flail, estoc, bow, spellbook, magicstaff, talisman, lightningspear, unarmed, randomized
+    zweihander, flail, estoc, bow, spellbook, magicstaff, talisman, lightningspear, unarmed, randomized, special
 };
 
 static const std::string weaponTypes[] =
@@ -32,6 +32,7 @@ enum WeaponDamageType
 class Weapon
 {
 private:
+    // Properties
     std::string name;
     WeaponType type;
     WeaponDamageType damageType; // physical or magic
@@ -39,13 +40,20 @@ private:
     int grade; // this is a quality/rarity value for the weapon
     std::vector<WeaponMove> moves;
 public:
+    // Constructor
     Weapon(WeaponType type = unarmed, int grade = 0);
+    Weapon(std::string name, WeaponDamageType damageType, int baseDamage, int grade, std::vector<WeaponMove> moves);
+    
+    // Accessors
     WeaponType getType() const;
     WeaponDamageType getDamageType() const;
     std::string getName() const;
     int getDamage() const; // weaponDamage + grade
     int getGrade() const;
     std::vector<WeaponMove> getMoves() const;
+    
+    // Public Property
+    static const unsigned short TOTAL_WEAPON_TYPES = 8;
 };
 
 #endif /* Weapon_hpp */

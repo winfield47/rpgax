@@ -12,6 +12,12 @@ using namespace std;
 int main()
 {
     srand(static_cast<unsigned int>(time(NULL)));
-    mainLoop();
+    char continueKey = 'y';
+    while (continueKey == 'y')
+    {
+        cout << "Welcome to rpgax!" << endl;
+        mainLoop();
+        continueKey = getContinueKey("Play again? (y/n): ");
+    }
     return 0;
 }

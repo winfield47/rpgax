@@ -11,30 +11,8 @@ using namespace std;
 
 void mainLoop()
 {
-    char continueKey = 'y';
-    while (continueKey == 'y')
-    {
-        cout << "Welcome to rpgax!" << endl;
-        gameLoop();
-        continueKey = getContinueKey("Play again? (y/n): ");
-    }
-}
-
-void gameLoop()
-{
     Player player = createNewPlayer();
-    
-    
-    // display hug (needs to be a function)
-    cout << endl;
-    cout << "Souls: " << player.getSouls() << endl;
-    cout << endl;
-    cout << "  " << player.getAsciiArt() << endl;
-    cout << "HP : " << player.getHP() << "/" << player.getHPMax() << endl;
-    cout << "Weapon : " << player.getWeapon().getName() << " (Grade " << player.getWeapon().getGrade() << ")" << endl;
-    cout << "\"" << player.getDescription() << "\"" << endl;
-    cout << endl;
-    
+    displayHUD(player);
 }
 
 void psuedoClearScreen()
@@ -46,7 +24,7 @@ void psuedoClearScreen()
     cout << endl;
 }
 
-char getContinueKey(string prompt)
+char getContinueKey(const string &prompt)
 {
     char input;
     bool good;
@@ -82,7 +60,7 @@ char getContinueKey(string prompt)
     return input;
 }
 
-char lowercase(char c)
+char lowercase(const char c)
 {
     char lowerChar;
     if (c <= 'Z' && c >= 'A')
@@ -96,7 +74,7 @@ char lowercase(char c)
     return lowerChar;
 }
 
-string lowercase(string str)
+string lowercase(const string &str)
 {
     string lowerStr = "";
     for (char c: str)
@@ -107,7 +85,7 @@ string lowercase(string str)
     return lowerStr;
 }
 
-string getLineFromPrompt(string prompt)
+string getLineFromPrompt(const string &prompt)
 {
     string line;
     cout << prompt;
@@ -120,29 +98,69 @@ string getLineFromPrompt(string prompt)
     return line;
 }
 
-Origin getOriginFromPrompt(string prompt)
+bool isSubset(const std::string &stringInQuestion, const std::string &superString) {
+    
+    bool currentCharIsInSuperString = false;
+    for (char subChar : stringInQuestion)
+    {
+        currentCharIsInSuperString = false;
+        for (char superChar : superString)
+        {
+            if (subChar == superChar)
+            {
+                currentCharIsInSuperString = true;
+                break;
+            }
+        }
+        if (!currentCharIsInSuperString)
+        {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+void displayHUD(const Player &player)
+{
+    cout << "\n\n\n  " << player.getAsciiArt() << endl;
+    cout << "\"" << player.getDescription() << "\"" << endl;
+    cout << "STR~" << player.getStrength();
+    cout << "\tDEX~" << player.getDexterity();
+    cout << "\tINT~" << player.getIntelligence();
+    cout << "\tFAI~" << player.getFaith() << endl;
+    cout << "\nHP : " << player.getHP() << "/" << player.getHPMax() << endl;
+    cout << "Weapon : " << player.getWeapon().getName();
+    cout << " (" << player.getWeapon().getDamage() << " " << ((player.getWeapon().getDamageType() == physical) ? "physical" : "magic") << " damage)" << endl;
+    cout << "Armor : " << player.getArmor() << endl;
+    cout << "Resistance : " << player.getResistance() << endl;
+    cout << "\nStarting souls : " << player.getSouls() << endl;
+    cout << endl;
+}
+
+Origin getOriginFromPrompt(const string prompt)
 {
     while (true)
     {
         string originStr = getLineFromPrompt(prompt);
         
-        if (lowercase(originStr) == "brute")
+        if (isSubset(originStr, "brute") || originStr == "1")
         {
             return brute;
         }
-        else if (lowercase(originStr) == "rogue")
+        else if (isSubset(originStr, "rogue") || originStr == "2")
         {
             return rogue;
         }
-        else if (lowercase(originStr) == "wizard")
+        else if (isSubset(originStr, "wizard") || originStr == "3")
         {
             return wizard;
         }
-        else if (lowercase(originStr) == "inquisitor")
+        else if (isSubset(originStr, "inquisitor") || originStr == "4")
         {
             return inquisitor;
         }
-        else if (lowercase(originStr) == "nomad")
+        else if (isSubset(originStr, "nomad") || originStr == "5")
         {
             return nomad;
         }

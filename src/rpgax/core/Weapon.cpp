@@ -14,6 +14,10 @@ Weapon::Weapon(WeaponType type, int grade)
     {
         type = static_cast<WeaponType>(rand() % TOTAL_WEAPON_TYPES);
     }
+    else if (type == special)
+    {
+        throw "WeaponType \"special\" cannot be used to create a standard grade weapon. Please use the other Weapon constructor.";
+    }
     this->type = type;
     this->name = weaponTypes[type];
     this->grade = grade;
@@ -86,6 +90,16 @@ Weapon::Weapon(WeaponType type, int grade)
             moves.push_back(WeaponMove("Kick", 2, strength)); // creates a kick move with 2 checks that use STR at 100% damage
             break;
     }
+}
+
+Weapon::Weapon(std::string name, WeaponDamageType damageType, int baseDamage, int grade, std::vector<WeaponMove> moves)
+{
+    this->name = name;
+    this->type = special;
+    this->damageType = damageType;
+    this->baseDamage = baseDamage;
+    this->grade = grade;
+    this->moves = moves;
 }
 
 string Weapon::getName() const

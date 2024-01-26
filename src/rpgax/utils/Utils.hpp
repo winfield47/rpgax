@@ -11,13 +11,20 @@
 #include "../core/Player.hpp"
 #include <string>
 
+// Loops
 void mainLoop();
-void gameLoop();
+
+// General
 void psuedoClearScreen();
-char getContinueKey(std::string = "Continue? (y/n): ");
-char lowercase(char);
-std::string lowercase(std::string);
-std::string getLineFromPrompt(std::string);
+char getContinueKey(const std::string& = "Continue? (y/n): ");
+char lowercase(const char);
+std::string lowercase(const std::string&);
+std::string getLineFromPrompt(const std::string&);
+bool isSubset(const std::string&, const std::string&);
+
+// Game
+void displayHUD(const Player&);
+void displayHUD(Player, Character);
 Origin getOriginFromPrompt(std::string = "Inspect Origin: ");
 Player createNewPlayer();
 
