@@ -11,7 +11,7 @@
 #include "Character.hpp"
 
 enum EnemyType {
-    goblin, noEnemyType
+    goblin, slime, noEnemyType
 };
 
 class Enemy : public Character
@@ -20,7 +20,8 @@ private:
     int variance;
     int floorLevel;
 public:
-    Enemy(EnemyType type = noEnemyType, int floorLevel = 0); // default enemy is a Floor 0 Goblin
+    Enemy();
+    Enemy(EnemyType type, int floorLevel = 0); // default enemy is a Floor 0 Goblin
     void varyStats();
 };
 

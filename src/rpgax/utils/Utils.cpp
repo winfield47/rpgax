@@ -10,11 +10,7 @@
 #include <iomanip>
 using namespace std;
 
-void mainLoop()
-{
-    Player player = createNewPlayer();
-    displayHUD(player);
-}
+// DISPLAY
 
 void psuedoClearScreen()
 {
@@ -24,6 +20,97 @@ void psuedoClearScreen()
     }
     cout << endl;
 }
+
+void displayHUD(const Player &player)
+{
+    cout << "Souls : " << player.getSouls() << endl;
+    cout << "\n\n\n" << player.getAsciiArt() <<endl;
+    cout << "\"" << player.getDescription() << "\"" << endl;
+    cout << "STR~" << player.getStrength();
+    cout << "\tDEX~" << player.getDexterity();
+    cout << "\tINT~" << player.getIntelligence();
+    cout << "\tFAI~" << player.getFaith() << endl;
+    cout << "\nHP : " << player.getHP() << "/" << player.getHPMax() << endl;
+    cout << "Weapon : " << player.getWeapon().getName();
+    cout << " (" << player.getWeapon().getDamage() << " " << ((player.getWeapon().getDamageType() == physical) ? "physical" : "magic") << " damage)" << endl;
+    cout << "Armor : " << player.getArmor() << endl;
+    cout << "Resistance : " << player.getResistance() << endl;
+    cout << endl;
+}
+
+void displayHUD(const Player &player, const Enemy &enemy)
+{
+    // Display Souls
+    cout << "Souls : " + to_string(player.getSouls()) << "\n\n" << endl;
+    
+    // Display ASCII Art
+    printWithFormattingHUD("  " + player.getAsciiArt(), enemy.getAsciiArt() + "  ", addPipes);
+    
+    // Display Description
+    string playerDescriptionDisplayStr = "\"" + player.getDescription() + "\"";
+    string enemyDescriptionDisplayStr = "\"" + enemy.getDescription() + "\"";
+    printWithFormattingHUD("\"" + player.getDescription() + "\"", "\"" + enemy.getDescription() + "\"", addVersus);
+    
+    // Display STATS
+    string playerStatsDisplayStr = "STR~" + to_string(player.getStrength());
+    playerStatsDisplayStr += ", DEX~" + to_string(player.getDexterity());
+    playerStatsDisplayStr += ", INT~" + to_string(player.getIntelligence());
+    playerStatsDisplayStr += ", FAI~" + to_string(player.getFaith());
+    string enemyStatsDisplayStr = "STR~" + to_string(enemy.getStrength());
+    enemyStatsDisplayStr += ", DEX~" + to_string(enemy.getDexterity());
+    enemyStatsDisplayStr += ", INT~" + to_string(enemy.getIntelligence());
+    enemyStatsDisplayStr += ", FAI~" + to_string(enemy.getFaith());
+    printWithFormattingHUD(playerStatsDisplayStr, enemyStatsDisplayStr, addPipes);
+    cout << endl;
+    
+    // Display HP
+    string playerHealthDisplayStr = "HP : " + to_string(player.getHP()) + "/" + to_string(player.getHPMax());
+    string enemyHealthDisplayStr = "HP : " + to_string(enemy.getHP()) + "/" + to_string(enemy.getHPMax());
+    printWithFormattingHUD(playerHealthDisplayStr, enemyHealthDisplayStr);
+    
+    // Display Weapon
+    string playerWeaponDisplayStr = "Weapon : " + player.getWeapon().getName() + " (" + to_string(player.getWeapon().getDamage()) + " ";
+    playerWeaponDisplayStr += ((player.getWeapon().getDamageType() == physical) ? "physical" : "magic");
+    playerWeaponDisplayStr += " damage)";
+    string enemyWeaponDisplayStr = "Weapon : " + enemy.getWeapon().getName() + " (" + to_string(enemy.getWeapon().getDamage()) + " ";
+    enemyWeaponDisplayStr += ((enemy.getWeapon().getDamageType() == physical) ? "physical" : "magic");
+    enemyWeaponDisplayStr += " damage)";
+    printWithFormattingHUD(playerWeaponDisplayStr, enemyWeaponDisplayStr);
+    
+    // Display Armor
+    string playerArmorDisplayStr = "Armor : " + to_string(player.getArmor());
+    string enemyArmorDisplayStr = "Armor : " + to_string(enemy.getArmor());
+    printWithFormattingHUD(playerArmorDisplayStr, enemyArmorDisplayStr);
+    
+    // Display Resistance
+    string playerResistanceDisplayStr = "Resistance : " + to_string(player.getResistance());
+    string enemyResistanceDisplayStr = "Resistance : " + to_string(enemy.getResistance());
+    printWithFormattingHUD(playerResistanceDisplayStr, enemyResistanceDisplayStr);
+    cout << endl;
+}
+
+void printWithFormattingHUD(const string &leftString, const string &rightString, const OptionSelectHUD optionSelectHUD)
+{
+    const int TOTAL_WIDTH = 50;
+    
+    switch (optionSelectHUD) {
+        case addPipes:
+            cout << setw(TOTAL_WIDTH) << right << leftString << setw(2) << "|" << setw(10) << "| " << setw(TOTAL_WIDTH) << left << rightString << endl;
+            break;
+            
+        case addVersus:
+            cout << setw(TOTAL_WIDTH) << right << leftString << " | VERSUS | " << setw(TOTAL_WIDTH) << left << rightString << endl;
+            break;
+            
+        default:
+        case addNothing:
+            // int leftPadding = ((50 - static_cast<int>(leftString.length())) / 2) + static_cast<int>(leftString.length());
+            cout << setw(TOTAL_WIDTH) << right << leftString << setw(10) << "" << "  " << setw(TOTAL_WIDTH) << left << rightString << endl;
+            break;
+    }
+}
+
+// USER INPUT
 
 char getContinueKey(const string &prompt)
 {
@@ -61,6 +148,21 @@ char getContinueKey(const string &prompt)
     return input;
 }
 
+string getLineFromPrompt(const string &prompt)
+{
+    string line;
+    cout << prompt;
+    getline(cin, line);
+    if (cin.bad())
+    {
+        cout << "You broke the code!" << endl;
+        return "";
+    }
+    return line;
+}
+
+// STRING MANIPULATION
+
 char lowercase(const char c)
 {
     char lowerChar;
@@ -86,19 +188,6 @@ string lowercase(const string &str)
     return lowerStr;
 }
 
-string getLineFromPrompt(const string &prompt)
-{
-    string line;
-    cout << prompt;
-    getline(cin, line);
-    if (cin.bad())
-    {
-        cout << "You broke the code!" << endl;
-        return "";
-    }
-    return line;
-}
-
 bool isSubset(const std::string &stringInQuestion, const std::string &superString) {
     
     bool currentCharIsInSuperString = false;
@@ -120,40 +209,6 @@ bool isSubset(const std::string &stringInQuestion, const std::string &superStrin
     }
     
     return true;
-}
-
-void displayHUD(const Player &player)
-{
-    cout << "\n\n\n  " << player.getAsciiArt() << endl;
-    cout << "\"" << player.getDescription() << "\"" << endl;
-    cout << "STR~" << player.getStrength();
-    cout << "\tDEX~" << player.getDexterity();
-    cout << "\tINT~" << player.getIntelligence();
-    cout << "\tFAI~" << player.getFaith() << endl;
-    cout << "\nHP : " << player.getHP() << "/" << player.getHPMax() << endl;
-    cout << "Weapon : " << player.getWeapon().getName();
-    cout << " (" << player.getWeapon().getDamage() << " " << ((player.getWeapon().getDamageType() == physical) ? "physical" : "magic") << " damage)" << endl;
-    cout << "Armor : " << player.getArmor() << endl;
-    cout << "Resistance : " << player.getResistance() << endl;
-    cout << "\nStarting souls : " << player.getSouls() << endl;
-    cout << endl;
-}
-
-void displayHUD(const Player &player, const Enemy &enemy)
-{
-    cout << "\n\n\n  " << player.getAsciiArt() << endl;
-    cout << "\"" << player.getDescription() << "\"" << endl;
-    cout << "STR~" << player.getStrength();
-    cout << "\tDEX~" << player.getDexterity();
-    cout << "\tINT~" << player.getIntelligence();
-    cout << "\tFAI~" << player.getFaith() << endl;
-    cout << "\nHP : " << player.getHP() << "/" << player.getHPMax() << endl;
-    cout << "Weapon : " << player.getWeapon().getName();
-    cout << " (" << player.getWeapon().getDamage() << " " << ((player.getWeapon().getDamageType() == physical) ? "physical" : "magic") << " damage)" << endl;
-    cout << "Armor : " << player.getArmor() << endl;
-    cout << "Resistance : " << player.getResistance() << endl;
-    cout << "\nStarting souls : " << player.getSouls() << endl;
-    cout << endl;
 }
 
 Origin getOriginFromPrompt(const string prompt)
@@ -218,44 +273,26 @@ Player createNewPlayer()
         switch (inputOrigin)
         {
             case brute:
-                originDescription = "A strong warrior who can take a hit or two.";
+                originDescription = "Brute… A strong warrior who can take a hit or two… or three!";
                 break;
             case rogue:
-                originDescription = "A quick skirmisher that likes to strike first.";
+                originDescription = "Rogue… A quick skirmisher that likes to strike first.";
                 break;
             case wizard:
-                originDescription = "A weak mage with hopes of powerful magic.";
+                originDescription = "Wizard… A weak mage with hopes of powerful magic.";
                 break;
             case inquisitor:
-                originDescription = "A vessel for a higher power's will.";
+                originDescription = "Inquisitor… A vessel for a higher power's will.";
                 break;
             default:
             case nomad:
-                originDescription = "An exiled wanderer from a long-forgotten land.";
+                originDescription = "Nomad… An exiled wanderer from a long-forgotten land.";
                 break;
         }
         Player tempPlayerChoice = Player(inputOrigin, originDescription);
         
-        psuedoClearScreen();
-        //
-        // vvv DISPLAY ORIGIN vvv
-        //
-        cout << "\n\n\n  " << tempPlayerChoice.getAsciiArt() << endl;
-        cout << "\"" << tempPlayerChoice.getDescription() << "\"" << endl;
-        cout << "STR~" << tempPlayerChoice.getStrength();
-        cout << "\tDEX~" << tempPlayerChoice.getDexterity();
-        cout << "\tINT~" << tempPlayerChoice.getIntelligence();
-        cout << "\tFAI~" << tempPlayerChoice.getFaith() << endl;
-        cout << "\nHP : " << tempPlayerChoice.getHP() << "/" << tempPlayerChoice.getHPMax() << endl;
-        cout << "Weapon : " << tempPlayerChoice.getWeapon().getName();
-        cout << " (" << tempPlayerChoice.getWeapon().getDamage() << " " << ((tempPlayerChoice.getWeapon().getDamageType() == physical) ? "physical" : "magic") << " damage)" << endl;
-        cout << "Armor : " << tempPlayerChoice.getArmor() << endl;
-        cout << "Resistance : " << tempPlayerChoice.getResistance() << endl;
-        cout << "\nStarting souls : " << tempPlayerChoice.getSouls() << endl;
-        cout << endl;
-        //
-        // ^^^ DISPLAY ORIGIN ^^^
-        //
+        psuedoClearScreen();\
+        displayHUD(tempPlayerChoice);
         
         continueKey = getContinueKey("Do you want to play this class? (y/n): ");
     }

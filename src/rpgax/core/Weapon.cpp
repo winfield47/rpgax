@@ -6,7 +6,10 @@
 //
 
 #include "Weapon.hpp"
+#include <iostream>
 using namespace std;
+
+Weapon::Weapon() {}
 
 Weapon::Weapon(WeaponType type, int grade)
 {
@@ -35,7 +38,7 @@ Weapon::Weapon(WeaponType type, int grade)
             this->damageType = physical;
             this->baseDamage = 8;
             this->baseDamage += grade;
-            moves.push_back(WeaponMove("Reckless Attack", 0, none, 1)); // creates a 100% dmg 100% accuracy move
+            moves.push_back(WeaponMove("Reckless Attack", 0, noWeaponMoveAttribute, 1)); // creates a 100% dmg 100% accuracy move
             break;
         case estoc:
             this->damageType = physical;
@@ -51,6 +54,7 @@ Weapon::Weapon(WeaponType type, int grade)
             this->baseDamage += grade * 2;
             moves.push_back(WeaponMove("Stab"));
             moves.push_back(WeaponMove("Assassinate", 1, dexterity, 1));
+            break;
         case bow:
             this->damageType = physical;
             this->baseDamage = 6;
@@ -79,7 +83,7 @@ Weapon::Weapon(WeaponType type, int grade)
             this->baseDamage += grade;
             moves.push_back(WeaponMove("Judgement", 2, faith, 1));
             // heal will heal the user for: FAI mod + grade
-            moves.push_back(WeaponMove("Heal", 0, none, 0)); // does no dmg, but has a special effect
+            moves.push_back(WeaponMove("Heal", 0, noWeaponMoveAttribute, 0)); // does no dmg, but has a special effect
             break;
         case lightningspear:
             this->damageType = magic;

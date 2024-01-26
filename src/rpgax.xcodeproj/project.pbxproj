@@ -14,6 +14,7 @@
 		F34CD4492B57337B000E64A0 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F34CD4472B57337B000E64A0 /* Utils.cpp */; };
 		F394B6E62B607A13006CF334 /* WeaponMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F394B6E42B607A13006CF334 /* WeaponMove.cpp */; };
 		F394B6E92B633544006CF334 /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F394B6E72B633544006CF334 /* Enemy.cpp */; };
+		F394B6EC2B637372006CF334 /* MainLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F394B6EA2B637372006CF334 /* MainLoop.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,6 +45,8 @@
 		F394B6E52B607A13006CF334 /* WeaponMove.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = WeaponMove.hpp; sourceTree = "<group>"; };
 		F394B6E72B633544006CF334 /* Enemy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Enemy.cpp; sourceTree = "<group>"; };
 		F394B6E82B633544006CF334 /* Enemy.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Enemy.hpp; sourceTree = "<group>"; };
+		F394B6EA2B637372006CF334 /* MainLoop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainLoop.cpp; sourceTree = "<group>"; };
+		F394B6EB2B637372006CF334 /* MainLoop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MainLoop.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +110,8 @@
 			children = (
 				F34CD4482B57337B000E64A0 /* Utils.hpp */,
 				F34CD4472B57337B000E64A0 /* Utils.cpp */,
+				F394B6EB2B637372006CF334 /* MainLoop.hpp */,
+				F394B6EA2B637372006CF334 /* MainLoop.cpp */,
 			);
 			name = utils;
 			path = rpgax/utils;
@@ -173,6 +178,7 @@
 				F31BCCFB2B579109001BD9FF /* Weapon.cpp in Sources */,
 				F394B6E92B633544006CF334 /* Enemy.cpp in Sources */,
 				F34CD4492B57337B000E64A0 /* Utils.cpp in Sources */,
+				F394B6EC2B637372006CF334 /* MainLoop.cpp in Sources */,
 				F31BCCFA2B579109001BD9FF /* Character.cpp in Sources */,
 				F394B6E62B607A13006CF334 /* WeaponMove.cpp in Sources */,
 				F31BCCFE2B57A8AF001BD9FF /* Player.cpp in Sources */,

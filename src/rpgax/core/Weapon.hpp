@@ -41,7 +41,8 @@ private:
     std::vector<WeaponMove> moves;
 public:
     // Constructor
-    Weapon(WeaponType type = unarmed, int grade = 0);
+    Weapon();
+    Weapon(WeaponType type, int grade = 0);
     Weapon(std::string name, WeaponDamageType damageType, int baseDamage, int grade, std::vector<WeaponMove> moves);
     
     // Accessors

@@ -12,20 +12,27 @@
 #include "../core/Enemy.hpp"
 #include <string>
 
-// Loops
-void mainLoop();
+enum OptionSelectHUD
+{
+    addPipes, addVersus, addNothing
+};
 
-// General
+// Display
 void psuedoClearScreen();
+void displayHUD(const Player&);
+void displayHUD(const Player&, const Enemy&);
+void printWithFormattingHUD(const std::string&, const std::string&, const OptionSelectHUD optionSelectHUD = addNothing);
+
+// User Input
 char getContinueKey(const std::string& = "Continue? (y/n): ");
+std::string getLineFromPrompt(const std::string&);
+
+// String Manipulation
 char lowercase(const char);
 std::string lowercase(const std::string&);
-std::string getLineFromPrompt(const std::string&);
 bool isSubset(const std::string&, const std::string&);
 
 // Game
-void displayHUD(const Player&);
-void displayHUD(const Player&, const Enemy&);
 Origin getOriginFromPrompt(std::string = "Inspect Origin: ");
 Player createNewPlayer();
 

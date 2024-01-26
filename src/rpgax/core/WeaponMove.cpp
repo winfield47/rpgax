@@ -8,11 +8,13 @@
 #include "WeaponMove.hpp"
 using namespace std;
 
+WeaponMove::WeaponMove() {}
+
 WeaponMove::WeaponMove(string name)
 {
     this->name = name;
     this->amountOfChecks = 0;
-    this->usedAttribute = none;
+    this->usedAttribute = noWeaponMoveAttribute;
     this->damagePercentage = 0.6;
 }
 

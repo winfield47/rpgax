@@ -18,7 +18,6 @@ Player::Player(Origin origin, string playerName)
     vigor = 0;
     armor = 0;
     resistance = 0;
-    weapon = Weapon();
     apparel = Apparel();
     cloak = Cloak();
     potion = Potion();
@@ -81,6 +80,7 @@ Player::Player(Origin origin, string playerName)
             intelligence = 70;
             faith = 70;
             souls = 22;
+            weapon = Weapon(unarmed);
             break;
     }
     

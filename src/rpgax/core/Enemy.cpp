@@ -8,13 +8,15 @@
 #include "Enemy.hpp"
 using namespace std;
 
+Enemy::Enemy() {}
+
 Enemy::Enemy(EnemyType type, int floorLevel)
 {
     this->floorLevel = floorLevel;
+    variance = 3;
     switch (type)
     {
         default:
-            variance = 0;
             asciiArt = "\\ø/";
             description = "A lowly enemy.";
             weapon = Weapon();
@@ -26,29 +28,43 @@ Enemy::Enemy(EnemyType type, int floorLevel)
             resistance = 0;
             break;
         case goblin:
-            variance = 3;
-            asciiArt = "\\g/";
+            asciiArt = "\\g\\";
             description = "A goblin trying to rob you of your life!";
             weapon = Weapon(dagger, floorLevel);
-            strength = 64;
+            strength = 63;
             dexterity = 74;
             intelligence = 65;
             faith = 75;
             armor = 0;
             resistance = 0;
             break;
+        case slime:
+            asciiArt = "OOZ";
+            description = "What is this thing..? It's made of slime and not letting you pass.";
+            weapon = Weapon();
+            // weapon = Weapon("It's body…", physical, 6, floorLevel, std::vector<WeaponMove>(WeaponMove("Pseudopod", 3, strength, 1)));
+            strength = 90;
+            dexterity = 0;
+            intelligence = 0;
+            faith = 0;
+            armor = 10;
+            resistance = 0;
+            break;
     }
     varyStats();
     
-    hpMax = hp = 20 + (floorLevel * 1.5) + (strength - 70) * 2;
+    hpMax = hp = 20 + ((floorLevel + 1) * 1.5) + (strength - 70) * 2;
 }
 
 void Enemy::varyStats()
 {
-    strength += (rand() % variance) - (rand() % variance);
+    strength += (rand() % variance / 2) - (rand() % variance / 2);
     dexterity += (rand() % variance) - (rand() % variance);
     intelligence += (rand() % variance) - (rand() % variance);
     faith += (rand() % variance) - (rand() % variance);
-    armor += ((rand() % floorLevel) - rand() % floorLevel) <= 0 ? 0 : (rand() % floorLevel);
-    resistance += (rand() % floorLevel) <= 0 ? 0 : (rand() % floorLevel);
+    if (floorLevel > 0)
+    {
+        armor += ((rand() % floorLevel) - rand() % floorLevel) <= 0 ? 0 : (rand() % floorLevel);
+        resistance += (rand() % floorLevel) <= 0 ? 0 : (rand() % floorLevel);
+    }
 }

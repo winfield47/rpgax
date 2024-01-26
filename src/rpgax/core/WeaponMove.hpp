@@ -12,7 +12,7 @@
 
 enum WeaponMoveAttribute
 {
-    strength, dexterity, intelligence, faith, none
+    strength, dexterity, intelligence, faith, noWeaponMoveAttribute
 };
 
 class WeaponMove
@@ -27,6 +27,7 @@ private:
     
 public:
     // Constructors
+    WeaponMove();
     WeaponMove(std::string name); // 0 amountOfChecks, none usedAttribute, 0.6 damagePercentage
     WeaponMove(std::string name, int amountOfChecks, WeaponMoveAttribute usedAttribute); // 1 damagePercentage
     WeaponMove(std::string name, int amountOfChecks, WeaponMoveAttribute usedAttribute, float damagePercentage);
