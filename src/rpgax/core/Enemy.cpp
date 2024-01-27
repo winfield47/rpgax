@@ -9,7 +9,7 @@
 using namespace std;
 
 // Constructors
-Enemy::Enemy() {}
+Enemy::Enemy(){}
 Enemy::Enemy(EnemyType type, int floorLevel){
     this->floorLevel = floorLevel;
     variance = 3;

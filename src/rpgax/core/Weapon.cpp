@@ -14,7 +14,7 @@ int Weapon::enemyIntelligenceModifier = 0;
 int Weapon::enemyFaithModifier = 0;
 
 // Constructors
-Weapon::Weapon() {}
+Weapon::Weapon(){}
 Weapon::Weapon(WeaponType type, int grade){
     if (type == randomized)
     {

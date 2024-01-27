@@ -16,7 +16,7 @@ Enemy Game::enemy = Enemy();
 string Game::input = "";
 
 // Constructors
-Game::Game() {}
+Game::Game(){}
 Game::Game(Player player, Enemy enemy){
     this->player = player;
     this->enemy = enemy;

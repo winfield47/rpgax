@@ -9,7 +9,7 @@
 using namespace std;
 
 // Constructors
-Player::Player() {}
+Player::Player(){}
 Player::Player(Origin origin, string playerName){
     this->origin = origin;
     description = playerName;

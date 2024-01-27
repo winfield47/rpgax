@@ -65,10 +65,6 @@ string getLineFromPrompt(const string &prompt){
     }
     return line;
 }
-string getSmartInput(string prompt){
-    return lowercase(getFirstWord(getLineFromPrompt(prompt)));
-}
-
 
 // STRING MANIPULATION
 char lowercase(const char c){

@@ -23,7 +23,6 @@ void psuedoClearScreen();
 // User Input
 char getContinueKey(const std::string& = "Continue? (y/n): ");
 std::string getLineFromPrompt(const std::string&);
-std::string getSmartInput(std::string);
 
 // String Manipulation
 char lowercase(const char);

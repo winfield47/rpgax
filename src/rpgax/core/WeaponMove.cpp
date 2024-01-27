@@ -9,7 +9,7 @@
 using namespace std;
 
 // Constructors
-WeaponMove::WeaponMove() {}
+WeaponMove::WeaponMove(){}
 WeaponMove::WeaponMove(string name){
     this->name = name;
     this->amountOfChecks = 0;

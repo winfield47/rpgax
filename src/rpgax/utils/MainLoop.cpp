@@ -15,6 +15,8 @@ void mainLoop(){
     Game game = Game(Player(wizard, "Winfield"), Enemy(goblin));
     
     // Fight Goblins Until Death (reverse pyramid development)
-    game.engageInCombat();
-    
+    while (game.player.getHP() > 0)
+    {
+        game.engageInCombat();
+    }
 }
