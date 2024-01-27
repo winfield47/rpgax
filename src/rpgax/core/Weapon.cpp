@@ -98,14 +98,14 @@ Weapon::Weapon(WeaponType type, int grade){
         case unarmed:
             this->damageType = physical;
             this->baseDamage = 5;
-            this->grade = 0;
+            this->grade = 1;
             moves.push_back(WeaponMove("Punch")); // creates a 60% dmg 100% accuracy move
             moves.push_back(WeaponMove("Kick", 2, strength)); // creates a kick move with 2 checks that use STR at 100% damage
             break;
     }
     
     // Have weapon moves become unlocked with higher weapon grades (i.e. Spellbook unlocks Oakskin at Grade 2)
-    while (moves.size() > grade + 1)
+    while (moves.size() > this->grade + 1)
     {
         moves.pop_back();
     }

@@ -44,6 +44,8 @@ public:
     
     // Combat
     void engageInCombat();
+    void performPlayerMove();
+    void performEnemyMove();
     void determineWhoGoesFirst();
 };
 

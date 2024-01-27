@@ -29,7 +29,11 @@ Game::Game(Player player, Enemy enemy){
 
 // User Input
 void Game::getSmartInput(const string &prompt){
-    this->input = lowercase(getFirstWord(getLineFromPrompt(prompt)));
+    string smartInput = lowercase(getFirstWord(getLineFromPrompt(prompt)));
+    if (prompt != "Continue…")
+    {
+        input = smartInput;
+    }
 }
 void Game::createNewPlayer(){
     // Player choices
@@ -258,7 +262,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     {
         turnInfo = enemy.getName();
     }
-    turnInfo += " acts first!";
+    turnInfo += " acted first!";
     printWithFormattingHUD(getStringAttributes(player), turnInfo, addPipes);
     
     // Display WEAPONS and MOVES
@@ -349,73 +353,102 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
 
 // Combat
 void Game::engageInCombat(){
-    char continueKey = ' ';
-    short chosenMoveIndex = -1;
     while (player.getHP() > 0)
     {
-        input = "";
-        chosenMoveIndex = -1;
-        do
+        determineWhoGoesFirst();
+        if (playerGoesFirst)
         {
-            displayHUD(player, enemy);
-            cout << endl;
-            getSmartInput("Select a move from <" + player.getWeapon().getName() + ">: ");
-            for (short i = 0; i < player.getWeapon().getMoves().size(); i++)
+            performPlayerMove();
+            performEnemyMove();
+        }
+        else
+        {
+            performEnemyMove();
+            performPlayerMove();
+        }
+    }
+}
+void Game::performPlayerMove(){
+    char continueKey = ' ';
+    short chosenMoveIndex = -1;
+    input = "";
+    chosenMoveIndex = -1;
+    do
+    {
+        displayHUD(player, enemy);
+        cout << endl;
+        getSmartInput("Select a move from <" + player.getWeapon().getName() + ">: ");
+        for (short i = 0; i < player.getWeapon().getMoves().size(); i++)
+        {
+            if (isSubset(input, lowercase(player.getWeapon().getMoves().at(i).getName())))
             {
-                if (isSubset(input, lowercase(player.getWeapon().getMoves().at(i).getName())))
-                {
-                    chosenMoveIndex = i;
-                    break;
-                }
+                chosenMoveIndex = i;
+                break;
             }
-            if (chosenMoveIndex < 0)
+        }
+        if (chosenMoveIndex < 0)
+        {
+            if (isSubset(input, "potion"))
             {
-                if (isSubset(input, "potion"))
+                if (player.getPotion().name != "None")
                 {
-                    if (player.getPotion().name != "None")
+                    // Confirm drinking potion
+                    continueKey = getContinueKey("Drink healing potion? (y/n): ");
+                    if (continueKey == 'y')
                     {
-                        // Confirm drinking potion
-                        continueKey = getContinueKey("Drink healing potion? (y/n): ");
-                        if (continueKey == 'y')
-                        {
-                            cout << player.getName() << " drank the " << lowercase(player.getPotion().name) << " potion!" << endl;
-                            cout << player.getName() << " healed " << player.heal(player.popPotion().grade) << " HP" << endl;
-                            getSmartInput("Continue…");
-                        }
-                    }
-                    else
-                    {
-                        cout << "No potions…" << endl;
+                        cout << player.getName() << " drank the " << lowercase(player.getPotion().name) << " potion!" << endl;
+                        cout << player.getName() << " healed " << player.heal(player.popPotion().grade) << " HP" << endl;
                         getSmartInput("Continue…");
                     }
                 }
                 else
                 {
-                    cout << "Please enter a valid move." << endl;
+                    cout << "No potions…" << endl;
                     getSmartInput("Continue…");
                 }
             }
-        }
-        while (chosenMoveIndex < 0);
-        WeaponMove chosenMove = player.getWeapon().getMoves().at(chosenMoveIndex);
-        // Confirm weapon move
-        continueKey = getContinueKey("Use " + chosenMove.getName() + "? (y/n): ");
-        if (continueKey == 'y')
-        {
-            cout << player.getName() << " performed: " << chosenMove.getName() << "!" << endl;
-            cout << player.getName() << " dealt " << player.getWeapon().getDamage(chosenMove) << ((player.getWeapon().getDamageType() == magic) ? " magic" : "") << " dmg" << endl;
-            if (chosenMove.getDamagePercentage() != 0)
+            else
             {
-                enemy.takeDamage(player.getWeapon().getDamage(chosenMove));
-                if (enemy.getHP() == 0)
-                {
-                    cout << "You defeated the goblin… but here comes another one!" << endl;
-                    enemy = Enemy(goblin, ++floor);
-                }
+                cout << "Please enter a valid move." << endl;
+                getSmartInput("Continue…");
             }
-            getSmartInput("Continue...");
         }
     }
+    while (chosenMoveIndex < 0);
+    WeaponMove chosenMove = player.getWeapon().getMoves().at(chosenMoveIndex);
+    // Confirm weapon move
+    continueKey = getContinueKey("Use " + chosenMove.getName() + "? (y/n): ");
+    if (continueKey == 'y')
+    {
+        cout << player.getName() << " performed: " << chosenMove.getName() << "!" << endl;
+        cout << player.getName() << " dealt " << player.getWeapon().getDamage(chosenMove) << ((player.getWeapon().getDamageType() == magic) ? " magic" : "") << " dmg" << endl;
+        if (chosenMove.getDamagePercentage() != 0)
+        {
+            enemy.takeDamage(player.getWeapon().getDamage(chosenMove));
+            if (enemy.getHP() == 0)
+            {
+                cout << "You defeated the goblin… but here comes another one!" << endl;
+                enemy = Enemy(goblin, ++floor);
+            }
+        }
+        getSmartInput("Continue...");
+    }
+}
+void Game::performEnemyMove(){
+    
+    // Display HUD
+    displayHUD(player, enemy);
+    
+    // What the enemy move choice is
+    WeaponMove chosenMove = enemy.getWeapon().getMoves().at(enemy.getMoveChooser());
+    int chosenMoveDamage = enemy.getWeapon().getDamage(chosenMove);
+    
+    // Deal damage
+    player.takeDamage(chosenMoveDamage);
+    
+    // Display damage taken
+    cout << "\n" << enemy.getName() << " dealt " << chosenMoveDamage << (enemy.getWeapon().getDamageType() == magic ? " magic" : "") << " dmg" << endl;
+    getSmartInput("Continue…");
 }
 void Game::determineWhoGoesFirst(){
     if (player.getDexterity() > enemy.getDexterity())
