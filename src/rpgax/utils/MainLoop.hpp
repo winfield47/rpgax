@@ -8,7 +8,7 @@
 #ifndef MainLoop_hpp
 #define MainLoop_hpp
 
-#include "Utils.hpp"
+#include "Game.hpp"
 
 void mainLoop();
 

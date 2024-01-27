@@ -15,6 +15,7 @@
 		F394B6E62B607A13006CF334 /* WeaponMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F394B6E42B607A13006CF334 /* WeaponMove.cpp */; };
 		F394B6E92B633544006CF334 /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F394B6E72B633544006CF334 /* Enemy.cpp */; };
 		F394B6EC2B637372006CF334 /* MainLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F394B6EA2B637372006CF334 /* MainLoop.cpp */; };
+		F3BB80842B6526610003E6F9 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3BB80822B6526610003E6F9 /* Game.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +48,8 @@
 		F394B6E82B633544006CF334 /* Enemy.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Enemy.hpp; sourceTree = "<group>"; };
 		F394B6EA2B637372006CF334 /* MainLoop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainLoop.cpp; sourceTree = "<group>"; };
 		F394B6EB2B637372006CF334 /* MainLoop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MainLoop.hpp; sourceTree = "<group>"; };
+		F3BB80822B6526610003E6F9 /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
+		F3BB80832B6526610003E6F9 /* Game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +113,8 @@
 			children = (
 				F34CD4482B57337B000E64A0 /* Utils.hpp */,
 				F34CD4472B57337B000E64A0 /* Utils.cpp */,
+				F3BB80832B6526610003E6F9 /* Game.hpp */,
+				F3BB80822B6526610003E6F9 /* Game.cpp */,
 				F394B6EB2B637372006CF334 /* MainLoop.hpp */,
 				F394B6EA2B637372006CF334 /* MainLoop.cpp */,
 			);
@@ -174,6 +179,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3BB80842B6526610003E6F9 /* Game.cpp in Sources */,
 				F329C9A92B5123550078A42B /* main.cpp in Sources */,
 				F31BCCFB2B579109001BD9FF /* Weapon.cpp in Sources */,
 				F394B6E92B633544006CF334 /* Enemy.cpp in Sources */,

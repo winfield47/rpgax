@@ -8,8 +8,8 @@
 #include "Character.hpp"
 using namespace std;
 
+// Constructors
 Character::Character(){};
-
 Character::Character(string asciiArt, int hp, WeaponType weaponType, int weaponGrade, int armor, int resistance, string description, int strength, int dexterity, int intelligence, int faith)
 {
     this->asciiArt = asciiArt;
@@ -25,6 +25,7 @@ Character::Character(string asciiArt, int hp, WeaponType weaponType, int weaponG
     this->faith = faith;
 }
 
+// Accessors
 string Character::getAsciiArt() const{
     return asciiArt;
 }
@@ -57,4 +58,9 @@ int Character::getIntelligence() const{
 }
 int Character::getFaith() const{
     return faith;
+}
+
+// Methods
+void Character::takeDamage(int damageTaken){
+    hp -= damageTaken;
 }

@@ -19,27 +19,19 @@ enum OptionSelectHUD
 
 // Display
 void psuedoClearScreen();
-void displayHUD(const Player&);
-void displayHUD(const Player&, const Enemy&);
-void printWithFormattingHUD(const std::string&, const std::string&, const OptionSelectHUD optionSelectHUD = addNothing);
-void printMovesWithFormattingHUD(const Weapon&, const Enemy&);
 
 // User Input
 char getContinueKey(const std::string& = "Continue? (y/n): ");
 std::string getLineFromPrompt(const std::string&);
+std::string getSmartInput(std::string);
 
 // String Manipulation
 char lowercase(const char);
 std::string lowercase(const std::string&);
+char uppercase(char);
+std::string uppercase(std::string);
+std::string capitalize(std::string);
+std::string getFirstWord(std::string);
 bool isSubset(const std::string&, const std::string&);
-
-// Game
-Player createNewPlayer();
-Origin getOriginFromPrompt(std::string = "Inspect Origin: ");
-std::string getStringHpAmrRes(const Character&);
-std::string getStringAttributes(const Character&);
-std::string getStringForAttributeEnum(const int);
-std::string getStringForAmountOfChecks(const int);
-std::string getStringForWeaponDamageType(const int, const bool = false);
 
 #endif /* Utils_hpp */

@@ -29,6 +29,9 @@ public:
     int getDexterity() const;
     int getIntelligence() const;
     int getFaith() const;
+    
+    // Methods
+    void takeDamage(int);
 
 protected:
     // Common attributes
