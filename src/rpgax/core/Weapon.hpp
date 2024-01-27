@@ -32,8 +32,9 @@ enum WeaponDamageType
 class Weapon
 {
 private:
-    // Static Properties
-    static int playerIntelligenceModifier; // this is for keeping track of how much damage the spell book magic missile does
+    // Stats Properties
+    int characterIntelligenceModifier; // this is for keeping track of how much damage the spell book magic missile does
+    int characterFaithModifier; // this is for keeping track of how much healing the talisman does
     
     // Properties
     std::string name;
@@ -49,7 +50,8 @@ public:
     Weapon(std::string name, WeaponDamageType damageType, int baseDamage, int grade, std::vector<WeaponMove> moves);
     
     // Accessors
-    static int getPlayerIntelligenceModifier();
+    int getCharacterIntelligenceModifier() const;
+    int getCharacterFaithModifier() const;
     WeaponType getType() const;
     WeaponDamageType getDamageType() const;
     std::string getName() const;
@@ -59,7 +61,8 @@ public:
     std::vector<WeaponMove> getMoves() const;
     
     // Setters
-    static void setPlayerIntelligenceModifier(int);
+    void setCharacterIntelligenceModifier(int);
+    void setCharacterFaithModifier(int);
     
     // Public Property
     static const unsigned short TOTAL_WEAPON_TYPES = 8;

@@ -52,7 +52,7 @@ Player::Player(Origin origin, string playerName)
             strength = 65;
             dexterity = 72;
             intelligence = 75;
-            weapon.setPlayerIntelligenceModifier(intelligence);
+            weapon.setCharacterIntelligenceModifier(intelligence);
             faith = 68;
             souls = 4;
             weapon = Weapon(spellbook);
@@ -88,7 +88,8 @@ Player::Player(Origin origin, string playerName)
     hpMax = hp = 20 + (strength - 70) * 2;
     armor = apparel.grade;
     resistance = cloak.grade;
-    weapon.setPlayerIntelligenceModifier(intelligence);
+    weapon.setCharacterIntelligenceModifier(intelligence);
+    weapon.setCharacterFaithModifier(faith);
     
 }
 

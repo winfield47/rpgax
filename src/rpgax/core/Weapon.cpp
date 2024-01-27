@@ -9,8 +9,6 @@
 #include <iostream>
 using namespace std;
 
-int Weapon::playerIntelligenceModifier = 0;
-
 // Constructors
 Weapon::Weapon() {}
 Weapon::Weapon(WeaponType type, int grade)
@@ -66,7 +64,7 @@ Weapon::Weapon(WeaponType type, int grade)
             break;
         case spellbook:
             this->damageType = magic;
-            this->baseDamage = 0 + playerIntelligenceModifier; // spell book gets damage from INT mod
+            this->baseDamage = 0 + characterIntelligenceModifier; // spell book gets damage from INT mod
             moves.push_back(WeaponMove("Magic Missile", 0, noWeaponMoveAttribute, 1));
             // oakskin will increase armor by up to the int mod for the combat
             moves.push_back(WeaponMove("Oakskin", 3, intelligence, 0)); // does no dmg, but has a special effect
@@ -114,9 +112,13 @@ Weapon::Weapon(std::string name, WeaponDamageType damageType, int baseDamage, in
 }
 
 // Accessors
-int Weapon::getPlayerIntelligenceModifier()
+int Weapon::getCharacterIntelligenceModifier() const
 {
-    return playerIntelligenceModifier;
+    return characterIntelligenceModifier;
+}
+int Weapon::getCharacterFaithModifier() const
+{
+    return characterFaithModifier;
 }
 string Weapon::getName() const
 {
@@ -148,7 +150,11 @@ vector<WeaponMove> Weapon::getMoves() const
 }
 
 // Setters
-void Weapon::setPlayerIntelligenceModifier(int currentIntelligenceModifier)
+void Weapon::setCharacterIntelligenceModifier(int currentIntelligenceModifier)
 {
-    playerIntelligenceModifier = currentIntelligenceModifier - 70;
+    characterIntelligenceModifier = currentIntelligenceModifier - 70;
+}
+void Weapon::setCharacterFaithModifier(int currentFaithModifier)
+{
+    characterFaithModifier = currentFaithModifier - 70;
 }

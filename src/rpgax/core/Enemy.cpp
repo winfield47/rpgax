@@ -58,6 +58,8 @@ Enemy::Enemy(EnemyType type, int floorLevel)
     hpMax = hp = 20 + ((floorLevel + 1) * 1.5) + (strength - 70) * 2;
     
     moveChooser = rand() % weapon.getMoves().size();
+    weapon.setCharacterIntelligenceModifier(intelligence);
+    weapon.setCharacterFaithModifier(faith);
 }
 void Enemy::varyStats() // This helps the constructor look prettier
 {

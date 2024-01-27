@@ -119,19 +119,26 @@ void printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &enemy)
         
         // Creating the display string
         leftString = playerWeapon.getMoves().at(i).getName() + ": ";
-        if (currentMoveDamage != 0)
+        if (currentMove.getName() != "Heal")
         {
-            leftString += to_string(currentMoveDamage);
-            leftString += getStringForWeaponDamageType(playerWeapon.getDamageType()) + " dmg";
+            if (currentMoveDamage != 0)
+            {
+                leftString += to_string(currentMoveDamage);
+                leftString += getStringForWeaponDamageType(playerWeapon.getDamageType()) + " dmg";
+                if (currentMove.getAmountOfChecks() != 0)
+                {
+                    leftString += ", ";
+                }
+            }
             if (currentMove.getAmountOfChecks() != 0)
             {
-                leftString += ", ";
+                leftString += getStringForAmountOfChecks(playerWeapon.getMoves().at(i).getAmountOfChecks());
+                leftString += " " + getStringForAttributeEnum(playerWeapon.getMoves().at(i).getUsedAttribute());
             }
         }
-        if (currentMove.getAmountOfChecks() != 0)
+        else
         {
-            leftString += getStringForAmountOfChecks(playerWeapon.getMoves().at(i).getAmountOfChecks());
-            leftString += " " + getStringForAttributeEnum(playerWeapon.getMoves().at(i).getUsedAttribute());
+            leftString += to_string(playerWeapon.getCharacterFaithModifier()) + " HP";
         }
         
         // Enemy's NEXT MOVE display
