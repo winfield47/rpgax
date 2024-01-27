@@ -17,7 +17,7 @@ This Text-Based RPG allows players to create a character, explore a world filled
 3. **How to Play:**
    - Open the terminal and move to the base directory for rpgax:
     - cd src/rpgax/ 
-    - g++ core/WeaponMove.cpp core/Weapon.cpp core/Character.cpp core/Player.cpp core/Enemy.cpp utils/Utils.cpp utils/MainLoop.cpp main.cpp -std=c++11
+    - g++ core/WeaponMove.cpp core/Weapon.cpp core/Character.cpp core/Player.cpp core/Enemy.cpp utils/Utils.cpp utils/Game.cpp utils/MainLoop.cpp main.cpp -std=c++11
    - Follow on-screen instructions to create a character and begin your journey.
 
 ## Game Features
