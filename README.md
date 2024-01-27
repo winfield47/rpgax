@@ -15,23 +15,19 @@ This Text-Based RPG allows players to create a character, explore a world filled
    - Compile the source code using your preferred C++ compiler.
 
 3. **How to Play:**
-   - Run the compiled executable to start the game.
+   - Open the terminal and move to the base directory for rpgax:
+    - cd src/rpgax/ 
+    - g++ core/WeaponMove.cpp core/Weapon.cpp core/Character.cpp core/Player.cpp core/Enemy.cpp utils/Utils.cpp utils/MainLoop.cpp main.cpp -std=c++11
    - Follow on-screen instructions to create a character and begin your journey.
 
 ## Game Features
 - **Character Creation:** Choose your character's name, class, and attributes.
-- **Quests:** Engage in various quests with objectives and rewards.
-- **Exploration:** Explore different locations and interact with NPCs.
 - **Combat System:** Battle monsters using a turn-based combat system.
 - **Leveling Up:** Improve your character's skills and abilities as you level up.
-- **Game Over and Victory:** Experience different outcomes based on your choices.
 
 ## Controls
 - Use keyboard input to navigate menus and make choices.
 - Follow on-screen prompts for in-game interactions.
-
-## Development
-The game is developed in C++ with a focus on OOP principles. Classes include Player, Monster, Quest, and Game, contributing to a modular and extensible codebase.
 
 ## Acknowledgments
 This project was inspired by a passion for game development and a desire to explore OOP concepts in C++. Special thanks to the C++ community for valuable resources and support.
