@@ -12,11 +12,12 @@ using namespace std;
 void mainLoop(){
     
     // Initialize the Game
-    Game game = Game(Player(wizard, "Winfield"), Enemy(goblin));
+    // Game game = Game(Player(wizard, "Winfield"), Enemy(goblin));
+    Game rpgax = Game();
     
     // Fight Goblins Until Death (reverse pyramid development)
-    while (game.player.getHP() > 0)
+    while (rpgax.player.getHP() > 0)
     {
-        game.engageInCombat();
+        rpgax.engageInCombat();
     }
 }

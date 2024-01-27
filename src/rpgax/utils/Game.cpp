@@ -11,12 +11,16 @@
 using namespace std;
 
 // Static Properties
+string Game::input = "";
 Player Game::player = Player();
 Enemy Game::enemy = Enemy();
-string Game::input = "";
+short Game::floor = 0;
 
 // Constructors
-Game::Game(){}
+Game::Game(){
+    createNewPlayer();
+    enemy = Enemy(goblin);
+}
 Game::Game(Player player, Enemy enemy){
     this->player = player;
     this->enemy = enemy;
@@ -26,38 +30,7 @@ Game::Game(Player player, Enemy enemy){
 void Game::getSmartInput(const string &prompt){
     this->input = lowercase(getFirstWord(getLineFromPrompt(prompt)));
 }
-Origin Game::getOriginFromPrompt(const string prompt){
-    while (true)
-    {
-        string originStr = getLineFromPrompt(prompt);
-        
-        if (isSubset(originStr, "brute") || originStr == "1")
-        {
-            return brute;
-        }
-        else if (isSubset(originStr, "rogue") || originStr == "2")
-        {
-            return rogue;
-        }
-        else if (isSubset(originStr, "wizard") || originStr == "3")
-        {
-            return wizard;
-        }
-        else if (isSubset(originStr, "inquisitor") || originStr == "4")
-        {
-            return inquisitor;
-        }
-        else if (isSubset(originStr, "nomad") || originStr == "5")
-        {
-            return nomad;
-        }
-        else
-        {
-            cout << "Please enter a valid player origin." << endl;
-        }
-    }
-}
-Player Game::createNewPlayer(){
+void Game::createNewPlayer(){
     // Player choices
     Origin inputOrigin;
     string inputName;
@@ -113,8 +86,39 @@ Player Game::createNewPlayer(){
     
     psuedoClearScreen();
     
-    return Player(inputOrigin, inputName);
+    player = Player(inputOrigin, inputName);
     
+}
+Origin Game::getOriginFromPrompt(const string prompt){
+    while (true)
+    {
+        string originStr = getLineFromPrompt(prompt);
+        
+        if (isSubset(originStr, "brute") || originStr == "1")
+        {
+            return brute;
+        }
+        else if (isSubset(originStr, "rogue") || originStr == "2")
+        {
+            return rogue;
+        }
+        else if (isSubset(originStr, "wizard") || originStr == "3")
+        {
+            return wizard;
+        }
+        else if (isSubset(originStr, "inquisitor") || originStr == "4")
+        {
+            return inquisitor;
+        }
+        else if (isSubset(originStr, "nomad") || originStr == "5")
+        {
+            return nomad;
+        }
+        else
+        {
+            cout << "Please enter a valid player origin." << endl;
+        }
+    }
 }
 
 // Property-to-String Converters
@@ -217,6 +221,9 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
 
     // Clear the screen
     psuedoClearScreen();
+    
+    // Display Floor
+    cout << floor << "F" << endl;
     
     // Display Souls
     cout << "Souls  : " + to_string(player.getSouls()) << endl;
@@ -370,8 +377,12 @@ void Game::engageInCombat(){
         if (chosenMove.getDamagePercentage() != 0)
         {
             enemy.takeDamage(player.getWeapon().getDamage(chosenMove));
+            if (enemy.getHP() == 0)
+            {
+                cout << "You defeated the goblin… but here comes another one!" << endl;
+                enemy = Enemy(goblin, ++floor);
+            }
         }
-        displayHUD(player, enemy);
-        getSmartInput("Pause... ");
+        getSmartInput("Continue...");
     }
 }

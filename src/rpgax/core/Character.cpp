@@ -63,4 +63,8 @@ int Character::getFaith() const{
 // Methods
 void Character::takeDamage(int damageTaken){
     hp -= damageTaken;
+    if (hp <= 0)
+    {
+        hp = 0;
+    }
 }

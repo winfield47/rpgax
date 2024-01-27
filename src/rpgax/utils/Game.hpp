@@ -14,9 +14,10 @@ class Game
 {
 public:
     // Properties
+    static std::string input;
     static Player player;
     static Enemy enemy;
-    static std::string input;
+    static short floor;
     
     // Constructors
     Game();
@@ -24,8 +25,8 @@ public:
     
     // User Input
     void getSmartInput(const std::string&);
+    void createNewPlayer();
     Origin getOriginFromPrompt(std::string = "Inspect Origin: ");
-    Player createNewPlayer();
     
     // Property-to-String Converters
     std::string getStringHpAmrRes(const Character&);
