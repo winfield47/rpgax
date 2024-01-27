@@ -60,11 +60,25 @@ void displayHUD(const Player &player, const Enemy &enemy)
     // Display HP, WPN, AMR, RES
     printWithFormattingHUD(getStringHpAmrRes(player), getStringHpAmrRes(enemy), addPipes);
     
-    // Display MORE INFO
-    printWithFormattingHUD(getStringAttributes(player), "Weapon: " + enemy.getWeapon().getName(), addPipes);
+    // Display PLAYER ATTRIBUTES and TURN INFORMATION
+    string turnInfo = "";
+    if (player.getDexterity() > enemy.getDexterity())
+    {
+        turnInfo = player.getName();
+    }
+    else if (player.getDexterity() < enemy.getDexterity())
+    {
+        turnInfo = enemy.getName();
+    }
+    else
+    {
+        turnInfo = enemy.getMoveChooser() % 2 == 0 ? enemy.getName() : player.getName();
+    }
+    turnInfo += " acts first!";
+    printWithFormattingHUD(getStringAttributes(player), turnInfo, addPipes);
     
-    // Display MOVES
-    printWithFormattingHUD("\n<" + player.getWeapon().getName() + ">", "<Enemy Intent>");
+    // Display WEAPONS and MOVES
+    printWithFormattingHUD("\n<" + player.getWeapon().getName() + ">", "<" + enemy.getWeapon().getName() + ">");
     printMovesWithFormattingHUD(player.getWeapon(), enemy);
 }
 void printWithFormattingHUD(const string &leftString, const string &rightString, const OptionSelectHUD optionSelectHUD)

@@ -18,6 +18,7 @@ class Enemy : public Character
 {
 private:
     // Properties
+    std::string name;
     int floorLevel;
     int variance;
     size_t moveChooser;
@@ -29,6 +30,7 @@ public:
     
     // Accessors
     size_t getMoveChooser() const;
+    std::string getName() const;
 };
 
 #endif /* Enemy_hpp */

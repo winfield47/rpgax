@@ -18,6 +18,7 @@ Enemy::Enemy(EnemyType type, int floorLevel)
     {
         default:
             asciiArt = "\\ø/";
+            name = "Enemy";
             description = "A lowly enemy.";
             weapon = Weapon();
             strength = 70;
@@ -29,6 +30,7 @@ Enemy::Enemy(EnemyType type, int floorLevel)
             break;
         case goblin:
             asciiArt = "\\g\\";
+            name = "Goblin";
             description = "A goblin trying to rob you of your life!";
             weapon = Weapon(dagger, floorLevel);
             strength = 63;
@@ -74,4 +76,8 @@ void Enemy::varyStats() // This helps the constructor look prettier
 size_t Enemy::getMoveChooser() const
 {
     return moveChooser;
+}
+string Enemy::getName() const
+{
+    return name;
 }

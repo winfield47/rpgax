@@ -19,6 +19,7 @@ enum Origin
 class Player : public Character
 {
 private:
+    // Properties
     Origin origin;
     int level;
     int souls; // This is the currency AND the resource for leveling up in the game
@@ -27,8 +28,12 @@ private:
     Cloak cloak;
     Potion potion;
 public:
+    // Constructors
     Player();
     Player(Origin origin, std::string playerName);
+    
+    // Accessors
+    std::string getName() const;
     Origin getOrigin() const;
     int getSouls() const;
     int getLevel() const;
@@ -37,6 +42,8 @@ public:
     Apparel getApparel() const;
     Cloak getCloak() const;
     Potion getPotion() const;
+    
+    // Methods
     int spendSouls(int);
     void consumeSouls(int);
     void addSouls(int);

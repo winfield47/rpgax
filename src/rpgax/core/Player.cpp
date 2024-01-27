@@ -93,6 +93,10 @@ Player::Player(Origin origin, string playerName)
 }
 
 // Accessors
+string Player::getName() const
+{
+    return description;
+}
 Origin Player::getOrigin() const
 {
     return origin;
