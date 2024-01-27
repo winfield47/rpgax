@@ -145,7 +145,7 @@ void Player::replaceCloak(Cloak newCloak){
 void Player::replacePotion(Potion newPotion){
     potion = newPotion;
 }
-Potion Player::popPotion(Potion){
+Potion Player::popPotion(){
     Potion usedPotion = potion;
     potion = Potion();
     return usedPotion;

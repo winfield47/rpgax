@@ -69,10 +69,10 @@ Weapon::Weapon(WeaponType type, int grade){
             this->damageType = magic;
             this->baseDamage = 0 + playerIntelligenceModifier; // spell book gets damage from INT mod
             moves.push_back(WeaponMove("Magic Missile", 0, noWeaponMoveAttribute, 1));
-            // oakskin will increase armor by up to the int mod for the combat
-            moves.push_back(WeaponMove("Oakskin", 3, intelligence, 0)); // does no dmg, but has a special effect
             // Spellshield will increase resistance by up to the int mod for the combat
             moves.push_back(WeaponMove("Spellshield", 3, intelligence, 0)); // does no dmg, but has a special effect
+            // oakskin will increase armor by up to the int mod for the combat
+            moves.push_back(WeaponMove("Oakskin", 3, intelligence, 0)); // does no dmg, but has a special effect
             break;
         case magicstaff:
             this->damageType = magic;
@@ -102,6 +102,12 @@ Weapon::Weapon(WeaponType type, int grade){
             moves.push_back(WeaponMove("Punch")); // creates a 60% dmg 100% accuracy move
             moves.push_back(WeaponMove("Kick", 2, strength)); // creates a kick move with 2 checks that use STR at 100% damage
             break;
+    }
+    
+    // Have weapon moves become unlocked with higher weapon grades (i.e. Spellbook unlocks Oakskin at Grade 2)
+    while (moves.size() > grade + 1)
+    {
+        moves.pop_back();
     }
 }
 Weapon::Weapon(std::string name, WeaponDamageType damageType, int baseDamage, int grade, std::vector<WeaponMove> moves){

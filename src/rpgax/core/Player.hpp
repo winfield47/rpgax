@@ -50,7 +50,7 @@ public:
     void replaceApparel(Apparel);
     void replaceCloak(Cloak);
     void replacePotion(Potion);
-    Potion popPotion(Potion);
+    Potion popPotion();
 };
 
 #endif /* Player_hpp */

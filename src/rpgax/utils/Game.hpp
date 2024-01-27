@@ -18,6 +18,7 @@ public:
     static Player player;
     static Enemy enemy;
     static short floor;
+    static bool playerGoesFirst;
     
     // Constructors
     Game();
@@ -43,6 +44,7 @@ public:
     
     // Combat
     void engageInCombat();
+    void determineWhoGoesFirst();
 };
 
 #endif /* Game_hpp */

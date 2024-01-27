@@ -32,6 +32,7 @@ public:
     
     // Methods
     void takeDamage(int);
+    int heal(int);
 
 protected:
     // Common attributes

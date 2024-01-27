@@ -68,3 +68,12 @@ void Character::takeDamage(int damageTaken){
         hp = 0;
     }
 }
+int Character::heal(int healthGained){
+    hp += healthGained;
+    if (hp >= hpMax)
+    {
+        healthGained += (hpMax - hp);
+        hp = hpMax;
+    }
+    return healthGained;
+}

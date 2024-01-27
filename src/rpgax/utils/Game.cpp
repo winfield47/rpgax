@@ -15,6 +15,7 @@ string Game::input = "";
 Player Game::player = Player();
 Enemy Game::enemy = Enemy();
 short Game::floor = 0;
+bool Game::playerGoesFirst = true;
 
 // Constructors
 Game::Game(){
@@ -198,7 +199,8 @@ string Game::getStringForWeaponDamageType(const int type, const bool displayPhys
 // Display
 void Game::displayHUD(const Player &player){
     cout << "Souls : " << player.getSouls() << endl;
-    cout << "\n  " << player.getAsciiArt() <<endl;
+    cout << "Potion : " + player.getPotion().name << "\n" << endl;
+    cout << "  " << player.getAsciiArt() <<endl;
     cout << "\"" << player.getDescription() << "\"" << endl;
     cout << "STR~" << player.getStrength();
     cout << "\tDEX~" << player.getDexterity();
@@ -222,14 +224,17 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     // Clear the screen
     psuedoClearScreen();
     
-    // Display Floor
-    cout << floor << "F" << endl;
-    
     // Display Souls
     cout << "Souls  : " + to_string(player.getSouls()) << endl;
     
     // Display Potion
-    cout << "Potion : " + player.getPotion().name << "\n" << endl;
+    cout << "Potion : " + player.getPotion().name << endl;
+    
+    // Display Floor
+    cout << floor << "F" << endl;
+    
+    // Spacing
+    cout << endl;
     
     // Display ASCII ART
     printWithFormattingHUD("  " + player.getAsciiArt(), "  " + enemy.getAsciiArt(), addPipes);
@@ -244,17 +249,14 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     
     // Display PLAYER ATTRIBUTES and TURN INFORMATION
     string turnInfo = "";
-    if (player.getDexterity() > enemy.getDexterity())
+    determineWhoGoesFirst();
+    if (playerGoesFirst)
     {
         turnInfo = player.getName();
     }
-    else if (player.getDexterity() < enemy.getDexterity())
-    {
-        turnInfo = enemy.getName();
-    }
     else
     {
-        turnInfo = enemy.getMoveChooser() % 2 == 0 ? enemy.getName() : player.getName();
+        turnInfo = enemy.getName();
     }
     turnInfo += " acts first!";
     printWithFormattingHUD(getStringAttributes(player), turnInfo, addPipes);
@@ -347,15 +349,15 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
 
 // Combat
 void Game::engageInCombat(){
+    char continueKey = ' ';
     short chosenMoveIndex = -1;
-    cout << chosenMoveIndex << endl;
     while (player.getHP() > 0)
     {
         input = "";
         chosenMoveIndex = -1;
-        displayHUD(player, enemy);
         do
         {
+            displayHUD(player, enemy);
             cout << endl;
             getSmartInput("Select a move from <" + player.getWeapon().getName() + ">: ");
             for (short i = 0; i < player.getWeapon().getMoves().size(); i++)
@@ -368,21 +370,71 @@ void Game::engageInCombat(){
             }
             if (chosenMoveIndex < 0)
             {
-                cout << "Please enter a valid move.";
+                if (isSubset(input, "potion"))
+                {
+                    if (player.getPotion().name != "None")
+                    {
+                        // Confirm drinking potion
+                        continueKey = getContinueKey("Drink healing potion? (y/n): ");
+                        if (continueKey == 'y')
+                        {
+                            cout << player.getName() << " drank the " << lowercase(player.getPotion().name) << " potion!" << endl;
+                            cout << player.getName() << " healed " << player.heal(player.popPotion().grade) << " HP" << endl;
+                            getSmartInput("Continue…");
+                        }
+                    }
+                    else
+                    {
+                        cout << "No potions…" << endl;
+                        getSmartInput("Continue…");
+                    }
+                }
+                else
+                {
+                    cout << "Please enter a valid move." << endl;
+                    getSmartInput("Continue…");
+                }
             }
         }
         while (chosenMoveIndex < 0);
         WeaponMove chosenMove = player.getWeapon().getMoves().at(chosenMoveIndex);
-        cout << "You chose: " << chosenMove.getName() << "!" << endl;
-        if (chosenMove.getDamagePercentage() != 0)
+        // Confirm weapon move
+        continueKey = getContinueKey("Use " + chosenMove.getName() + "? (y/n): ");
+        if (continueKey == 'y')
         {
-            enemy.takeDamage(player.getWeapon().getDamage(chosenMove));
-            if (enemy.getHP() == 0)
+            cout << player.getName() << " performed: " << chosenMove.getName() << "!" << endl;
+            cout << player.getName() << " dealt " << player.getWeapon().getDamage(chosenMove) << ((player.getWeapon().getDamageType() == magic) ? " magic" : "") << " dmg" << endl;
+            if (chosenMove.getDamagePercentage() != 0)
             {
-                cout << "You defeated the goblin… but here comes another one!" << endl;
-                enemy = Enemy(goblin, ++floor);
+                enemy.takeDamage(player.getWeapon().getDamage(chosenMove));
+                if (enemy.getHP() == 0)
+                {
+                    cout << "You defeated the goblin… but here comes another one!" << endl;
+                    enemy = Enemy(goblin, ++floor);
+                }
             }
+            getSmartInput("Continue...");
         }
-        getSmartInput("Continue...");
+    }
+}
+void Game::determineWhoGoesFirst(){
+    if (player.getDexterity() > enemy.getDexterity())
+    {
+        playerGoesFirst = true;
+    }
+    else if (player.getDexterity() < enemy.getDexterity())
+    {
+        playerGoesFirst = false;
+    }
+    else
+    {
+        if (enemy.getMoveChooser() % 2 == 0)
+        {
+            playerGoesFirst = false;
+        }
+        else
+        {
+            playerGoesFirst = true;
+        }
     }
 }
