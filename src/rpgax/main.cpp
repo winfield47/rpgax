@@ -5,13 +5,11 @@
 //  Created by Kyle Winfield Burnham on 1/11/24.
 //
 
-#include <iostream>
 #include "utils/MainLoop.hpp"
 using namespace std;
 
 int main()
 {
-    cout << "Welcome to rpgax!" << endl;
     srand(static_cast<unsigned int>(time(NULL)));
     char continueKey = 'y';
     while (continueKey == 'y')

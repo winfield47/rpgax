@@ -6,7 +6,6 @@
 //
 
 #include "MainLoop.hpp"
-#include <iostream>
 
 void mainLoop()
 {
@@ -14,4 +13,5 @@ void mainLoop()
     // Player player = createNewPlayer();
     Enemy enemyGoblin = Enemy(goblin, 2);
     displayHUD(player, enemyGoblin);
+    
 }

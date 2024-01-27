@@ -6,7 +6,6 @@
 //
 
 #include "Weapon.hpp"
-#include <iostream>
 using namespace std;
 
 // Constructors
