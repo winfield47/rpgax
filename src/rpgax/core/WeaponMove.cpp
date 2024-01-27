@@ -10,22 +10,19 @@ using namespace std;
 
 // Constructors
 WeaponMove::WeaponMove() {}
-WeaponMove::WeaponMove(string name)
-{
+WeaponMove::WeaponMove(string name){
     this->name = name;
     this->amountOfChecks = 0;
     this->usedAttribute = noWeaponMoveAttribute;
     this->damagePercentage = 0.6;
 }
-WeaponMove::WeaponMove(string name, int amountOfChecks, WeaponMoveAttribute usedAttribute)
-{
+WeaponMove::WeaponMove(string name, int amountOfChecks, WeaponMoveAttribute usedAttribute){
     this->name = name;
     this->amountOfChecks = amountOfChecks;
     this->usedAttribute = usedAttribute;
     this->damagePercentage = 1;
 }
-WeaponMove::WeaponMove(string name, int amountOfChecks, WeaponMoveAttribute usedAttribute, float damagePercentage)
-{
+WeaponMove::WeaponMove(string name, int amountOfChecks, WeaponMoveAttribute usedAttribute, float damagePercentage){
     this->name = name;
     this->amountOfChecks = amountOfChecks;
     this->usedAttribute = usedAttribute;
@@ -33,19 +30,15 @@ WeaponMove::WeaponMove(string name, int amountOfChecks, WeaponMoveAttribute used
 }
 
 // Accessors
-std::string WeaponMove::getName() const
-{
+std::string WeaponMove::getName() const{
     return name;
 }
-int WeaponMove::getAmountOfChecks() const
-{
+int WeaponMove::getAmountOfChecks() const{
     return amountOfChecks;
 }
-WeaponMoveAttribute WeaponMove::getUsedAttribute() const
-{
+WeaponMoveAttribute WeaponMove::getUsedAttribute() const{
     return usedAttribute;
 }
-float WeaponMove::getDamagePercentage() const
-{
+float WeaponMove::getDamagePercentage() const{
     return damagePercentage;
 }

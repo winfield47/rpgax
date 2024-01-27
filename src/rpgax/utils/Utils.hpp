@@ -34,8 +34,8 @@ std::string lowercase(const std::string&);
 bool isSubset(const std::string&, const std::string&);
 
 // Game
-Origin getOriginFromPrompt(std::string = "Inspect Origin: ");
 Player createNewPlayer();
+Origin getOriginFromPrompt(std::string = "Inspect Origin: ");
 std::string getStringHpAmrRes(const Character&);
 std::string getStringAttributes(const Character&);
 std::string getStringForAttributeEnum(const int);

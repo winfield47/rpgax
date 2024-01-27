@@ -11,16 +11,14 @@
 using namespace std;
 
 // DISPLAY
-void psuedoClearScreen()
-{
+void psuedoClearScreen(){
     for (size_t i = 0; i < 20; i++)
     {
         cout << "\n";
     }
     cout << endl;
 }
-void displayHUD(const Player &player)
-{
+void displayHUD(const Player &player){
     cout << "Souls : " << player.getSouls() << endl;
     cout << "\n  " << player.getAsciiArt() <<endl;
     cout << "\"" << player.getDescription() << "\"" << endl;
@@ -41,8 +39,7 @@ void displayHUD(const Player &player)
     }
     cout << endl;
 }
-void displayHUD(const Player &player, const Enemy &enemy)
-{
+void displayHUD(const Player &player, const Enemy &enemy){
     // Display Souls
     cout << "Souls  : " + to_string(player.getSouls()) << endl;
     
@@ -81,8 +78,7 @@ void displayHUD(const Player &player, const Enemy &enemy)
     printWithFormattingHUD("\n<" + player.getWeapon().getName() + ">", "<" + enemy.getWeapon().getName() + ">");
     printMovesWithFormattingHUD(player.getWeapon(), enemy);
 }
-void printWithFormattingHUD(const string &leftString, const string &rightString, const OptionSelectHUD optionSelectHUD)
-{
+void printWithFormattingHUD(const string &leftString, const string &rightString, const OptionSelectHUD optionSelectHUD){
     const int TOTAL_WIDTH = 40;
     cout << setw(TOTAL_WIDTH) << ((optionSelectHUD == addNothing) ? left : left) << leftString;
     switch (optionSelectHUD) {
@@ -102,8 +98,7 @@ void printWithFormattingHUD(const string &leftString, const string &rightString,
     }
     cout << setw(TOTAL_WIDTH) << left << rightString << endl;
 }
-void printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &enemy)
-{
+void printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &enemy){
     string leftString;
     string rightString;
     WeaponMove currentMove;
@@ -138,7 +133,7 @@ void printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &enemy)
         }
         else
         {
-            leftString += to_string(playerWeapon.getCharacterFaithModifier()) + " HP";
+            leftString += to_string(playerWeapon.getPlayerFaithModifier()) + " HP";
         }
         
         // Enemy's NEXT MOVE display
@@ -167,8 +162,7 @@ void printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &enemy)
 }
 
 // USER INPUT
-char getContinueKey(const string &prompt)
-{
+char getContinueKey(const string &prompt){
     char input;
     bool good;
     
@@ -202,8 +196,7 @@ char getContinueKey(const string &prompt)
     cout << endl;
     return input;
 }
-string getLineFromPrompt(const string &prompt)
-{
+string getLineFromPrompt(const string &prompt){
     string line;
     cout << prompt;
     getline(cin, line);
@@ -215,9 +208,9 @@ string getLineFromPrompt(const string &prompt)
     return line;
 }
 
+
 // STRING MANIPULATION
-char lowercase(const char c)
-{
+char lowercase(const char c){
     char lowerChar;
     if (c <= 'Z' && c >= 'A')
     {
@@ -229,8 +222,7 @@ char lowercase(const char c)
     }
     return lowerChar;
 }
-string lowercase(const string &str)
-{
+string lowercase(const string &str){
     string lowerStr = "";
     for (char c: str)
     {
@@ -239,8 +231,7 @@ string lowercase(const string &str)
     
     return lowerStr;
 }
-bool isSubset(const std::string &stringInQuestion, const std::string &superString) 
-{
+bool isSubset(const std::string &stringInQuestion, const std::string &superString){
     bool currentCharIsInSuperString = false;
     for (char subChar : stringInQuestion)
     {
@@ -261,42 +252,9 @@ bool isSubset(const std::string &stringInQuestion, const std::string &superStrin
     
     return true;
 }
-Origin getOriginFromPrompt(const string prompt)
-{
-    while (true)
-    {
-        string originStr = getLineFromPrompt(prompt);
-        
-        if (isSubset(originStr, "brute") || originStr == "1")
-        {
-            return brute;
-        }
-        else if (isSubset(originStr, "rogue") || originStr == "2")
-        {
-            return rogue;
-        }
-        else if (isSubset(originStr, "wizard") || originStr == "3")
-        {
-            return wizard;
-        }
-        else if (isSubset(originStr, "inquisitor") || originStr == "4")
-        {
-            return inquisitor;
-        }
-        else if (isSubset(originStr, "nomad") || originStr == "5")
-        {
-            return nomad;
-        }
-        else
-        {
-            cout << "Please enter a valid player origin." << endl;
-        }
-    }
-}
 
 // GAME
-Player createNewPlayer()
-{
+Player createNewPlayer(){
     // Player choices
     Origin inputOrigin;
     string inputName;
@@ -355,23 +313,51 @@ Player createNewPlayer()
     return Player(inputOrigin, inputName);
     
 }
-string getStringHpAmrRes(const Character &character)
-{
+Origin getOriginFromPrompt(const string prompt){
+    while (true)
+    {
+        string originStr = getLineFromPrompt(prompt);
+        
+        if (isSubset(originStr, "brute") || originStr == "1")
+        {
+            return brute;
+        }
+        else if (isSubset(originStr, "rogue") || originStr == "2")
+        {
+            return rogue;
+        }
+        else if (isSubset(originStr, "wizard") || originStr == "3")
+        {
+            return wizard;
+        }
+        else if (isSubset(originStr, "inquisitor") || originStr == "4")
+        {
+            return inquisitor;
+        }
+        else if (isSubset(originStr, "nomad") || originStr == "5")
+        {
+            return nomad;
+        }
+        else
+        {
+            cout << "Please enter a valid player origin." << endl;
+        }
+    }
+}
+string getStringHpAmrRes(const Character &character){
     string str = "HP~" + to_string(character.getHP()) + "/" + to_string(character.getHPMax());
     str += character.getArmor() == 0 ? "" : ", AMR~" + to_string(character.getArmor());
     str += character.getResistance() == 0 ? "" : ", RES~" + to_string(character.getResistance());
     return str;
 }
-string getStringAttributes(const Character &character)
-{
+string getStringAttributes(const Character &character){
     string str = "STR~" + to_string(character.getStrength());
     str += ", DEX~" + to_string(character.getDexterity());
     str += ", INT~" + to_string(character.getIntelligence());
     str += ", FAI~" + to_string(character.getFaith());
     return str;
 }
-string getStringForAttributeEnum(const int attrEnumIntValue)
-{
+string getStringForAttributeEnum(const int attrEnumIntValue){
     switch (attrEnumIntValue) {
         case 0:
             return "STR";
@@ -390,8 +376,7 @@ string getStringForAttributeEnum(const int attrEnumIntValue)
             break;
     }
 }
-std::string getStringForAmountOfChecks(const int amountOfChecks)
-{
+string getStringForAmountOfChecks(const int amountOfChecks){
     string str = "";
     if (amountOfChecks > 0)
     {
@@ -403,8 +388,7 @@ std::string getStringForAmountOfChecks(const int amountOfChecks)
     }
     return str;
 }
-std::string getStringForWeaponDamageType(const int type, const bool displayPhysical)
-{
+string getStringForWeaponDamageType(const int type, const bool displayPhysical){
     switch (type)
     {
         case 0:

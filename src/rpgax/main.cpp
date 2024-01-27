@@ -8,8 +8,7 @@
 #include "utils/MainLoop.hpp"
 using namespace std;
 
-int main()
-{
+int main(){
     srand(static_cast<unsigned int>(time(NULL)));
     char continueKey = 'y';
     while (continueKey == 'y')

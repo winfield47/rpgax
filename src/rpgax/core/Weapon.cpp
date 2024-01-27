@@ -8,10 +8,14 @@
 #include "Weapon.hpp"
 using namespace std;
 
+int Weapon::playerIntelligenceModifier = 0;
+int Weapon::playerFaithModifier = 0;
+int Weapon::enemyIntelligenceModifier = 0;
+int Weapon::enemyFaithModifier = 0;
+
 // Constructors
 Weapon::Weapon() {}
-Weapon::Weapon(WeaponType type, int grade)
-{
+Weapon::Weapon(WeaponType type, int grade){
     if (type == randomized)
     {
         type = static_cast<WeaponType>(rand() % TOTAL_WEAPON_TYPES);
@@ -63,7 +67,7 @@ Weapon::Weapon(WeaponType type, int grade)
             break;
         case spellbook:
             this->damageType = magic;
-            this->baseDamage = 0 + characterIntelligenceModifier; // spell book gets damage from INT mod
+            this->baseDamage = 0 + playerIntelligenceModifier; // spell book gets damage from INT mod
             moves.push_back(WeaponMove("Magic Missile", 0, noWeaponMoveAttribute, 1));
             // oakskin will increase armor by up to the int mod for the combat
             moves.push_back(WeaponMove("Oakskin", 3, intelligence, 0)); // does no dmg, but has a special effect
@@ -100,8 +104,7 @@ Weapon::Weapon(WeaponType type, int grade)
             break;
     }
 }
-Weapon::Weapon(std::string name, WeaponDamageType damageType, int baseDamage, int grade, std::vector<WeaponMove> moves)
-{
+Weapon::Weapon(std::string name, WeaponDamageType damageType, int baseDamage, int grade, std::vector<WeaponMove> moves){
     this->name = name;
     this->type = special;
     this->damageType = damageType;
@@ -111,49 +114,50 @@ Weapon::Weapon(std::string name, WeaponDamageType damageType, int baseDamage, in
 }
 
 // Accessors
-int Weapon::getCharacterIntelligenceModifier() const
-{
-    return characterIntelligenceModifier;
+int Weapon::getPlayerIntelligenceModifier(){
+    return playerIntelligenceModifier;
 }
-int Weapon::getCharacterFaithModifier() const
-{
-    return characterFaithModifier;
+int Weapon::getPlayerFaithModifier(){
+    return playerFaithModifier;
 }
-string Weapon::getName() const
-{
+int Weapon::getEnemyIntelligenceModifier(){
+    return enemyIntelligenceModifier;
+}
+int Weapon::getEnemyFaithModifier(){
+    return enemyFaithModifier;
+}
+string Weapon::getName() const{
     return name;
 }
-WeaponType Weapon::getType() const
-{
+WeaponType Weapon::getType() const{
     return type;
 }
-WeaponDamageType Weapon::getDamageType() const
-{
+WeaponDamageType Weapon::getDamageType() const{
     return damageType;
 }
-int Weapon::getDamage() const
-{
+int Weapon::getDamage() const{
     return baseDamage;
 }
-int Weapon::getDamage(WeaponMove &move) const
-{
+int Weapon::getDamage(WeaponMove &move) const{
     return move.getDamagePercentage() * baseDamage;
 }
-int Weapon::getGrade() const
-{
+int Weapon::getGrade() const{
     return grade;
 }
-vector<WeaponMove> Weapon::getMoves() const
-{
+vector<WeaponMove> Weapon::getMoves() const{
     return moves;
 }
 
 // Setters
-void Weapon::setCharacterIntelligenceModifier(int currentIntelligenceModifier)
-{
-    characterIntelligenceModifier = currentIntelligenceModifier - 70;
+void Weapon::setPlayerIntelligenceModifier(int currentIntelligenceModifier){
+    playerIntelligenceModifier = currentIntelligenceModifier - 70;
 }
-void Weapon::setCharacterFaithModifier(int currentFaithModifier)
-{
-    characterFaithModifier = currentFaithModifier - 70;
+void Weapon::setPlayerFaithModifier(int currentFaithModifier){
+    playerFaithModifier = currentFaithModifier - 70;
+}
+void Weapon::setEnemyIntelligenceModifier(int currentIntelligenceModifier){
+    enemyIntelligenceModifier = currentIntelligenceModifier - 70;
+}
+void Weapon::setEnemyFaithModifier(int currentFaithModifier){
+    enemyFaithModifier = currentFaithModifier - 70;
 }

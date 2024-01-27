@@ -10,8 +10,7 @@ using namespace std;
 
 // Constructors
 Enemy::Enemy() {}
-Enemy::Enemy(EnemyType type, int floorLevel)
-{
+Enemy::Enemy(EnemyType type, int floorLevel){
     this->floorLevel = floorLevel;
     variance = 3;
     switch (type)
@@ -58,11 +57,10 @@ Enemy::Enemy(EnemyType type, int floorLevel)
     hpMax = hp = 20 + ((floorLevel + 1) * 1.5) + (strength - 70) * 2;
     
     moveChooser = rand() % weapon.getMoves().size();
-    weapon.setCharacterIntelligenceModifier(intelligence);
-    weapon.setCharacterFaithModifier(faith);
+    weapon.setEnemyIntelligenceModifier(intelligence);
+    weapon.setEnemyFaithModifier(faith);
 }
-void Enemy::varyStats() // This helps the constructor look prettier
-{
+void Enemy::varyStats(){
     strength += (rand() % variance / 2) - (rand() % variance / 2);
     dexterity += (rand() % variance) - (rand() % variance);
     intelligence += (rand() % variance) - (rand() % variance);
@@ -72,14 +70,12 @@ void Enemy::varyStats() // This helps the constructor look prettier
         armor += ((rand() % floorLevel) - rand() % floorLevel) <= 0 ? 0 : (rand() % floorLevel);
         resistance += (rand() % floorLevel) <= 0 ? 0 : (rand() % floorLevel);
     }
-}
+} // This helps the constructor look prettier
 
 // Accessors
-size_t Enemy::getMoveChooser() const
-{
+size_t Enemy::getMoveChooser() const{
     return moveChooser;
 }
-string Enemy::getName() const
-{
+string Enemy::getName() const{
     return name;
 }

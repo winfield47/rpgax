@@ -32,9 +32,11 @@ enum WeaponDamageType
 class Weapon
 {
 private:
-    // Stats Properties
-    int characterIntelligenceModifier; // this is for keeping track of how much damage the spell book magic missile does
-    int characterFaithModifier; // this is for keeping track of how much healing the talisman does
+    // Static Properties
+    static int playerIntelligenceModifier; // this is for keeping track of how much damage the spell book magic missile does
+    static int playerFaithModifier; // this is for keeping track of how much healing the talisman does
+    static int enemyIntelligenceModifier; // this is for keeping track of how much damage the spell book magic missile does
+    static int enemyFaithModifier; // this is for keeping track of how much healing the talisman does
     
     // Properties
     std::string name;
@@ -50,8 +52,10 @@ public:
     Weapon(std::string name, WeaponDamageType damageType, int baseDamage, int grade, std::vector<WeaponMove> moves);
     
     // Accessors
-    int getCharacterIntelligenceModifier() const;
-    int getCharacterFaithModifier() const;
+    static int getPlayerIntelligenceModifier();
+    static int getPlayerFaithModifier();
+    static int getEnemyIntelligenceModifier();
+    static int getEnemyFaithModifier();
     WeaponType getType() const;
     WeaponDamageType getDamageType() const;
     std::string getName() const;
@@ -61,8 +65,10 @@ public:
     std::vector<WeaponMove> getMoves() const;
     
     // Setters
-    void setCharacterIntelligenceModifier(int);
-    void setCharacterFaithModifier(int);
+    static void setPlayerIntelligenceModifier(int);
+    static void setPlayerFaithModifier(int);
+    static void setEnemyIntelligenceModifier(int);
+    static void setEnemyFaithModifier(int);
     
     // Public Property
     static const unsigned short TOTAL_WEAPON_TYPES = 8;
