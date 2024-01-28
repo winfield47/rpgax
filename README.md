@@ -1,15 +1,15 @@
-# rpgax
+# Text-based Adventure
 
-Welcome to rpgax! This is like a Rogue-like, dungeon-crawler RPG… or something… I'm not too sure what the genre is, I just had fun making it!
+Welcome to rpgax! This is a text-based, rogue-like, dungeon-crawler RPG or something…
 
 ## What is rpgax?
-"rpgax" is short for "Role Playing Game ASCII"
+"rpgax" is short for "Role Playing Game ASCII"\n
 ASCII basically just means "text" (you can look it up), so "rpgax" kind of just means "text-based adventure". The name takes inspiration from the short-hand naming conventions when working with the Terminal that I've been learning about while going through my Software Development college classes.
 I really didn't have a name for the game when I first started making it, and now I just like the look of it.
 This game was made using C++, XCode, GitHub and VIM!
 
 ## Overview
-This Text-Based RPG allows players to create a character, explore a world filled with quests and monsters, and embark on an epic adventure. Make strategic choices, complete quests, and level up your character to become a legendary hero.
+This Text-Based Adventure allows players to create a character, explore dungeons filled with events and enemies, find loot and embark on an epic adventure. Make strategic choices and level up your character to become a legendary hero.
 
 ## Getting Started
 1. **Requirements:**
@@ -38,6 +38,6 @@ This Text-Based RPG allows players to create a character, explore a world filled
 - Then just follow the on-screen prompts for in-game choices.
 
 ## License
-This project is licensed under the [MIT License](link_to_license_file).
+This project is licensed under the [MIT License](https://github.com/winfield47/rpgax/blob/main/LICENSE).
 
 Enjoy your adventure in the Text-Based RPG!
