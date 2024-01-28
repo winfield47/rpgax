@@ -3,14 +3,18 @@
 Welcome to rpgax! This is a text-based, rogue-like, dungeon-crawler RPG or something…
 
 ## What is rpgax?
-rpgax is short for "Role Playing Game ASCII"
+**ax** represents **ascii** : When putting an 'x' after the first letter of a word, the rest of the word is assumed. 
 
-*ASCII* basically just means *text* <sub>just look it up</sub>, so "rpgax" kind of just means "text-based adventure". The name takes inspiration from the short-hand naming conventions when working with the Terminal that I've been learning about while going through my Software Development college classes. I really didn't have a name for the game when I first started making it, and now I just like the look of it.
+**ASCII** represents **text** : ASCII is a standard data-encoding format for electronic communication between computers.
 
-This game was made using C++, XCode, GitHub and VIM!
+**rpgax** is short for **Role Playing Game ASCII**
+
+The name takes inspiration from the short-hand naming conventions when working with the Terminal that I've been learning about while going through my Software Development college classes. I really didn't have a name for the game when I first started making it, and now I just like the look of it.
 
 ## Overview
-This Text-Based Adventure allows players to create a character, explore dungeons filled with events and enemies, find loot and embark on an epic adventure. Make strategic choices and level up your character to become a legendary hero.
+This Text-Based Adventure allows players to create a character, explore dungeons filled with events and enemies, find loot, make strategic choices and level up your character.
+
+This game was made using C++, XCode, GitHub and VIM!
 
 ## Getting Started
 1. **Requirements:**
@@ -26,15 +30,19 @@ This Text-Based Adventure allows players to create a character, explore dungeons
 3. **How to Play:**
    - Open the terminal and move to the base directory for rpgax.
    - Then, run these commands (USES g++):
-    ```
-    chmod +x rpgax.sh 
-    ./rpgax.sh
-    ```
+      ```
+      chmod +x rpgax.sh 
+      ./rpgax.sh
+      ```
    - Follow on-screen instructions to create a character and begin your journey!
 
 ## Game Features
+- **Procedurally Generated:** Each playthrough will have different encounters and variations to explore.
+- **ASCII Art:** The world is presented to your human eyes via text-based art.
 - **Character Creation:** Choose your character's starting origin and name.
 - **Combat System:** Battle enemies using a turn-based combat system while being able to see enemy intent.
+- **Dungeon Crawling:** Rest, shop, explore and fight until you either win or die.
+- **Upgrade Loot:** Find better loot and swap out old gear to become as strong as possible.
 - **Leveling Up:** Improve your character's skills and abilities as you level up.
 
 ## Controls
