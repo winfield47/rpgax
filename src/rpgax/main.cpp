@@ -13,7 +13,7 @@ int main(){
     char continueKey = 'y';
     while (continueKey == 'y')
     {
-        psuedoClearScreen();
+        clearScreen();
         mainLoop();
         continueKey = getContinueKey("\nPlay again? (y/n): ");
     }

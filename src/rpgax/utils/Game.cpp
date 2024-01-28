@@ -42,7 +42,7 @@ void Game::createNewPlayer(){
     char continueKey;
     do
     {
-        psuedoClearScreen();
+        clearScreen();
         // Create the playable character origins for the user to browse
         std::cout << "Here are the starting origins for your character:\n" << std::endl;
         
@@ -80,7 +80,7 @@ void Game::createNewPlayer(){
         }
         Player tempPlayerChoice = Player(inputOrigin, originDescription);
         
-        psuedoClearScreen();\
+        clearScreen();
         displayHUD(tempPlayerChoice);
         
         continueKey = getContinueKey("Do you want to play this class? (y/n): ");
@@ -88,7 +88,7 @@ void Game::createNewPlayer(){
     while (continueKey == 'n');
     inputName = getLineFromPrompt("Name: ");
     
-    psuedoClearScreen();
+    clearScreen();
     
     player = Player(inputOrigin, inputName);
     
@@ -225,7 +225,7 @@ void Game::displayHUD(const Player &player){
 void Game::displayHUD(const Player &player, const Enemy &enemy){
 
     // Clear the screen
-    psuedoClearScreen();
+    clearScreen();
     
     // Display Souls
     std::cout << "Souls  : " + std::to_string(player.getSouls()) << std::endl;

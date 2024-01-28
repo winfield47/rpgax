@@ -8,14 +8,23 @@
 #include "Utils.hpp"
 #include <iostream>
 #include <iomanip>
+#include <stdlib.h>
 
 // DISPLAY
-void psuedoClearScreen(){
-    for (size_t i = 0; i < 20; i++)
+void clearScreen(){
+    // If neither of the clear functions DONT work, they will go in the if statements
+    if (system("clear"))
     {
-        std::cout << "\n";
+        if (system("cls"))
+        {
+            // back up clear function
+            for (size_t i = 0; i < 20; i++)
+            {
+                std::cout << "\n";
+            }
+            std::cout << std::endl;
+        }
     }
-    std::cout << std::endl;
 }
 
 // USER INPUT
