@@ -19,7 +19,7 @@ bool Game::playerGoesFirst = true;
 // Constructors
 Game::Game(){
     createNewPlayer();
-    enemy = Enemy(goblin);
+    createNewEnemy();
 }
 Game::Game(Player player, Enemy enemy){
     this->player = player;
@@ -96,25 +96,25 @@ void Game::createNewPlayer(){
 Origin Game::getOriginFromPrompt(const std::string prompt){
     while (true)
     {
-        std::string originStr = getLineFromPrompt(prompt);
+        getSmartInput(prompt);
         
-        if (isSubset(originStr, "brute") || originStr == "1")
+        if (isSubset(input, "brute") || input == "1")
         {
             return brute;
         }
-        else if (isSubset(originStr, "rogue") || originStr == "2")
+        else if (isSubset(input, "rogue") || input == "2")
         {
             return rogue;
         }
-        else if (isSubset(originStr, "wizard") || originStr == "3")
+        else if (isSubset(input, "wizard") || input == "3")
         {
             return wizard;
         }
-        else if (isSubset(originStr, "inquisitor") || originStr == "4")
+        else if (isSubset(input, "inquisitor") || input == "4")
         {
             return inquisitor;
         }
-        else if (isSubset(originStr, "nomad") || originStr == "5")
+        else if (isSubset(input, "nomad") || input == "5")
         {
             return nomad;
         }
@@ -358,13 +358,36 @@ void Game::engageInCombat(){
         if (playerGoesFirst)
         {
             performPlayerMove();
-            performEnemyMove();
+            if (enemy.getHP() <= 0)
+            {
+                std::cout << "You defeated " + enemy.getName() + "… but here comes another enemy!" << std::endl;
+                floor++;
+                createNewEnemy();
+            }
+            else
+            {
+                performEnemyMove();
+            }
         }
         else
         {
             performEnemyMove();
-            performPlayerMove();
+            if (player.getHP() > 0)
+            {
+                performPlayerMove();
+            }
+            if (enemy.getHP() == 0)
+            {
+                std::cout << "You defeated " + enemy.getName() + "… but here comes another enemy!" << std::endl;
+                floor++;
+                createNewEnemy();
+            }
         }
+        if (player.getHP() <= 0)
+        {
+            std::cout << "You died…" << std::endl;
+        }
+        getSmartInput("Continue…");
     }
 }
 void Game::performPlayerMove(){
@@ -397,20 +420,18 @@ void Game::performPlayerMove(){
                     {
                         std::cout << player.getName() << " drank the " << lowercase(player.getPotion().name) << " potion!" << std::endl;
                         std::cout << player.getName() << " healed " << player.heal(player.popPotion().grade) << " HP" << std::endl;
-                        getSmartInput("Continue…");
                     }
                 }
                 else
                 {
                     std::cout << "No potions…" << std::endl;
-                    getSmartInput("Continue…");
                 }
             }
             else
             {
                 std::cout << "Please enter a valid move." << std::endl;
-                getSmartInput("Continue…");
             }
+            getSmartInput("Continue…");
         }
     }
     while (chosenMoveIndex < 0);
@@ -424,13 +445,12 @@ void Game::performPlayerMove(){
         if (chosenMove.getDamagePercentage() != 0)
         {
             enemy.takeDamage(player.getWeapon().getDamage(chosenMove));
-            if (enemy.getHP() == 0)
-            {
-                std::cout << "You defeated the goblin… but here comes another one!" << std::endl;
-                enemy = Enemy(goblin, ++floor);
-            }
         }
         getSmartInput("Continue...");
+    }
+    else
+    {
+        // PLAYER DID NOT WANT TO USE THAT MOVE
     }
 }
 void Game::performEnemyMove(){
@@ -447,7 +467,6 @@ void Game::performEnemyMove(){
     
     // Display damage taken
     std::cout << "\n" << enemy.getName() << " dealt " << chosenMoveDamage << (enemy.getWeapon().getDamageType() == magic ? " magic" : "") << " dmg" << std::endl;
-    getSmartInput("Continue…");
 }
 void Game::determineWhoGoesFirst(){
     if (player.getDexterity() > enemy.getDexterity())
@@ -469,4 +488,7 @@ void Game::determineWhoGoesFirst(){
             playerGoesFirst = true;
         }
     }
+}
+void Game::createNewEnemy(){
+    enemy = Enemy(static_cast<EnemyType>(rand() % (floor + 1 < TOTAL_ENEMY_TYPES ? floor : TOTAL_ENEMY_TYPES)), floor);
 }

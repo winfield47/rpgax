@@ -14,15 +14,15 @@ Enemy::Enemy(EnemyType type, int floorLevel){
     variance = 3;
     switch (type)
     {
-        default:
-            asciiArt = "\\ø/";
-            name = "Enemy";
-            description = "A lowly enemy.";
-            weapon = Weapon();
-            strength = 70;
-            dexterity = 70;
-            intelligence = 70;
-            faith = 70;
+        case pigeon:
+            asciiArt = "<@\\";
+            name = "Pigeon";
+            description = "A giant, fat pigeon… it can't even fly!";
+            weapon = Weapon(unarmed);
+            strength = 66;
+            dexterity = 50;
+            intelligence = 50;
+            faith = 50;
             armor = 0;
             resistance = 0;
             break;
@@ -31,15 +31,43 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             name = "Goblin";
             description = "A goblin trying to rob you of your life!";
             weapon = Weapon(dagger, floorLevel);
-            strength = 63;
+            strength = 62;
             dexterity = 74;
             intelligence = 65;
-            faith = 75;
+            faith = 70;
             armor = 0;
             resistance = 0;
             break;
+        case drow:
+            if (rand() % 2 == 0)
+            {
+                asciiArt = "}0{";
+                name = "Drow Mage";
+                description = "A dark elf with magical powers, she has a funny hat!";
+                weapon = Weapon(magicstaff, floorLevel);
+                strength = 63;
+                dexterity = 69;
+                intelligence = 70;
+                faith = 68;
+                armor = 0;
+                resistance = 1;
+            }
+            else
+            {
+                asciiArt = "^0^";
+                name = "Drow Ranger";
+                description = "A dark elf with an arrow nocked, aiming at your face!";
+                weapon = Weapon(bow, floorLevel);
+                strength = 64;
+                dexterity = 70;
+                intelligence = 65;
+                faith = 68;
+                armor = 0;
+                resistance = 0;
+            }
+            break;
         case slime:
-            asciiArt = "OOZ";
+            asciiArt = "[Œ]";
             description = "What is this thing..? It's made of slime and not letting you pass.";
             weapon = Weapon();
             // weapon = Weapon("It's body…", physical, 6, floorLevel, std::vector<WeaponMove>(WeaponMove("Pseudopod", 3, strength, 1)));
@@ -48,6 +76,18 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             intelligence = 0;
             faith = 0;
             armor = 10;
+            resistance = 0;
+            break;
+        default:
+            asciiArt = "\\ø/";
+            name = "Enemy";
+            description = "A lowly enemy… nothing but a foot soldier.";
+            weapon = Weapon(unarmed);
+            strength = 60;
+            dexterity = 60;
+            intelligence = 60;
+            faith = 60;
+            armor = 0;
             resistance = 0;
             break;
     }

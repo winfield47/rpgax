@@ -62,7 +62,7 @@ Weapon::Weapon(WeaponType type, int grade){
             this->baseDamage = 6;
             this->baseDamage += grade;
             moves.push_back(WeaponMove("Called Shot"));
-            moves.push_back(WeaponMove("Triple Draw", 1, dexterity, 2));
+            moves.push_back(WeaponMove("Triple Draw", 1, dexterity, 1));
             break;
         case spellbook:
             this->damageType = magic;

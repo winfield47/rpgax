@@ -10,8 +10,10 @@
 
 #include "Character.hpp"
 
+const int TOTAL_ENEMY_TYPES = 2;
+
 enum EnemyType {
-    goblin, slime, noEnemyType
+    pigeon, goblin, drow, slime, noEnemyType
 };
 
 class Enemy : public Character

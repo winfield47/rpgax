@@ -22,7 +22,7 @@ public:
     
     // Constructors
     Game();
-    Game(Player, Enemy);
+    Game(Player, Enemy = Enemy(static_cast<EnemyType>(0)));
     
     // User Input
     void getSmartInput(const std::string&);
@@ -47,6 +47,7 @@ public:
     void performPlayerMove();
     void performEnemyMove();
     void determineWhoGoesFirst();
+    void createNewEnemy();
 };
 
 #endif /* Game_hpp */
