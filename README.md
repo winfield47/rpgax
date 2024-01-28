@@ -3,13 +3,17 @@
 Welcome to rpgax! This is a text-based, rogue-like, dungeon-crawler RPG or something…
 
 ## What is rpgax?
-**ax** represents **ascii** : When putting an 'x' after the first letter of a word, the rest of the word is assumed. 
-
-**ASCII** represents **text** : ASCII is a standard data-encoding format for electronic communication between computers.
-
-**rpgax** is short for **Role Playing Game ASCII**
+**rpgax** is short-hand for **Role Playing Game ASCII**
 
 The name takes inspiration from the short-hand naming conventions when working with the Terminal that I've been learning about while going through my Software Development college classes. I really didn't have a name for the game when I first started making it, and now I just like the look of it.
+
+**ax** represents **ascii** : When putting an 'x' after the first letter of a word, the rest of the word is assumed. 
+
+**ASCII** just means **text** : ASCII is a standard data-encoding format for electronic communication between computers.
+
+**RPG** usually implies **Adventure** : RPG usually means you have some kind of stats, leveled-gear and character building while progressing through an adventure.
+
+So all together, **rpgax** represents the meaning of **Text-based Adventure**
 
 ## Overview
 This Text-Based Adventure allows players to create a character, explore dungeons filled with events and enemies, find loot, make strategic choices and level up your character.
