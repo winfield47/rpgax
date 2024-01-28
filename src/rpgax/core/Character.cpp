@@ -6,11 +6,10 @@
 //
 
 #include "Character.hpp"
-using namespace std;
 
 // Constructors
 Character::Character(){};
-Character::Character(string asciiArt, int hp, WeaponType weaponType, int weaponGrade, int armor, int resistance, string description, int strength, int dexterity, int intelligence, int faith)
+Character::Character(std::string asciiArt, int hp, WeaponType weaponType, int weaponGrade, int armor, int resistance, std::string description, int strength, int dexterity, int intelligence, int faith)
 {
     this->asciiArt = asciiArt;
     this->hp = hp;
@@ -26,10 +25,10 @@ Character::Character(string asciiArt, int hp, WeaponType weaponType, int weaponG
 }
 
 // Accessors
-string Character::getAsciiArt() const{
+std::string Character::getAsciiArt() const{
     return asciiArt;
 }
-string Character::getDescription() const{
+std::string Character::getDescription() const{
     return description;
 }
 const Weapon& Character::getWeapon() const{

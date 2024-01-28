@@ -6,7 +6,6 @@
 //
 
 #include "Enemy.hpp"
-using namespace std;
 
 // Constructors
 Enemy::Enemy(){}
@@ -76,6 +75,6 @@ void Enemy::varyStats(){
 size_t Enemy::getMoveChooser() const{
     return moveChooser;
 }
-string Enemy::getName() const{
+std::string Enemy::getName() const{
     return name;
 }

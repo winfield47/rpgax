@@ -7,7 +7,6 @@
 
 #include "MainLoop.hpp"
 #include <iostream>
-using namespace std;
 
 void mainLoop(){
     

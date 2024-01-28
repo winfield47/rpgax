@@ -6,7 +6,6 @@
 //
 
 #include "Weapon.hpp"
-using namespace std;
 
 int Weapon::playerIntelligenceModifier = 0;
 int Weapon::playerFaithModifier = 0;
@@ -132,7 +131,7 @@ int Weapon::getEnemyIntelligenceModifier(){
 int Weapon::getEnemyFaithModifier(){
     return enemyFaithModifier;
 }
-string Weapon::getName() const{
+std::string Weapon::getName() const{
     return name;
 }
 WeaponType Weapon::getType() const{
@@ -150,7 +149,7 @@ int Weapon::getDamage(WeaponMove &move) const{
 int Weapon::getGrade() const{
     return grade;
 }
-vector<WeaponMove> Weapon::getMoves() const{
+std::vector<WeaponMove> Weapon::getMoves() const{
     return moves;
 }
 

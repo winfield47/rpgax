@@ -6,11 +6,10 @@
 //
 
 #include "Player.hpp"
-using namespace std;
 
 // Constructors
 Player::Player(){}
-Player::Player(Origin origin, string playerName){
+Player::Player(Origin origin, std::string playerName){
     this->origin = origin;
     description = playerName;
     level = 0;
@@ -94,7 +93,7 @@ Player::Player(Origin origin, string playerName){
 }
 
 // Accessors
-string Player::getName() const{
+std::string Player::getName() const{
     return description;
 }
 Origin Player::getOrigin() const{

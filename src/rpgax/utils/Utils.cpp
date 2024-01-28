@@ -8,27 +8,26 @@
 #include "Utils.hpp"
 #include <iostream>
 #include <iomanip>
-using namespace std;
 
 // DISPLAY
 void psuedoClearScreen(){
     for (size_t i = 0; i < 20; i++)
     {
-        cout << "\n";
+        std::cout << "\n";
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 // USER INPUT
-char getContinueKey(const string &prompt){
+char getContinueKey(const std::string &prompt){
     char input;
     bool good;
     
     do {
-        cout << prompt;
-        cin >> input;
+        std::cout << prompt;
+        std::cin >> input;
         
-        if (cin)
+        if (std::cin)
         {
             if (input == 'y' || input == 'n' || input == 'Y' || input == 'N')
             {
@@ -37,30 +36,30 @@ char getContinueKey(const string &prompt){
             else
             {
                 good = false;
-                cout << "Please use 'y' or 'n' to answer." << endl;
+                std::cout << "Please use 'y' or 'n' to answer." << std::endl;
             }
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
         else
         {
             good = false;
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "That doesn't make sense!" << endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "That doesn't make sense!" << std::endl;
         }
     } while (!good);
     
-    cout << endl;
+    std::cout << std::endl;
     return input;
 }
-string getLineFromPrompt(const string &prompt){
-    string line;
-    cout << prompt;
-    getline(cin, line);
-    if (cin.bad())
+std::string getLineFromPrompt(const std::string &prompt){
+    std::string line;
+    std::cout << prompt;
+    getline(std::cin, line);
+    if (std::cin.bad())
     {
-        cout << "You broke the code!" << endl;
+        std::cout << "You broke the code!" << std::endl;
         return "";
     }
     return line;
@@ -79,8 +78,8 @@ char lowercase(const char c){
     }
     return lowerChar;
 }
-string lowercase(const string &str){
-    string lowerStr = "";
+std::string lowercase(const std::string &str){
+    std::string lowerStr = "";
     for (char c: str)
     {
         lowerStr += lowercase(c);
@@ -100,8 +99,8 @@ char uppercase(char c){
     }
     return upperChar;
 }
-string uppercase(string str){
-    string upperStr = "";
+std::string uppercase(std::string str){
+    std::string upperStr = "";
     for (char c: str)
     {
         upperStr += uppercase(c);
@@ -109,12 +108,12 @@ string uppercase(string str){
     
     return upperStr;
 }
-string capitalize(string str){
+std::string capitalize(std::string str){
     str[0] = uppercase(str[0]);
     return str;
 }
-string getFirstWord(string str){
-    string returnString = "";
+std::string getFirstWord(std::string str){
+    std::string returnString = "";
     for (char c: str)
     {
         if (c == ' ')
