@@ -83,7 +83,7 @@ void Game::createNewPlayer(){
         clearScreen();
         displayHUD(tempPlayerChoice);
         
-        continueKey = getContinueKey("Do you want to play this class? (y/n): ");
+        continueKey = getContinueKey("Do you want to play this class? (Y/n): ");
     }
     while (continueKey == 'n');
     inputName = getLineFromPrompt("Name: ");
@@ -376,18 +376,19 @@ void Game::engageInCombat(){
             {
                 performPlayerMove();
             }
-            if (enemy.getHP() == 0)
+            if (enemy.getHP() <= 0)
             {
                 std::cout << "You defeated " + enemy.getName() + "… but here comes another enemy!" << std::endl;
                 floor++;
                 createNewEnemy();
+                getSmartInput("Continue…");
             }
         }
         if (player.getHP() <= 0)
         {
             std::cout << "You died…" << std::endl;
+            getSmartInput("Continue…");
         }
-        getSmartInput("Continue…");
     }
 }
 void Game::performPlayerMove(){
@@ -415,7 +416,7 @@ void Game::performPlayerMove(){
                 if (player.getPotion().name != "None")
                 {
                     // Confirm drinking potion
-                    continueKey = getContinueKey("Drink healing potion? (y/n): ");
+                    continueKey = getContinueKey("Drink healing potion? (Y/n): ");
                     if (continueKey == 'y')
                     {
                         std::cout << player.getName() << " drank the " << lowercase(player.getPotion().name) << " potion!" << std::endl;
@@ -437,7 +438,7 @@ void Game::performPlayerMove(){
     while (chosenMoveIndex < 0);
     WeaponMove chosenMove = player.getWeapon().getMoves().at(chosenMoveIndex);
     // Confirm weapon move
-    continueKey = getContinueKey("Use " + chosenMove.getName() + "? (y/n): ");
+    continueKey = getContinueKey("Use " + chosenMove.getName() + "? (Y/n): ");
     if (continueKey == 'y')
     {
         std::cout << player.getName() << " performed: " << chosenMove.getName() << "!" << std::endl;
@@ -467,6 +468,7 @@ void Game::performEnemyMove(){
     
     // Display damage taken
     std::cout << "\n" << enemy.getName() << " dealt " << chosenMoveDamage << (enemy.getWeapon().getDamageType() == magic ? " magic" : "") << " dmg" << std::endl;
+    getSmartInput("Continue…");
 }
 void Game::determineWhoGoesFirst(){
     if (player.getDexterity() > enemy.getDexterity())

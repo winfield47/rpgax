@@ -21,7 +21,7 @@ enum OptionSelectHUD
 void clearScreen();
 
 // User Input
-char getContinueKey(const std::string& = "Continue? (y/n): ");
+char getContinueKey(const std::string& = "Continue? (Y/n): ");
 std::string getLineFromPrompt(const std::string&);
 
 // String Manipulation

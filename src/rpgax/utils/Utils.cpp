@@ -29,38 +29,25 @@ void clearScreen(){
 
 // USER INPUT
 char getContinueKey(const std::string &prompt){
-    char input;
-    bool good;
-    
-    do {
-        std::cout << prompt;
-        std::cin >> input;
-        
-        if (std::cin)
+    std::string input;
+    while (true)
+    {
+        input = lowercase(getFirstWord(getLineFromPrompt(prompt)));
+        if (input == "y" || input == "")
         {
-            if (input == 'y' || input == 'n' || input == 'Y' || input == 'N')
-            {
-                good = true;
-            }
-            else
-            {
-                good = false;
-                std::cout << "Please use 'y' or 'n' to answer." << std::endl;
-            }
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << std::endl;
+            return 'y';
+        }
+        else if (input == "n")
+        {
+            std::cout << std::endl;
+            return 'n';
         }
         else
         {
-            good = false;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "That doesn't make sense!" << std::endl;
+            std::cout << "Please use 'y' or 'n' to answer." << std::endl;
         }
-    } while (!good);
-    
-    std::cout << std::endl;
-    return input;
+    }
 }
 std::string getLineFromPrompt(const std::string &prompt){
     std::string line;
@@ -123,13 +110,25 @@ std::string capitalize(std::string str){
 }
 std::string getFirstWord(std::string str){
     std::string returnString = "";
+    bool isPastBeginningWhiteSpace = false;
     for (char c: str)
     {
-        if (c == ' ')
+        if (!isPastBeginningWhiteSpace)
         {
-            break;
+            if (c != ' ')
+            {
+                isPastBeginningWhiteSpace = true;
+                returnString += c;
+            }
         }
-        returnString += c;
+        else
+        {
+            if (c == ' ')
+            {
+                break;
+            }
+            returnString += c;
+        }
     }
     return returnString;
 }
