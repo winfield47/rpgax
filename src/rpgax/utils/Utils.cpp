@@ -95,7 +95,7 @@ char uppercase(char c){
     }
     return upperChar;
 }
-std::string uppercase(std::string str){
+std::string uppercase(const std::string &str){
     std::string upperStr = "";
     for (char c: str)
     {
@@ -104,11 +104,12 @@ std::string uppercase(std::string str){
     
     return upperStr;
 }
-std::string capitalize(std::string str){
-    str[0] = uppercase(str[0]);
+std::string capitalize(const std::string &str){
+    std::string temp = str;
+    temp[0] = uppercase(str[0]);
     return str;
 }
-std::string getFirstWord(std::string str){
+std::string getFirstWord(const std::string &str){
     std::string returnString = "";
     bool isPastBeginningWhiteSpace = false;
     for (char c: str)
@@ -152,4 +153,37 @@ bool isSubset(const std::string &stringInQuestion, const std::string &superStrin
     }
     
     return true;
+}
+bool isInt(const std::string &str){
+    bool isInt = false;
+    if (str[0] == '-' || (str[0] >= '0' && str[0] <= '9'))
+    {
+        isInt = true;
+    }
+    else
+    {
+        return false;
+    }
+    for (size_t i = 1; i < str.length(); i++)
+    {
+        if (str[i] >= '0' && str[i] <= '9')
+        {
+            isInt = true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    return isInt;
+}
+int charToInt(const char &c){
+    if (c >= '0' && c <= '9')
+    {
+        return c - '0';
+    }
+    else
+    {
+        return -1;
+    }
 }

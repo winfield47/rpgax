@@ -28,9 +28,11 @@ std::string getLineFromPrompt(const std::string&);
 char lowercase(const char);
 std::string lowercase(const std::string&);
 char uppercase(char);
-std::string uppercase(std::string);
-std::string capitalize(std::string);
-std::string getFirstWord(std::string);
+std::string uppercase(const std::string&);
+std::string capitalize(const std::string&);
+std::string getFirstWord(const std::string&);
 bool isSubset(const std::string&, const std::string&);
+bool isInt(const std::string&);
+int charToInt(const char&);
 
 #endif /* Utils_hpp */

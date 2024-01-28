@@ -403,10 +403,19 @@ void Game::performPlayerMove(){
         getSmartInput("Select a move from <" + player.getWeapon().getName() + ">: ");
         for (short i = 0; i < player.getWeapon().getMoves().size(); i++)
         {
+            // Find/assume which move the player selected
             if (isSubset(input, lowercase(player.getWeapon().getMoves().at(i).getName())))
             {
                 chosenMoveIndex = i;
                 break;
+            }
+            else if (isInt(input))
+            {
+                if (charToInt(input[0]) == i + 1)
+                {
+                    chosenMoveIndex = i;
+                    break;
+                }
             }
         }
         if (chosenMoveIndex < 0)
@@ -434,25 +443,29 @@ void Game::performPlayerMove(){
             }
             getSmartInput("Continue…");
         }
+        if (chosenMoveIndex >= 0)
+        {
+            WeaponMove chosenMove = player.getWeapon().getMoves().at(chosenMoveIndex);
+            // Confirm weapon move
+            continueKey = getContinueKey("Use " + chosenMove.getName() + "? (Y/n): ");
+            if (continueKey == 'y')
+            {
+                std::cout << player.getName() << " performed: " << chosenMove.getName() << "!" << std::endl;
+                std::cout << player.getName() << " dealt " << player.getWeapon().getDamage(chosenMove) << ((player.getWeapon().getDamageType() == magic) ? " magic" : "") << " dmg" << std::endl;
+                if (chosenMove.getDamagePercentage() != 0)
+                {
+                    enemy.takeDamage(player.getWeapon().getDamage(chosenMove));
+                }
+                getSmartInput("Continue...");
+            }
+            else
+            {
+                // PLAYER DID NOT WANT TO USE THAT MOVE
+                chosenMoveIndex = -1;
+            }
+        }
     }
     while (chosenMoveIndex < 0);
-    WeaponMove chosenMove = player.getWeapon().getMoves().at(chosenMoveIndex);
-    // Confirm weapon move
-    continueKey = getContinueKey("Use " + chosenMove.getName() + "? (Y/n): ");
-    if (continueKey == 'y')
-    {
-        std::cout << player.getName() << " performed: " << chosenMove.getName() << "!" << std::endl;
-        std::cout << player.getName() << " dealt " << player.getWeapon().getDamage(chosenMove) << ((player.getWeapon().getDamageType() == magic) ? " magic" : "") << " dmg" << std::endl;
-        if (chosenMove.getDamagePercentage() != 0)
-        {
-            enemy.takeDamage(player.getWeapon().getDamage(chosenMove));
-        }
-        getSmartInput("Continue...");
-    }
-    else
-    {
-        // PLAYER DID NOT WANT TO USE THAT MOVE
-    }
 }
 void Game::performEnemyMove(){
     
