@@ -22,7 +22,8 @@ public:
     
     // Constructors
     Game();
-    Game(Player, Enemy = Enemy(static_cast<EnemyType>(0)));
+    Game(const Player&);
+    Game(const Player&, const Enemy&);
     
     // User Input
     void getSmartInput(const std::string&);

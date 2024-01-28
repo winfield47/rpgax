@@ -21,7 +21,11 @@ Game::Game(){
     createNewPlayer();
     createNewEnemy();
 }
-Game::Game(Player player, Enemy enemy){
+Game::Game(const Player &player){
+    this->player = player;
+    createNewEnemy();
+}
+Game::Game(const Player &player, const Enemy &enemy){
     this->player = player;
     this->enemy = enemy;
 }
@@ -505,5 +509,5 @@ void Game::determineWhoGoesFirst(){
     }
 }
 void Game::createNewEnemy(){
-    enemy = Enemy(static_cast<EnemyType>(rand() % (floor + 1 < TOTAL_ENEMY_TYPES ? floor : TOTAL_ENEMY_TYPES)), floor);
+    enemy = Enemy(static_cast<EnemyType>(rand() % ((floor + 1 < TOTAL_ENEMY_TYPES ? floor : TOTAL_ENEMY_TYPES) + 1)), floor);
 }

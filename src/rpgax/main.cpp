@@ -15,7 +15,7 @@ int main(){
     {
         clearScreen();
         mainLoop();
-        continueKey = getContinueKey("\nPlay again? (y/n): ");
+        continueKey = getContinueKey("\nPlay again? (Y/n): ");
     }
     return 0;
 }

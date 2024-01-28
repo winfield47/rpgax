@@ -46,9 +46,9 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 description = "A dark elf with magical powers, she has a funny hat!";
                 weapon = Weapon(magicstaff, floorLevel);
                 strength = 63;
-                dexterity = 69;
+                dexterity = 67;
                 intelligence = 70;
-                faith = 68;
+                faith = 65;
                 armor = 0;
                 resistance = 1;
             }
@@ -79,6 +79,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             resistance = 0;
             break;
         default:
+            variance = 0;
             asciiArt = "\\ø/";
             name = "Enemy";
             description = "A lowly enemy… nothing but a foot soldier.";
@@ -94,6 +95,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
     varyStats();
     
     hpMax = hp = 20 + ((floorLevel + 1) * 1.5) + (strength - 70) * 2;
+    if (hpMax <= 0) { hpMax = hp = 1; }
     
     weapon.setEnemyIntelligenceModifier(intelligence);
     weapon.setEnemyFaithModifier(faith);
