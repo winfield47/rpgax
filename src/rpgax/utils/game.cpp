@@ -369,7 +369,7 @@ void Game::printWithFormattingHUD(const std::string &leftString, const std::stri
     }
     if (!enemyIsPrinted)
     {
-        if (isSubset("is slower than you", rightString))
+        if (isSubset("is than you!", rightString))
         {
             pause();
             printCharByChar(rightString, slow);
