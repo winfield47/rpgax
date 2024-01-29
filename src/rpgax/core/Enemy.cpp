@@ -19,7 +19,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             name = "Pigeon";
             description = "A giant, fat pigeon… it can't even fly!";
             weapon = Weapon(unarmed);
-            strength = 66;
+            strength = 62;
             dexterity = 50;
             intelligence = 50;
             faith = 50;
@@ -31,7 +31,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             name = "Goblin";
             description = "A goblin trying to rob you of your life!";
             weapon = Weapon(dagger, floorLevel);
-            strength = 62;
+            strength = 63;
             dexterity = 74;
             intelligence = 65;
             faith = 70;
@@ -43,7 +43,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             {
                 asciiArt = "}0{";
                 name = "Drow Mage";
-                description = "A dark elf with magical powers, she has a funny hat!";
+                description = "A dark elf mage with a funny hat!";
                 weapon = Weapon(magicstaff, floorLevel);
                 strength = 63;
                 dexterity = 67;
@@ -56,7 +56,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             {
                 asciiArt = "^0^";
                 name = "Drow Ranger";
-                description = "A dark elf with an arrow nocked, aiming at your face!";
+                description = "A dark elf woodsman with a feather hat!";
                 weapon = Weapon(bow, floorLevel);
                 strength = 64;
                 dexterity = 70;

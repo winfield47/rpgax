@@ -8,7 +8,9 @@
 #include "Utils.hpp"
 #include <iostream>
 #include <iomanip>
-#include <stdlib.h>
+#include <thread>
+#include <chrono>
+#include <stdio.h>
 
 // DISPLAY
 void clearScreen(){
@@ -25,6 +27,21 @@ void clearScreen(){
             std::cout << std::endl;
         }
     }
+}
+unsigned int printCharByChar(const std::string &str, const PrintSpeed milliseconds){
+    std::cout << std::flush;
+    short i = 0;
+    while (str[i] != '\0')
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+        std::cout << str[i] << std::flush;
+        i++;
+    }
+    return i;
+}
+void pause(const double seconds){
+    std::cout << std::flush;
+    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<unsigned int>(1000 * seconds)));
 }
 
 // USER INPUT
@@ -51,7 +68,7 @@ char getContinueKey(const std::string &prompt){
 }
 std::string getLineFromPrompt(const std::string &prompt){
     std::string line;
-    std::cout << prompt;
+    printCharByChar(prompt, fast);
     getline(std::cin, line);
     if (std::cin.bad())
     {

@@ -19,6 +19,10 @@ public:
     static Enemy enemy;
     static short floor;
     static bool playerGoesFirst;
+    static bool playerIsPrinted;
+    static bool enemyIsPrinted;
+    static PrintSpeed playerPrintSpeed;
+    static PrintSpeed universalPrintSpeed;
     
     // Constructors
     Game();
@@ -26,9 +30,9 @@ public:
     Game(const Player&, const Enemy&);
     
     // User Input
-    void getSmartInput(const std::string&);
+    void getSmartInput(const std::string& = "Continue...");
     void createNewPlayer();
-    Origin getOriginFromPrompt(std::string = "Inspect Origin: ");
+    Origin getOriginFromPrompt(std::string = "Choose an origin to inspect: ");
     
     // Property-to-String Converters
     std::string getStringHpAmrRes(const Character&);
@@ -36,6 +40,7 @@ public:
     std::string getStringForAttributeEnum(const int);
     std::string getStringForAmountOfChecks(const int);
     std::string getStringForWeaponDamageType(const int, const bool = false);
+    std::string getStringForOrigin(const Origin);
     
     // Display
     void displayHUD(const Player&);
@@ -48,6 +53,7 @@ public:
     void performPlayerMove();
     void performEnemyMove();
     void determineWhoGoesFirst();
+    void enemyDeathCleanUp();
     void createNewEnemy();
 };
 

@@ -17,8 +17,15 @@ enum OptionSelectHUD
     addPipes, addVersus, addNothing
 };
 
+enum PrintSpeed
+{
+    instant = 0, fast = 25, normal = 50, slow = 75
+};
+
 // Display
 void clearScreen();
+unsigned int printCharByChar(const std::string&, const PrintSpeed milliseconds = normal);
+void pause(const double seconds = 0.5);
 
 // User Input
 char getContinueKey(const std::string& = "Continue? (Y/n): ");
