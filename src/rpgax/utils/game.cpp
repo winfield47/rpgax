@@ -292,6 +292,8 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
         // Display Floor
         printCharByChar("Floor    : ", universalPrintSpeed);
         printCharByChar(std::to_string(floor), universalPrintSpeed);
+        // Randomize Enemy Attack
+        
     }
     else
     {
@@ -349,11 +351,11 @@ void Game::printWithFormattingHUD(const std::string &leftString, const std::stri
     std::cout << std::setw(TOTAL_WIDTH - lengthOfLeftString) << std::left << "";
     switch (optionSelectHUD) {
         case addPipes:
-            printCharByChar(" |        | ", universalPrintSpeed);
+            printCharByChar(" |        | ", playerPrintSpeed);
             break;
             
         case addVersus:
-            printCharByChar(" | VERSUS | ", universalPrintSpeed);
+            printCharByChar(" | VERSUS | ", playerPrintSpeed);
             break;
             
         default:
@@ -421,7 +423,7 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
         // Enemy's NEXT INTENT MOVE display
         if (i == 0)
         {
-            WeaponMove chosenMove = enemy.getWeapon().getMoves().at(enemy.getMoveChooser());
+            WeaponMove chosenMove = this->enemy.getChosenMove();
             int chosenMoveDamage = enemy.getWeapon().getDamage(chosenMove);
             rightString = " " + chosenMove.getName() + ", ";
             if (chosenMoveDamage != 0)
@@ -569,7 +571,8 @@ void Game::performEnemyMove(){
     displayHUD(player, enemy);
     
     // What the enemy move choice is
-    WeaponMove chosenMove = enemy.getWeapon().getMoves().at(enemy.getMoveChooser());
+    WeaponMove chosenMove = enemy.getChosenMove();
+    enemy.chooseMove();
     int chosenMoveDamage = enemy.getWeapon().getDamage(chosenMove);
     
     // Deal damage
@@ -593,7 +596,7 @@ void Game::determineWhoGoesFirst(){
     }
     else
     {
-        if (enemy.getMoveChooser() % 2 == 0)
+        if ((enemy.getChosenMove().getAmountOfChecks() + enemy.getHP() + player.getSouls() + floor) % 2 == 0)
         {
             playerGoesFirst = false;
         }
@@ -616,7 +619,7 @@ void Game::enemyDeathCleanUp(){
     getSmartInput();
 }
 void Game::createNewEnemy(){
-    EnemyType newEnemyType = static_cast<EnemyType>(rand() % (((floor + 1) < TOTAL_ENEMY_TYPES ? floor : TOTAL_ENEMY_TYPES) + 1));
+    EnemyType newEnemyType = static_cast<EnemyType>(rand() % ((floor < TOTAL_ENEMY_TYPES ? floor : TOTAL_ENEMY_TYPES) + 1));
     enemy = Enemy(newEnemyType, floor);
     enemyIsPrinted = false;
     if (playerPrintSpeed == instant)

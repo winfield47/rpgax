@@ -2,7 +2,7 @@
 
 # Compile C++ files
 cd src/rpgax/
-g++ -o ../rpgax.out -std=c++11 core/weaponmove.cpp core/weapon.cpp core/character.cpp core/player.cpp core/enemy.cpp utils/utils.cpp utils/game.cpp utils/mainloop.cpp main.cpp
+g++ -o ../rpgax.out -std=c++11 core/weaponmove.cpp core/weapon.cpp core/character.cpp core/player.cpp core/enemy.cpp utils/utils.cpp utils/game.cpp main.cpp
 cd ../../
 
 # Check if compilation was successful

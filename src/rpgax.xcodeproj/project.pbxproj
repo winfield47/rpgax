@@ -14,7 +14,6 @@
 		F34CD4492B57337B000E64A0 /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F34CD4472B57337B000E64A0 /* utils.cpp */; };
 		F394B6E62B607A13006CF334 /* weaponmove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F394B6E42B607A13006CF334 /* weaponmove.cpp */; };
 		F394B6E92B633544006CF334 /* enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F394B6E72B633544006CF334 /* enemy.cpp */; };
-		F394B6EC2B637372006CF334 /* mainloop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F394B6EA2B637372006CF334 /* mainloop.cpp */; };
 		F3BB80842B6526610003E6F9 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3BB80822B6526610003E6F9 /* game.cpp */; };
 /* End PBXBuildFile section */
 
@@ -46,8 +45,6 @@
 		F394B6E52B607A13006CF334 /* weaponmove.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = weaponmove.h; sourceTree = "<group>"; };
 		F394B6E72B633544006CF334 /* enemy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = enemy.cpp; sourceTree = "<group>"; };
 		F394B6E82B633544006CF334 /* enemy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = enemy.h; sourceTree = "<group>"; };
-		F394B6EA2B637372006CF334 /* mainloop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mainloop.cpp; sourceTree = "<group>"; };
-		F394B6EB2B637372006CF334 /* mainloop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mainloop.h; sourceTree = "<group>"; };
 		F3BB80822B6526610003E6F9 /* game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
 		F3BB80832B6526610003E6F9 /* game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,8 +112,6 @@
 				F34CD4472B57337B000E64A0 /* utils.cpp */,
 				F3BB80832B6526610003E6F9 /* game.h */,
 				F3BB80822B6526610003E6F9 /* game.cpp */,
-				F394B6EB2B637372006CF334 /* mainloop.h */,
-				F394B6EA2B637372006CF334 /* mainloop.cpp */,
 			);
 			name = utils;
 			path = rpgax/utils;
@@ -184,7 +179,6 @@
 				F31BCCFB2B579109001BD9FF /* weapon.cpp in Sources */,
 				F394B6E92B633544006CF334 /* enemy.cpp in Sources */,
 				F34CD4492B57337B000E64A0 /* utils.cpp in Sources */,
-				F394B6EC2B637372006CF334 /* mainloop.cpp in Sources */,
 				F31BCCFA2B579109001BD9FF /* character.cpp in Sources */,
 				F394B6E62B607A13006CF334 /* weaponmove.cpp in Sources */,
 				F31BCCFE2B57A8AF001BD9FF /* player.cpp in Sources */,

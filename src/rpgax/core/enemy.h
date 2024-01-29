@@ -23,7 +23,8 @@ private:
     std::string name;
     int floorLevel;
     int variance;
-    size_t moveChooser;
+    size_t chosenMoveIndex;
+    WeaponMove chosenMove;
 public:
     // Constructors
     Enemy();
@@ -31,8 +32,11 @@ public:
     void varyStats();
     
     // Accessors
-    size_t getMoveChooser() const;
     std::string getName() const;
+    WeaponMove getChosenMove();
+    
+    // Methods
+    void chooseMove();
 };
 
 #endif /* Enemy_hpp */

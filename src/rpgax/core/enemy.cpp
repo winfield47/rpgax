@@ -99,7 +99,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
     
     weapon.setEnemyIntelligenceModifier(intelligence);
     weapon.setEnemyFaithModifier(faith);
-    moveChooser = rand() % weapon.getMoves().size();
+    chooseMove();
 }
 void Enemy::varyStats(){
     strength += (rand() % variance / 2) - (rand() % variance / 2);
@@ -114,9 +114,15 @@ void Enemy::varyStats(){
 } // This helps the constructor look prettier
 
 // Accessors
-size_t Enemy::getMoveChooser() const{
-    return moveChooser;
-}
 std::string Enemy::getName() const{
     return name;
+}
+WeaponMove Enemy::getChosenMove(){
+    chosenMove = weapon.getMoves().at(chosenMoveIndex);
+    return chosenMove;
+}
+
+// Methods
+void Enemy::chooseMove(){
+    chosenMoveIndex = rand() % weapon.getMoves().size();
 }
