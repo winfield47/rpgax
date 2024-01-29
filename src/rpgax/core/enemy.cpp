@@ -5,7 +5,7 @@
 //  Created by Kyle Winfield Burnham on 1/25/24.
 //
 
-#include "Enemy.hpp"
+#include "enemy.h"
 
 // Constructors
 Enemy::Enemy(){}

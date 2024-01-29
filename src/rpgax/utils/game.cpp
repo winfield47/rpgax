@@ -5,7 +5,7 @@
 //  Created by Kyle Winfield Burnham on 1/27/24.
 //
 
-#include "Game.hpp"
+#include "game.h"
 #include <iostream>
 #include <iomanip>
 
@@ -474,8 +474,8 @@ void Game::engageInCombat(){
         }
         if (player.getHP() <= 0)
         {
-            printCharByChar("\n\nYou died…\n", slow);
-            getSmartInput();
+            printCharByChar("\n\nYou died...", slow);
+            getSmartInput("");
         }
     }
 }

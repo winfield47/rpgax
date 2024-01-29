@@ -5,12 +5,12 @@
 //  Created by Kyle Winfield Burnham on 1/16/24.
 //
 
-#ifndef Weapon_hpp
-#define Weapon_hpp
+#ifndef weapon_h
+#define weapon_h
 
 #include <string>
 #include <vector>
-#include "WeaponMove.hpp"
+#include "weaponmove.h"
 
 
 

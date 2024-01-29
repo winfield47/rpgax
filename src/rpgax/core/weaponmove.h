@@ -5,8 +5,8 @@
 //  Created by Kyle Winfield Burnham on 1/23/24.
 //
 
-#ifndef WeaponMove_hpp
-#define WeaponMove_hpp
+#ifndef weaponmove_h
+#define weaponmove_h
 
 #include <string>
 

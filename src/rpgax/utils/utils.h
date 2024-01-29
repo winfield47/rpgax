@@ -5,11 +5,11 @@
 //  Created by Kyle Winfield Burnham on 1/16/24.
 //
 
-#ifndef Utils_hpp
-#define Utils_hpp
+#ifndef utils_h
+#define utils_h
 
-#include "../core/Player.hpp"
-#include "../core/Enemy.hpp"
+#include "../core/player.h"
+#include "../core/enemy.h"
 #include <string>
 
 enum OptionSelectHUD

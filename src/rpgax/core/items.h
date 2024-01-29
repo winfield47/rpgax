@@ -5,8 +5,8 @@
 //  Created by Kyle Winfield Burnham on 1/19/24.
 //
 
-#ifndef Items_hpp
-#define Items_hpp
+#ifndef items_h
+#define items_h
 
 #include <string>
 

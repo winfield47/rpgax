@@ -5,10 +5,10 @@
 //  Created by Kyle Winfield Burnham on 1/25/24.
 //
 
-#ifndef Enemy_hpp
-#define Enemy_hpp
+#ifndef enemy_h
+#define enemy_h
 
-#include "Character.hpp"
+#include "character.h"
 
 const int TOTAL_ENEMY_TYPES = 2;
 

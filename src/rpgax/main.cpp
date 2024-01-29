@@ -5,7 +5,7 @@
 //  Created by Kyle Winfield Burnham on 1/11/24.
 //
 
-#include "utils/MainLoop.hpp"
+#include "utils/mainloop.h"
 using namespace std;
 
 int main(){
@@ -14,8 +14,17 @@ int main(){
     while (continueKey == 'y')
     {
         clearScreen();
-        mainLoop();
+        // Initialize the Game
+        // Game rpgax = Game(Player(brute, "Winfield"));
+        Game rpgax = Game();
+        
+        // Fight Goblins Until Death (reverse pyramid development)
+        while (rpgax.player.getHP() > 0)
+        {
+            rpgax.engageInCombat();
+        }
         continueKey = getContinueKey("\nPlay again? (Y/n): ");
     }
+    clearScreen();
     return 0;
 }

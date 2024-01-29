@@ -5,7 +5,7 @@
 //  Created by Kyle Winfield Burnham on 1/16/24.
 //
 
-#include "Character.hpp"
+#include "character.h"
 
 // Constructors
 Character::Character(){};

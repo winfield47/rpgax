@@ -5,10 +5,10 @@
 //  Created by Kyle Winfield Burnham on 1/16/24.
 //
 
-#ifndef Character_hpp
-#define Character_hpp
+#ifndef character_h
+#define character_h
 
-#include "Weapon.hpp"
+#include "weapon.h"
 
 class Character
 {

@@ -5,7 +5,7 @@
 //  Created by Kyle Winfield Burnham on 1/16/24.
 //
 
-#include "Utils.hpp"
+#include "utils.h"
 #include <iostream>
 #include <iomanip>
 #include <thread>

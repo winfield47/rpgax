@@ -5,7 +5,7 @@
 //  Created by Kyle Winfield Burnham on 1/16/24.
 //
 
-#include "Weapon.hpp"
+#include "weapon.h"
 
 int Weapon::playerIntelligenceModifier = 0;
 int Weapon::playerFaithModifier = 0;

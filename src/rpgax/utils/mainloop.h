@@ -5,10 +5,10 @@
 //  Created by Kyle Winfield Burnham on 1/25/24.
 //
 
-#ifndef MainLoop_hpp
-#define MainLoop_hpp
+#ifndef mainloop_h
+#define mainloop_h
 
-#include "Game.hpp"
+#include "game.h"
 
 void mainLoop();
 

@@ -5,11 +5,11 @@
 //  Created by Kyle Winfield Burnham on 1/16/24.
 //
 
-#ifndef Player_hpp
-#define Player_hpp
+#ifndef player_h
+#define player_h
 
-#include "Character.hpp"
-#include "Items.hpp"
+#include "character.h"
+#include "items.h"
 
 enum Origin
 {

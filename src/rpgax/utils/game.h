@@ -5,10 +5,10 @@
 //  Created by Kyle Winfield Burnham on 1/27/24.
 //
 
-#ifndef Game_hpp
-#define Game_hpp
+#ifndef game_h
+#define game_h
 
-#include "Utils.hpp"
+#include "utils.h"
 
 class Game
 {

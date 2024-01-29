@@ -5,7 +5,7 @@
 //  Created by Kyle Winfield Burnham on 1/23/24.
 //
 
-#include "WeaponMove.hpp"
+#include "weaponmove.h"
 
 // Constructors
 WeaponMove::WeaponMove(){}
