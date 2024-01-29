@@ -292,8 +292,9 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
         // Display Floor
         printCharByChar("Floor    : ", universalPrintSpeed);
         printCharByChar(std::to_string(floor), universalPrintSpeed);
-        // Randomize Enemy Attack
         
+        // Display Souls
+        printCharByChar("\nSouls    : " + std::to_string(player.getSouls()), playerPrintSpeed);
     }
     else
     {
@@ -305,12 +306,15 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
         pause();
         printCharByChar(std::to_string(floor));
         pause();
+        
+        // Display Souls
+        printCharByChar("\nSouls    : ");
+        pause();
+        printCharByChar(std::to_string(player.getSouls()));
+        pause();
     }
-    
-    // Display Souls
-    printCharByChar("\nSouls    : " + std::to_string(player.getSouls()) + "\n", playerPrintSpeed);
     // Display Potion
-    printCharByChar("<Potion> : " + player.getPotion().name + "\n", playerPrintSpeed);
+    printCharByChar("\n<Potion> : " + player.getPotion().name + "\n", playerPrintSpeed);
     
     // Spacing
     std::cout << std::endl;
@@ -545,8 +549,6 @@ void Game::performPlayerMove(){
             continueKey = getContinueKey("Use " + chosenMove.getName() + "? (Y/n): ");
             if (continueKey == 'y')
             {
-                printCharByChar(player.getName() + " performed: " + chosenMove.getName() + "!\n");
-                pause();
                 printCharByChar(player.getName() + " dealt " + std::to_string(player.getWeapon().getDamage(chosenMove)) + ((player.getWeapon().getDamageType() == magic) ? " magic" : "") + " dmg");
                 pause();
                 std::cout << std::endl;
@@ -609,13 +611,24 @@ void Game::determineWhoGoesFirst(){
 void Game::enemyDeathCleanUp(){
     pause();
     displayHUD(player, enemy);
-    printCharByChar("\nYou defeated " + enemy.getName() + "...");
+    printCharByChar("\nYou defeated " + enemy.getName() + ".");
     pause();
-    printCharByChar(" but here comes another enemy!");
+    int soulsHarvested = enemy.retrieveSoulsHeld();
+    printCharByChar("\nYou harvested " + std::to_string(enemy.retrieveSoulsHeld()) + " soul");
+    if (soulsHarvested != 1)
+    {
+        printCharByChar("s");
+    }
+    printCharByChar("!");
+    player.addSouls(soulsHarvested);
+    pause();
+    printCharByChar("\nIn the next floor you see... ");
+    pause();
     floor++;
     createNewEnemy();
+    printCharByChar(enemy.getName() + "...");
     pause();
-    std::cout << std::endl;
+    std::cout << std::endl << std::endl;
     getSmartInput();
 }
 void Game::createNewEnemy(){

@@ -10,6 +10,7 @@
 // Constructors
 Enemy::Enemy(){}
 Enemy::Enemy(EnemyType type, int floorLevel){
+    this->type = type;
     this->floorLevel = floorLevel;
     variance = 3;
     switch (type)
@@ -117,9 +118,23 @@ void Enemy::varyStats(){
 std::string Enemy::getName() const{
     return name;
 }
+EnemyType Enemy::getType() const{
+    return type;
+}
 WeaponMove Enemy::getChosenMove(){
     chosenMove = weapon.getMoves().at(chosenMoveIndex);
     return chosenMove;
+}
+int Enemy::retrieveSoulsHeld(){
+    int soulsRetrieved = (type * 2) + floorLevel;
+    if (soulsRetrieved == 0)
+    {
+        return 1;
+    }
+    else
+    {
+        return soulsRetrieved;
+    }
 }
 
 // Methods

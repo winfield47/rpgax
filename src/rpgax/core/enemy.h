@@ -21,6 +21,7 @@ class Enemy : public Character
 private:
     // Properties
     std::string name;
+    EnemyType type;
     int floorLevel;
     int variance;
     size_t chosenMoveIndex;
@@ -33,7 +34,9 @@ public:
     
     // Accessors
     std::string getName() const;
+    EnemyType getType() const;
     WeaponMove getChosenMove();
+    int retrieveSoulsHeld();
     
     // Methods
     void chooseMove();
