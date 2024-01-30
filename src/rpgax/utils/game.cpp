@@ -116,7 +116,7 @@ void Game::createNewPlayer(){
                 break;
             default:
             case nomad:
-                originDescription = "A nomad… you've completely forgotten who you were.";
+                originDescription = "A nomad… an exiled wanderer from a forgotten land.";
                 break;
         }
         Player originCharacter = Player(inputOrigin, originDescription);
@@ -127,7 +127,14 @@ void Game::createNewPlayer(){
         hasDisplayedOriginsOnce = true;
     }
     while (continueKey == 'n');
-    inputName = getLineFromPrompt("Name: ");
+    pause();
+    printCharByChar("\nYou remember that you were a " + lowercase(getStringForOrigin(inputOrigin)) + "...", slow);
+    pause();
+    printCharByChar("\nThen suddenly", fast);
+    pause();
+    printCharByChar(", a name flutters past your thoughts...", slow);
+    pause();
+    inputName = getLineFromPrompt("\n\nWhat was your name? ");
     
     clearScreen();
     
@@ -258,6 +265,60 @@ std::string Game::getStringForOrigin(const Origin origin){
 
 // Display
 void Game::printIntroductionParagraph(PrintSpeed printSpeed){
+    std::string asciiSkeleton = R"(
+
+    ,__
+   (o o}
+ ,--`Y'--._
+/^':   ;'`~^
+   / _ \
+  \.' `|/
+  `z' `k'
+
+)";
+    std::string asciiKnight = R"(
+
+  / \
+  | |
+  |.|
+  |.|
+  |:|      __
+,_|:|_,   /  )
+  (Oo    / _I_
+   +\ \  || __|
+      \ \||___|
+        \ /.:.\-\
+         |.:. /-----\
+         |___|::oOo::|
+         /   |:<_T_>:|
+        |_____\ ::: /
+         | |  \ \:/
+         | |   | |
+         \ /   | \___
+         / |   \_____\
+         `-'
+
+)";
+    std::string asciiMushrooms = R"(
+
+           ____
+       _.-'78o `"`--._
+   ,o888o.  .o888o,   ''-.
+ ,88888P  `78888P..______.]
+/_..__..----""        __.'
+`-._       /""| _..-''
+    "`-----\  `\
+            |   ;.-""--..
+            | ,8o.  o88. `.
+            `;888P  `788P  :
+      .o""-.|`-._         ./
+     J88 _.-/    ";"-P----'
+     `--'\`|     /  /
+         | /     |  |
+         \|     /   |akn
+          `-----`---'
+
+)";
     std::string asciiSouls = R"(
           ,
         .--')
@@ -331,93 +392,119 @@ void Game::printIntroductionParagraph(PrintSpeed printSpeed){
              _/;--._, >        |   --.__/ `""""""`
            (((-'  __//`'-......-;\      )
                 (((-'       __//  '--. /
-        jgs               (((-'    __//
-                                 (((-'
-
+                          (((-'    __//
+                                 (((-' jgs
 
 )";
     clearScreen();
     if (printSpeed != instant)
     {
-        printCharByChar("Welcome to rpgax!", slow);
+        // GAME RULES
         pause();
-        printCharByChar(" A text based adventure.", slow);
+        printCharByChar("Welcome to rpgax!");
         pause();
-        printCharByChar(asciiKeyboard, lightning);
+        printCharByChar("\n-An ASCII RPG", slow);
         pause();
-        printCharByChar("When playing this game, please don't touch the keyboard while text is typing...");
+        printCharByChar(asciiCandle, lightning);
         pause();
-        printCharByChar("\n...the text gets really messed up if you do... [o_o]", slow);
+        printCharByChar("When playing this game, please don't touch the keyboard while text is typing.");
+        // pause();
+        // printCharByChar(asciiKeyboard, lightning);
+        pause();
+        printCharByChar("\nThe text gets really messy if you do... [o_o]", slow);
         pause(2);
         printCharByChar("\n\nAlright, now that you know the rules, it's time to enter world of ASCII...", fast);
         pause();
-        printCharByChar("\n\nPress enter to begin the game...");
+        printCharByChar(asciiKnight, lightning);
+        pause();
+        printCharByChar("Press enter to begin...", fast);
         getSmartInput("");
         clearScreen();
         pause(2);
+        
+        // STORY BEGINNING (rat)
         printCharByChar("A rat is scuttling around the depths of a dark dungeon,");
         pause();
         printCharByChar("\ndesperately looking for anything to eat.");
         pause();
         printCharByChar(asciiRat, lightning);
         pause();
-        printCharByChar("\n\nEventually, it finds something...");
+        printCharByChar("\nEventually, it finds something...");
         pause();
         printCharByChar("\nAn old dungeon cell with a ");
         pause();
         printCharByChar("lifeless body inside.", slow);
         pause();
-        printCharByChar("\nHowever, an EARTHQUAKE displaces a stone in the wall...", fast);
+        printCharByChar(asciiSkeleton, fast);
         pause(2);
+        printCharByChar("However",slow);
+        pause();
+        printCharByChar(", an EARTHQUAKE displaces a stone in the wall.", fast);
+        pause(1.5);
         printCharByChar("\nAnd the stone falls,");
         pause();
         printCharByChar(" killing the rat.");
-        pause();
-        printCharByChar("\n\nPress enter to continue...");
-        getSmartInput("");
-        clearScreen();
-        pause();
+        pause(1);
         printCharByChar(asciiRatDead, lightning);
         pause();
         printCharByChar("From within the dead rat", slow);
         pause();
-        printCharByChar(", a bunch of ", slow);
+        printCharByChar(", a bunch of", slow);
         pause();
+        printCharByChar(" ...");
         printCharByChar("souls", slow);
+        printCharByChar("...");
         pause();
-        printCharByChar(" rush into the rotted corpse...", slow);
+        printCharByChar(" rush into the rotted corpse.", slow);
         pause();
-        printCharByChar(asciiSouls, lightning);
-        pause();
-        printCharByChar("\n\nPress enter to continue...");
+        printCharByChar("\n\nContinue...");
         getSmartInput("");
         clearScreen();
         pause();
+        
+        // YOU WAKE UP
         printCharByChar("You wake up—", fast);
         pause();
         printCharByChar("GASPING", fast);
         printCharByChar(" for air!", slow);
         pause();
-        printCharByChar("\n\nContinue...");
-        getSmartInput("");
         clearScreen();
         pause();
         printCharByChar("You look around.", fast);
-        printCharByChar(" You don't remember falling asleep in this dungeon cell.");
-        pause(0.4);
+        pause();
+        printCharByChar(asciiMushrooms, lightning);
+        pause();
+        printCharByChar("These mushrooms growing out of a rat's corpse,");
+        pause();
+        printCharByChar("\nare the only thing notable in this chamber.");
+        pause();
+        printCharByChar("\nLooks like the rat died weeks ago...");
+        pause();
+        printCharByChar(" gross...", slow);
+        pause();
+        printCharByChar("\nYou don't remember falling asleep here...");
+        pause(1);
         printCharByChar("\nIn fact,", fast);
         pause(0.2);
-        printCharByChar(" you don't remember anything at all...", fast);
-        printCharByChar("\nIt feels like it's been days since you went to sleep...");
-        pause();
-        printCharByChar("\n\nor was it...", slow);
-        pause(0.2);
-        printCharByChar("\n\nyears...", slow);
+        printCharByChar(" you don't remember anything at all...", slow);
         pause();
         printCharByChar("\n\nContinue...");
         getSmartInput("");
         clearScreen();
+        
+        // HOW LONG HAS IT BEEN...
+        printCharByChar("It feels like you've been asleep for days...", fast);
         pause();
+        printCharByChar("\n\nor has it been...");
+        pause(1);
+        printCharByChar(" years...", slow);
+        pause(2);
+        printCharByChar("\n\nContinue...");
+        getSmartInput("");
+        clearScreen();
+        pause();
+        
+        // REMEMBERENCE
         printCharByChar("You look down at yourself.");
         pause();
         printCharByChar("\n\nYour flesh is rotting...", fast);
@@ -426,39 +513,45 @@ void Game::printIntroductionParagraph(PrintSpeed printSpeed){
         pause();
         printCharByChar("\n\nThese clothes seem familiar to you",slow);
         pause(2);
-        printCharByChar(",\nand an old memory washes over you in a blanket of warmth.", slow);
+        printCharByChar(",\nand an old memory washes over you in a wave of warmth.", slow);
         pause(3);
-        printCharByChar("\n\nBut it fades faster than a dream", slow);
+        printCharByChar("\nBut it fades as fast as a dream.", slow);
         pause(2);
-        printCharByChar(" as the smell of ", slow);
+        
+        // SMELLING SOULS
+        printCharByChar("\n\nThe smell of ", slow);
         pause();
+        printCharByChar("...");
         printCharByChar("souls", slow);
+        printCharByChar("...");
         pause();
         printCharByChar(" fills your mind.");
-        pause(0.8);
-        printCharByChar("\nYou can smell where they are.");
-        pause(0.6);
-        printCharByChar("\nThey're just up the stairs on the next floor.");
-        pause(0.5);
-        printCharByChar("\nYou can almost taste them.", fast);
-        pause(0.4);
-        printCharByChar("\nAll you'd have to do is take them.", fast);
-        pause(0.2);
-        printCharByChar("\n\n\nALL YOU'D HAVE TO DO IS KILL THEM.", fast);
-        pause(0.1);
+        pause(0.75);
+        printCharByChar("\n\nYou can smell where they are.");
+        pause();
+        printCharByChar("\n\nThey're just up the stairs on the next floor.");
+        pause(0.25);
+        printCharByChar("\n\nYou can almost taste them.", fast);
+        pause(0.25);
+        printCharByChar("\n\nAll you'd have to do is take them.", fast);
+        printCharByChar("\n\n\nALL YOU'D HAVE TO DO IS KILL THEM!!!", fast);
         clearScreen();
         printCharByChar("You try to shake the feeling...");
         pause(2);
         printCharByChar(" and think back to who you are...");
+        printCharByChar("\n\nContinue...");
+        getSmartInput("");
+        clearScreen();
         pause();
-        printCharByChar("\n\nWho were you before this?");
+        
+        // CHOOSE ORIGIN
+        printCharByChar("Who were you before this?");
         pause();
     }
     else
     {
-        printCharByChar("With rotted flesh and the smell of souls clouding your mind,\nyou try desperately to remember who you are...", fast);
-        pause();
-        printCharByChar("\n\nWho were you before this?", fast);
+        printCharByChar("With your flesh rotting and the smell of souls clouding your mind,", fast);
+        printCharByChar("\nyou try desperately to remember who you were...", fast);
         pause();
     }
 }
@@ -473,7 +566,17 @@ void Game::displayOrigin(const Player &originCharacter){
     pause();
     printCharByChar(originCharacter.getAsciiArt());
     pause();
-    printCharByChar("\n\nStarting Gear:", slow);
+    printCharByChar("\n\nStarting Stats/Gear:", slow);
+    pause();
+    printCharByChar("\n\n HP     : ", fast);
+    pause();
+    printCharByChar(std::to_string(originCharacter.getHP()) + "/" + std::to_string(originCharacter.getHPMax()));
+    pause();
+    printCharByChar("\n Weapon : ", fast);
+    pause();
+    printCharByChar(originCharacter.getWeapon().getName());
+    pause();
+    printCharByChar(" (" + std::to_string(originCharacter.getWeapon().getDamage()) + " " + ((originCharacter.getWeapon().getDamageType() == physical) ? "physical" : "magic") + " damage)");
     pause();
     printCharByChar("\n\n Souls  : ", fast);
     pause();
@@ -483,20 +586,7 @@ void Game::displayOrigin(const Player &originCharacter){
     pause();
     printCharByChar(originCharacter.getPotion().name);
     pause();
-    printCharByChar("\n\n HP: ", fast);
-    pause();
-    printCharByChar(std::to_string(originCharacter.getHP()));
-    pause();
-    printCharByChar("/", fast);
-    pause();
-    printCharByChar(std::to_string(originCharacter.getHPMax()));
-    pause();
-    printCharByChar("\n Weapon: ", fast);
-    pause();
-    printCharByChar(originCharacter.getWeapon().getName());
-    pause();
-    printCharByChar(" (" + std::to_string(originCharacter.getWeapon().getDamage()) + " " + ((originCharacter.getWeapon().getDamageType() == physical) ? "physical" : "magic") + " damage)\n");
-    pause();
+    std::cout << std::endl;
     if (originCharacter.getArmor() != 0)
     {
         printCharByChar(" Armor: ", fast);

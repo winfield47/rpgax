@@ -1,4 +1,4 @@
-# Text-based Adventure
+# An ASCII RPG
 
 Welcome to rpgax! This is a text-based, rogue-like, dungeon-crawler RPG or something…
 
