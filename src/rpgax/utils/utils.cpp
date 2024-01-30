@@ -52,17 +52,15 @@ char getContinueKey(const std::string &prompt){
         input = lowercase(getFirstWord(getLineFromPrompt(prompt)));
         if (input == "y" || input == "")
         {
-            std::cout << std::endl;
             return 'y';
         }
         else if (input == "n")
         {
-            std::cout << std::endl;
             return 'n';
         }
         else
         {
-            std::cout << "Please use 'y' or 'n' to answer." << std::endl;
+            printCharByChar("Please use 'y' or 'n' to answer.");
         }
     }
 }

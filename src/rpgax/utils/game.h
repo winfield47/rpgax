@@ -32,7 +32,7 @@ public:
     Game(const Player&, const Enemy&);
     
     // User Input
-    void getSmartInput(const std::string& = "Continue...");
+    void getSmartInput(const std::string& = "\nContinue...");
     void createNewPlayer();
     Origin getOriginFromPrompt(std::string = "Choose an origin to inspect: ");
     
@@ -45,10 +45,12 @@ public:
     std::string getStringForOrigin(const Origin);
     
     // Display
-    void displayHUD(const Player&);
+    void printIntroductionParagraph(PrintSpeed);
+    void displayOrigin(const Player&);
     void displayHUD(const Player&, const Enemy&);
     void printWithFormattingHUD(const std::string&, const std::string&, const OptionSelectHUD optionSelectHUD = addNothing);
     void printMovesWithFormattingHUD(const Weapon&, const Enemy&);
+    void printGameOver();
     
     // Combat
     void engageInCombat();

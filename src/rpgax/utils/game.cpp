@@ -38,9 +38,9 @@ Game::Game(const Player &player, const Enemy &enemy){
 // User Input
 void Game::getSmartInput(const std::string &prompt){
     std::string smartInput = lowercase(getFirstWord(getLineFromPrompt(prompt)));
-    if (smartInput == "")
+    if (prompt != "Continue...")
     {
-        if (prompt != "Continue...")
+        if (smartInput == "")
         {
             // Make the input always fail a check for anything
             input = "\1";
@@ -51,36 +51,49 @@ void Game::getSmartInput(const std::string &prompt){
 }
 void Game::createNewPlayer(){
     
-    // Intro text
-    const std::string introduction = "Here are the starting origins for your character:\n\n";
-    
     // Player choices
     Origin inputOrigin;
     std::string inputName;
     
-    char continueKey;
+    char continueKey = 'y';
     bool hasDisplayedOriginsOnce = false;
+    
+    std::vector<Player> playerOrigins =
+    {
+        Player(brute, "Brute"), Player(rogue, "Rogue"), Player(wizard, "Wizard"), Player(inquisitor, "Inquisitor"), Player(nomad, "Nomad")
+    };
+    
     do
     {
         clearScreen();
-        // Create the playable character origins for the user to browse
-        printCharByChar(introduction, fast);
-
-        std::vector<Player> playerOrigins =
+        if (hasDisplayedOriginsOnce)
         {
-            Player(brute, "Brute"), Player(rogue, "Rogue"), Player(wizard, "Wizard"), Player(inquisitor, "Inquisitor"), Player(nomad, "Nomad")
-        };
+            printIntroductionParagraph(instant);
+        }
+        else
+        {
+            // Create the playable character origins for the user to browse
+            printIntroductionParagraph(normal);
+            pause();
+        }
+        
+        // Spacing
+        printCharByChar("\n\n");
         
         for (size_t i = 0; i < playerOrigins.size(); i++)
         {
-            Player p = playerOrigins.at(i);
+            Player currentPlayerOrigin = playerOrigins.at(i);
             if (hasDisplayedOriginsOnce)
             {
-                printCharByChar(p.getAsciiArt() + " " + p.getDescription(), fast);
+                printCharByChar(" " + currentPlayerOrigin.getAsciiArt() + " " + currentPlayerOrigin.getDescription(), fast);
             }
             else
             {
-                printCharByChar(p.getAsciiArt() + " " + p.getDescription());
+                pause();
+                printCharByChar(" " + currentPlayerOrigin.getAsciiArt(), slow);
+                pause();
+                printCharByChar(" " + currentPlayerOrigin.getDescription(), fast);
+                pause();
             }
             std::cout << "\t\n" << std::endl;
         }
@@ -90,28 +103,27 @@ void Game::createNewPlayer(){
         switch (inputOrigin)
         {
             case brute:
-                originDescription = "Brute… A strong warrior who can take a hit or two… or three!";
+                originDescription = "A tanky brute… you could take a hit.";
                 break;
             case rogue:
-                originDescription = "Rogue… A quick skirmisher that likes to strike first.";
+                originDescription = "A quick rogue… you liked to strike first.";
                 break;
             case wizard:
-                originDescription = "Wizard… A weak mage with hopes of powerful magic.";
+                originDescription = "A young wizard… you had hopes for powerful magic.";
                 break;
             case inquisitor:
-                originDescription = "Inquisitor… A vessel for a higher power's will.";
+                originDescription = "An inquisitor… you were a vessel for a higher power.";
                 break;
             default:
             case nomad:
-                originDescription = "Nomad… An exiled wanderer from a long-forgotten land.";
+                originDescription = "A nomad… you've completely forgotten who you were.";
                 break;
         }
-        Player tempPlayerChoice = Player(inputOrigin, originDescription);
+        Player originCharacter = Player(inputOrigin, originDescription);
         
-        clearScreen();
-        displayHUD(tempPlayerChoice);
+        displayOrigin(originCharacter);
         
-        continueKey = getContinueKey("Do you want to play the " + getStringForOrigin(tempPlayerChoice.getOrigin()) + "? (Y/n): ");
+        continueKey = getContinueKey("Do you want to play the " + getStringForOrigin(originCharacter.getOrigin()) + "? (Y/n): ");
         hasDisplayedOriginsOnce = true;
     }
     while (continueKey == 'n');
@@ -245,45 +257,280 @@ std::string Game::getStringForOrigin(const Origin origin){
 }
 
 // Display
-void Game::displayHUD(const Player &player){
-    std::cout << "Souls  : ";
-    pause();
-    printCharByChar(std::to_string(player.getSouls()) + "\n");
-    std::cout << "Potion : ";
-    pause();
-    printCharByChar(player.getPotion().name + "\n\n");
-    pause();
-    printCharByChar("  " + player.getAsciiArt() + "\n");
-    printCharByChar("\"" + player.getDescription() + "\"\n");
-    std::cout << "STR~";
-    printCharByChar(std::to_string(player.getStrength()));
-    std::cout << "\tDEX~";
-    printCharByChar(std::to_string(player.getDexterity()));
-    std::cout << "\tINT~";
-    printCharByChar(std::to_string(player.getIntelligence()));
-    std::cout << "\tFAI~";
-    printCharByChar(std::to_string(player.getFaith()));
-    std::cout << std::endl;
-    std::cout << "\nHP: ";
-    pause();
-    printCharByChar(std::to_string(player.getHP()) + "/" + std::to_string(player.getHPMax()) + "\n");
-    std::cout << "Weapon: ";
-    pause();
-    printCharByChar(player.getWeapon().getName());
-    printCharByChar(" (" + std::to_string(player.getWeapon().getDamage()) + " " + ((player.getWeapon().getDamageType() == physical) ? "physical" : "magic") + " damage)\n");
-    if (player.getArmor() != 0)
+void Game::printIntroductionParagraph(PrintSpeed printSpeed){
+    std::string asciiSouls = R"(
+          ,
+        .--')
+       /    /
+      |    /
+   /`.\   (_.'\
+   \          /
+    '--. .---'
+      ( " )
+       '-'
+                ,
+                 \`-,      ,     =-
+             .-._/   \_____)\
+            ("              / =-
+             '-;   ,_____.-'       =-
+              /__.'
+
+)";
+    std::string asciiCandle = R"(
+
+             .
+           .....
+       ..:::::::::..
+    ..:::::: # ::::::..
+  ..:::::: ====== :::::..
+ ..::::: ========== ::::..
+..::::: ==== |\ ==== ::::..
+.::::: ==== /%#| ==== :::..
+.::::: === |&@/ ==== :::::.
+..::::: ===_\|_==== :::::..
+ ..::::: /| .:. | :::::...
+  ..:::: || .:. | ::::...
+   ...:: (| .:. | ::....
+     .... | .:. | ....
+
+)";
+    std::string asciiKeyboard = R"(
+
+,---,---,---,---,---,---,---,---,---,---,---,---,---,-------,
+| ~ | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 | [ | ] | <-    |
+|---'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-----|
+| ->| | " | , | . | P | Y | F | G | C | R | L | / | = |  \  |
+|-----',--',--',--',--',--',--',--',--',--',--',--',--'-----|
+| Caps | A | O | E | U | I | D | H | T | N | S | - |  Enter |
+|------'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'-,-'--------|
+|        | ; | Q | J | K | X | B | M | W | V | Z |          |
+|------,-',--'--,'---'---'---'---'---'---'-,-'---',--,------|
+| ctrl |  | alt |                          | alt  |  | ctrl |
+'------'  '-----'--------------------------'------'  '------'
+
+)";
+    std::string asciiRatDead = R"(
+
+  ,,==.
+ //    `
+||      ,--~~~~-._ _(\--,_
+ \\._,-~   \      '    *  `o
+  `---~\( _/,___( /_/`---~~
+        ``==-    `==-,
+
+)";
+    std::string asciiRat = R"(
+
+
+               _     __,..---""-._                 ';-,
+        ,    _/_),-"`             '-.                `\\
+       \|.-"`    -_)                 '.                ||
+       /`   a   ,                      \              .'/
+       '.___,__/                 .-'    \_        _.-'.'
+          |\  \      \         /`        _`""""""`_.-'
+             _/;--._, >        |   --.__/ `""""""`
+           (((-'  __//`'-......-;\      )
+                (((-'       __//  '--. /
+        jgs               (((-'    __//
+                                 (((-'
+
+
+)";
+    clearScreen();
+    if (printSpeed != instant)
     {
-        std::cout << "Armor: ";
+        printCharByChar("Welcome to rpgax!", slow);
         pause();
-        printCharByChar(std::to_string(player.getArmor()) + "\n");
+        printCharByChar(" A text based adventure.", slow);
+        pause();
+        printCharByChar(asciiKeyboard, lightning);
+        pause();
+        printCharByChar("When playing this game, please don't touch the keyboard while text is typing...");
+        pause();
+        printCharByChar("\n...the text gets really messed up if you do... [o_o]", slow);
+        pause(2);
+        printCharByChar("\n\nAlright, now that you know the rules, it's time to enter world of ASCII...", fast);
+        pause();
+        printCharByChar("\n\nPress enter to begin the game...");
+        getSmartInput("");
+        clearScreen();
+        pause(2);
+        printCharByChar("A rat is scuttling around the depths of a dark dungeon,");
+        pause();
+        printCharByChar("\ndesperately looking for anything to eat.");
+        pause();
+        printCharByChar(asciiRat, lightning);
+        pause();
+        printCharByChar("\n\nEventually, it finds something...");
+        pause();
+        printCharByChar("\nAn old dungeon cell with a ");
+        pause();
+        printCharByChar("lifeless body inside.", slow);
+        pause();
+        printCharByChar("\nHowever, an EARTHQUAKE displaces a stone in the wall...", fast);
+        pause(2);
+        printCharByChar("\nAnd the stone falls,");
+        pause();
+        printCharByChar(" killing the rat.");
+        pause();
+        printCharByChar("\n\nPress enter to continue...");
+        getSmartInput("");
+        clearScreen();
+        pause();
+        printCharByChar(asciiRatDead, lightning);
+        pause();
+        printCharByChar("From within the dead rat", slow);
+        pause();
+        printCharByChar(", a bunch of ", slow);
+        pause();
+        printCharByChar("souls", slow);
+        pause();
+        printCharByChar(" rush into the rotted corpse...", slow);
+        pause();
+        printCharByChar(asciiSouls, lightning);
+        pause();
+        printCharByChar("\n\nPress enter to continue...");
+        getSmartInput("");
+        clearScreen();
+        pause();
+        printCharByChar("You wake up—", fast);
+        pause();
+        printCharByChar("GASPING", fast);
+        printCharByChar(" for air!", slow);
+        pause();
+        printCharByChar("\n\nContinue...");
+        getSmartInput("");
+        clearScreen();
+        pause();
+        printCharByChar("You look around.", fast);
+        printCharByChar(" You don't remember falling asleep in this dungeon cell.");
+        pause(0.4);
+        printCharByChar("\nIn fact,", fast);
+        pause(0.2);
+        printCharByChar(" you don't remember anything at all...", fast);
+        printCharByChar("\nIt feels like it's been days since you went to sleep...");
+        pause();
+        printCharByChar("\n\nor was it...", slow);
+        pause(0.2);
+        printCharByChar("\n\nyears...", slow);
+        pause();
+        printCharByChar("\n\nContinue...");
+        getSmartInput("");
+        clearScreen();
+        pause();
+        printCharByChar("You look down at yourself.");
+        pause();
+        printCharByChar("\n\nYour flesh is rotting...", fast);
+        pause(2);
+        printCharByChar(" but there is no pain...", slow);
+        pause();
+        printCharByChar("\n\nThese clothes seem familiar to you",slow);
+        pause(2);
+        printCharByChar(",\nand an old memory washes over you in a blanket of warmth.", slow);
+        pause(3);
+        printCharByChar("\n\nBut it fades faster than a dream", slow);
+        pause(2);
+        printCharByChar(" as the smell of ", slow);
+        pause();
+        printCharByChar("souls", slow);
+        pause();
+        printCharByChar(" fills your mind.");
+        pause(0.8);
+        printCharByChar("\nYou can smell where they are.");
+        pause(0.6);
+        printCharByChar("\nThey're just up the stairs on the next floor.");
+        pause(0.5);
+        printCharByChar("\nYou can almost taste them.", fast);
+        pause(0.4);
+        printCharByChar("\nAll you'd have to do is take them.", fast);
+        pause(0.2);
+        printCharByChar("\n\n\nALL YOU'D HAVE TO DO IS KILL THEM.", fast);
+        pause(0.1);
+        clearScreen();
+        printCharByChar("You try to shake the feeling...");
+        pause(2);
+        printCharByChar(" and think back to who you are...");
+        pause();
+        printCharByChar("\n\nWho were you before this?");
+        pause();
+    }
+    else
+    {
+        printCharByChar("With rotted flesh and the smell of souls clouding your mind,\nyou try desperately to remember who you are...", fast);
+        pause();
+        printCharByChar("\n\nWho were you before this?", fast);
+        pause();
+    }
+}
+void Game::displayOrigin(const Player &originCharacter){
+    clearScreen();
+    pause();
+    printCharByChar(originCharacter.getFullBlownASCII(), lightning);
+    pause();
+    printCharByChar("\n\"" + originCharacter.getDescription() + "\"");
+    pause();
+    printCharByChar("\n\nASCII Model: ", fast);
+    pause();
+    printCharByChar(originCharacter.getAsciiArt());
+    pause();
+    printCharByChar("\n\nStarting Gear:", slow);
+    pause();
+    printCharByChar("\n\n Souls  : ", fast);
+    pause();
+    printCharByChar(std::to_string(originCharacter.getSouls()));
+    pause();
+    printCharByChar("\n Potion : ", fast);
+    pause();
+    printCharByChar(originCharacter.getPotion().name);
+    pause();
+    printCharByChar("\n\n HP: ", fast);
+    pause();
+    printCharByChar(std::to_string(originCharacter.getHP()));
+    pause();
+    printCharByChar("/", fast);
+    pause();
+    printCharByChar(std::to_string(originCharacter.getHPMax()));
+    pause();
+    printCharByChar("\n Weapon: ", fast);
+    pause();
+    printCharByChar(originCharacter.getWeapon().getName());
+    pause();
+    printCharByChar(" (" + std::to_string(originCharacter.getWeapon().getDamage()) + " " + ((originCharacter.getWeapon().getDamageType() == physical) ? "physical" : "magic") + " damage)\n");
+    pause();
+    if (originCharacter.getArmor() != 0)
+    {
+        printCharByChar(" Armor: ", fast);
+        pause();
+        printCharByChar(std::to_string(originCharacter.getArmor()));
+        pause();
+        std::cout << std::endl;
     }
     if (player.getResistance() != 0)
     {
-        std::cout << "Resistance: ";
+        printCharByChar(" Resistance: ", fast);
         pause();
-        printCharByChar(std::to_string(player.getResistance()) + "\n");
+        printCharByChar(std::to_string(originCharacter.getResistance()));
+        pause();
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
+    pause();
+    printCharByChar("\n STR~", fast);
+    pause();
+    printCharByChar(std::to_string(originCharacter.getStrength()));
+    pause();
+    printCharByChar("  DEX~", fast);
+    pause();
+    printCharByChar(std::to_string(originCharacter.getDexterity()));
+    pause();
+    printCharByChar("  INT~", fast);
+    pause();
+    printCharByChar(std::to_string(originCharacter.getIntelligence()));
+    pause();
+    printCharByChar("  FAI~", fast);
+    pause();
+    printCharByChar(std::to_string(originCharacter.getFaith()));
+    std::cout << std::endl << std::endl;
+    pause();
 }
 void Game::displayHUD(const Player &player, const Enemy &enemy){
 
@@ -331,7 +578,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     printCharByChar("\n<Potion> : " + player.getPotion().name + "\n", playerPrintSpeed);
     
     // Spacing
-    printCharByChar("\n\n", playerPrintSpeed);
+    printCharByChar("\n", playerPrintSpeed);
     
     // Display ASCII ART
     printWithFormattingHUD("  " + player.getAsciiArt(), "  " + enemy.getAsciiArt(), addPipes);
@@ -463,6 +710,20 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
         printWithFormattingHUD(leftString, rightString);
     }
 }
+void Game::printGameOver(){
+    clearScreen();
+    std::string gameOverLiteral = R"(
+      ____    _    __  __ _____         _____     _______ ____
+     / ___|  / \  |  \/  | ____|       / _ \ \   / / ____|  _ \
+    | |  _  / _ \ | |\/| |  _|        | | | \ \ / /|  _| | |_) |
+    | |_| |/ ___ \| |  | | |___       | |_| |\ V / | |___|  _ <
+     \____/_/   \_\_|  |_|_____|       \___/  \_/  |_____|_| \_\
+
+    )";
+    printCharByChar(gameOverLiteral, lightning);
+    getSmartInput("Thanks for playing!");
+    clearScreen();
+}
 
 // Combat
 void Game::engageInCombat(){
@@ -497,6 +758,7 @@ void Game::engageInCombat(){
         {
             printCharByChar("\n\nYou died...", slow);
             getSmartInput("");
+            printGameOver();
         }
     }
 }
@@ -509,7 +771,7 @@ void Game::performPlayerMove(){
     {
         // GET A MOVE FROM PLAYER
         displayHUD(player, enemy);
-        getSmartInput("\nSelect a <Move>: ");
+        getSmartInput("Select a <Move>: ");
         for (short i = 0; i < player.getWeapon().getMoves().size(); i++)
         {
             // Find/assume which move the player selected
@@ -563,10 +825,11 @@ void Game::performPlayerMove(){
         {
             WeaponMove chosenMove = player.getWeapon().getMoves().at(chosenMoveIndex);
             // Confirm weapon move
-            continueKey = getContinueKey("Use " + chosenMove.getName() + "? (Y/n): ");
+            continueKey = getContinueKey("Use <" + chosenMove.getName() + ">? (Y/n): ");
             if (continueKey == 'y')
             {
                 // IF THE USER CONFIRMS THE <MOVE>
+                std::cout << std::endl;
                 dealWeaponMoveDamageAsCharacter1ToCharacter2(player, enemy, chosenMove);
                 getSmartInput();
             }
@@ -593,11 +856,13 @@ void Game::performEnemyMove(){
     getSmartInput();
 }
 void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &character1, Character &character2, const WeaponMove chosenMove){
+    std::string spacing = "\n";
     if (chosenMove.getDamagePercentage() != 0) // IF THE MOVE DOES DAMAGE
     {
         int damageDealt = 0;
         
         // FIGURE OUT HOW MUCH DMG TO DO TO CHARACTER_2
+        
         if (chosenMove.getAmountOfChecks() > 0) // IF THERE ARE CHECKS
         {
             int checksSucceeded = 0;
@@ -634,20 +899,31 @@ void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &charact
         }
         else // IF THERE ARE NO CHECKS
         {
+            spacing = "";
             damageDealt = character1.getWeapon().getDamage(chosenMove);
         }
         
+        // Spacing
+        std::cout << spacing;
+        
         // DEAL THE DAMAGE DEALT
-        std::cout << std::endl;
         if (character1.getWeapon().getDamageType() == physical)
         {
             character2.takeDamage(damageDealt - character2.getArmor());
-            printCharByChar(character1.getName() + " dealt " + std::to_string(damageDealt - character2.getArmor()) + " damage", fast);
+            printCharByChar(character1.getName() + " dealt ");
+            pause();
+            printCharByChar(std::to_string(damageDealt - character2.getArmor()));
+            pause();
+            printCharByChar(" damage", fast);
         }
         else // if magic damage
         {
             character2.takeDamage(damageDealt - character2.getResistance());
-            printCharByChar(character1.getName() + " dealt " + std::to_string(damageDealt - character2.getResistance()) + " magic damage", fast);
+            printCharByChar(character1.getName() + " dealt ");
+            pause();
+            printCharByChar(std::to_string(damageDealt - character2.getResistance()));
+            pause();
+            printCharByChar(" magic damage", fast);
         }
     }
     else // IF THE MOVE DOES NO DAMAGE (SOMETHING SPECIAL)
@@ -679,9 +955,9 @@ void Game::determineWhoGoesFirst(){
     }
 }
 void Game::enemyDeathCleanUp(){
-    pause();
     displayHUD(player, enemy);
-    printCharByChar("\nYou defeated " + enemy.getName() + "!", fast);
+    pause();
+    printCharByChar("You defeated " + enemy.getName() + "!", fast);
     pause();
     int soulsHarvested = enemy.retrieveSoulsHeld();
     printCharByChar("\nSouls harvested: ", fast);
@@ -689,14 +965,16 @@ void Game::enemyDeathCleanUp(){
     printCharByChar(std::to_string(enemy.retrieveSoulsHeld()));
     player.addSouls(soulsHarvested);
     pause();
-    printCharByChar("\nIn the next floor you see... ", fast);
+    std::cout << std::endl;
+    std::cout << std::endl;
+    printCharByChar("In the next floor you see... ", fast);
     pause();
     floor++;
     enemyTypesSeen.insert(enemy.getType());
     createNewEnemy();
     printCharByChar(enemy.getName() + "...");
     pause();
-    std::cout << std::endl << std::endl;
+    std::cout << std::endl;
     getSmartInput();
 }
 void Game::createNewEnemy(){

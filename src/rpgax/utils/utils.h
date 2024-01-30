@@ -19,7 +19,7 @@ enum OptionSelectHUD
 
 enum PrintSpeed
 {
-    instant = 0, fast = 25, normal = 50, slow = 75
+    instant = 0, lightning = 1, fast = 25, normal = 50, slow = 75
 };
 
 // Display

@@ -13,15 +13,13 @@ int main(){
     clearScreen();
     
     // Initialize the Game
-    Game rpgax = Game(Player(nomad, "Winfield"));
-    //Game rpgax = Game();
+    // Game rpgax = Game(Player(nomad, "Winfield"));
+    Game rpgax = Game();
     
     // Fight Goblins Until Death (reverse pyramid development)
     while (rpgax.player.getHP() > 0)
     {
         rpgax.engageInCombat();
     }
-    
-    clearScreen();
     return 0;
 }
