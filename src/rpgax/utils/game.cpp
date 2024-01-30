@@ -37,10 +37,16 @@ Game::Game(const Player &player, const Enemy &enemy){
 // User Input
 void Game::getSmartInput(const std::string &prompt){
     std::string smartInput = lowercase(getFirstWord(getLineFromPrompt(prompt)));
-    if (prompt != "Continue...")
+    if (smartInput == "")
     {
-        input = smartInput;
+        if (prompt != "Continue...")
+        {
+            // Make the input always fail a check for anything
+            input = "\1";
+            return;
+        }
     }
+    input = smartInput;
 }
 void Game::createNewPlayer(){
     
