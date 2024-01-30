@@ -909,19 +909,29 @@ void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &charact
         // DEAL THE DAMAGE DEALT
         if (character1.getWeapon().getDamageType() == physical)
         {
-            character2.takeDamage(damageDealt - character2.getArmor());
+            int actualDamageDealt = damageDealt - character2.getArmor();
+            if (actualDamageDealt < 0)
+            {
+                actualDamageDealt = 0;
+            }
+            character2.takeDamage(actualDamageDealt);
             printCharByChar(character1.getName() + " dealt ");
             pause();
-            printCharByChar(std::to_string(damageDealt - character2.getArmor()));
+            printCharByChar(std::to_string(actualDamageDealt));
             pause();
             printCharByChar(" damage", fast);
         }
         else // if magic damage
         {
-            character2.takeDamage(damageDealt - character2.getResistance());
+            int actualDamageDealt = damageDealt - character2.getResistance();
+            if (actualDamageDealt < 0)
+            {
+                actualDamageDealt = 0;
+            }
+            character2.takeDamage(actualDamageDealt);
             printCharByChar(character1.getName() + " dealt ");
             pause();
-            printCharByChar(std::to_string(damageDealt - character2.getResistance()));
+            printCharByChar(std::to_string(actualDamageDealt));
             pause();
             printCharByChar(" magic damage", fast);
         }
