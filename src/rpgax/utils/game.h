@@ -9,6 +9,7 @@
 #define game_h
 
 #include "utils.h"
+#include <set>
 
 class Game
 {
@@ -17,6 +18,7 @@ public:
     static std::string input;
     static Player player;
     static Enemy enemy;
+    static std::set<EnemyType> enemyTypesSeen;
     static short floor;
     static bool playerGoesFirst;
     static bool playerIsPrinted;

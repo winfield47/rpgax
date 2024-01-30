@@ -13,6 +13,7 @@
 std::string Game::input = "";
 Player Game::player = Player();
 Enemy Game::enemy = Enemy();
+std::set<EnemyType> Game::enemyTypesSeen = {};
 short Game::floor = 0;
 bool Game::playerGoesFirst = true;
 bool Game::playerIsPrinted = false;
@@ -305,7 +306,14 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     else
     {
         // Change Print Speed
-        universalPrintSpeed = normal;
+        std::set<EnemyType>::iterator it = enemyTypesSeen.find(enemy.getType());
+            if (it != enemyTypesSeen.end()) {
+                // Enemy type is in the set
+                universalPrintSpeed = fast;
+            } else {
+                // Enemy type is not in the set
+                universalPrintSpeed = normal;
+            }
         // Display Floor
         pause();
         printCharByChar("Floor    : ");
@@ -375,7 +383,7 @@ void Game::printWithFormattingHUD(const std::string &leftString, const std::stri
     }
     if (!enemyIsPrinted)
     {
-        if (isSubset("is than you!", rightString))
+        if (isSubset("is than you", rightString))
         {
             pause();
             printCharByChar(rightString, slow);
@@ -498,6 +506,7 @@ void Game::performPlayerMove(){
     chosenMoveIndex = -1;
     do
     {
+        // GET A MOVE FROM PLAYER
         displayHUD(player, enemy);
         std::cout << std::endl;
         getSmartInput("Select a <Move>: ");
@@ -518,8 +527,10 @@ void Game::performPlayerMove(){
                 }
             }
         }
+        // Check for: <SpecialMoves>
         if (chosenMoveIndex < 0)
         {
+            // POTION
             if (isSubset(input, "potion"))
             {
                 if (player.getPotion().name != "None")
@@ -537,7 +548,7 @@ void Game::performPlayerMove(){
                 }
                 else
                 {
-                    printCharByChar("No potions…");
+                    printCharByChar("You don't have a potion...");
                     pause();
                     std::cout << std::endl;
                 }
@@ -548,19 +559,29 @@ void Game::performPlayerMove(){
             }
             getSmartInput();
         }
-        if (chosenMoveIndex >= 0)
+        else // IF A VALID <MOVE> HAS BEEN PICKED
         {
             WeaponMove chosenMove = player.getWeapon().getMoves().at(chosenMoveIndex);
             // Confirm weapon move
             continueKey = getContinueKey("Use " + chosenMove.getName() + "? (Y/n): ");
             if (continueKey == 'y')
             {
-                printCharByChar(player.getName() + " dealt " + std::to_string(player.getWeapon().getDamage(chosenMove)) + ((player.getWeapon().getDamageType() == magic) ? " magic" : "") + " dmg");
-                pause();
-                std::cout << std::endl;
                 if (chosenMove.getDamagePercentage() != 0)
                 {
-                    enemy.takeDamage(player.getWeapon().getDamage(chosenMove));
+                    // DEAL DAMAGE TO ENEMY
+                    pause();
+                    if (player.getWeapon().getDamageType() == physical)
+                    {
+                        enemy.takeDamage(player.getWeapon().getDamage(chosenMove) - enemy.getArmor());
+                        printCharByChar(player.getName() + " dealt " + std::to_string(player.getWeapon().getDamage(chosenMove) - enemy.getArmor()) + " dmg");
+                    }
+                    else // if magic damage
+                    {
+                        enemy.takeDamage(player.getWeapon().getDamage(chosenMove) - enemy.getResistance());
+                        printCharByChar(player.getName() + " dealt " + std::to_string(player.getWeapon().getDamage(chosenMove) - enemy.getResistance()) + " magic dmg");
+                    }
+                    pause();
+                    std::cout << std::endl;
                 }
                 getSmartInput();
             }
@@ -583,14 +604,22 @@ void Game::performEnemyMove(){
     enemy.chooseMove();
     int chosenMoveDamage = enemy.getWeapon().getDamage(chosenMove);
     
-    // Deal damage
-    player.takeDamage(chosenMoveDamage);
-    
-    // Display damage taken
+    // DEAL DAMAGE TO PLAYER
+    std::cout << std::endl;
     pause();
-    printCharByChar("\n" + enemy.getName() + " dealt " + std::to_string(chosenMoveDamage) + (enemy.getWeapon().getDamageType() == magic ? " magic" : "") + " dmg");
+    if (enemy.getWeapon().getDamageType() == physical)
+    {
+        player.takeDamage(enemy.getWeapon().getDamage(chosenMove) - player.getArmor());
+        printCharByChar(enemy.getName() + " dealt " + std::to_string(enemy.getWeapon().getDamage(chosenMove) - player.getArmor()) + " dmg");
+    }
+    else // if magic damage
+    {
+        enemy.takeDamage(player.getWeapon().getDamage(chosenMove) - enemy.getResistance());
+        printCharByChar(enemy.getName() + " dealt " + std::to_string(enemy.getWeapon().getDamage(chosenMove) - player.getResistance()) + " magic dmg");
+    }
     pause();
     std::cout << std::endl;
+    
     getSmartInput();
 }
 void Game::determineWhoGoesFirst(){
@@ -631,6 +660,7 @@ void Game::enemyDeathCleanUp(){
     printCharByChar("\nIn the next floor you see... ");
     pause();
     floor++;
+    enemyTypesSeen.insert(enemy.getType());
     createNewEnemy();
     printCharByChar(enemy.getName() + "...");
     pause();
