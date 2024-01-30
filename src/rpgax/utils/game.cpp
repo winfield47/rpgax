@@ -331,7 +331,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     printCharByChar("\n<Potion> : " + player.getPotion().name + "\n", playerPrintSpeed);
     
     // Spacing
-    std::cout << std::endl;
+    printCharByChar("\n\n", playerPrintSpeed);
     
     // Display ASCII ART
     printWithFormattingHUD("  " + player.getAsciiArt(), "  " + enemy.getAsciiArt(), addPipes);
@@ -350,7 +350,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     turnInfo += enemy.getName();
     if (playerGoesFirst)
     {
-        turnInfo += " is slower than you…";
+        turnInfo += " is slower than you...";
     }
     else
     {
@@ -361,6 +361,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     // Display WEAPONS and MOVES
     printWithFormattingHUD("\n-" + player.getWeapon().getName() + ":", "-" + enemy.getWeapon().getName() + ":");
     printMovesWithFormattingHUD(player.getWeapon(), enemy);
+    std::cout << std::endl;
     enemyIsPrinted = true;
 }
 void Game::printWithFormattingHUD(const std::string &leftString, const std::string &rightString, const OptionSelectHUD optionSelectHUD){
@@ -508,8 +509,7 @@ void Game::performPlayerMove(){
     {
         // GET A MOVE FROM PLAYER
         displayHUD(player, enemy);
-        std::cout << std::endl;
-        getSmartInput("Select a <Move>: ");
+        getSmartInput("\nSelect a <Move>: ");
         for (short i = 0; i < player.getWeapon().getMoves().size(); i++)
         {
             // Find/assume which move the player selected
@@ -566,23 +566,8 @@ void Game::performPlayerMove(){
             continueKey = getContinueKey("Use " + chosenMove.getName() + "? (Y/n): ");
             if (continueKey == 'y')
             {
-                if (chosenMove.getDamagePercentage() != 0)
-                {
-                    // DEAL DAMAGE TO ENEMY
-                    pause();
-                    if (player.getWeapon().getDamageType() == physical)
-                    {
-                        enemy.takeDamage(player.getWeapon().getDamage(chosenMove) - enemy.getArmor());
-                        printCharByChar(player.getName() + " dealt " + std::to_string(player.getWeapon().getDamage(chosenMove) - enemy.getArmor()) + " dmg");
-                    }
-                    else // if magic damage
-                    {
-                        enemy.takeDamage(player.getWeapon().getDamage(chosenMove) - enemy.getResistance());
-                        printCharByChar(player.getName() + " dealt " + std::to_string(player.getWeapon().getDamage(chosenMove) - enemy.getResistance()) + " magic dmg");
-                    }
-                    pause();
-                    std::cout << std::endl;
-                }
+                // IF THE USER CONFIRMS THE <MOVE>
+                dealWeaponMoveDamageAsCharacter1ToCharacter2(player, enemy, chosenMove);
                 getSmartInput();
             }
             else
@@ -601,26 +586,76 @@ void Game::performEnemyMove(){
     
     // What the enemy move choice is
     WeaponMove chosenMove = enemy.getChosenMove();
-    enemy.chooseMove();
-    int chosenMoveDamage = enemy.getWeapon().getDamage(chosenMove);
+    enemy.chooseNewMove();
     
-    // DEAL DAMAGE TO PLAYER
-    std::cout << std::endl;
-    pause();
-    if (enemy.getWeapon().getDamageType() == physical)
-    {
-        player.takeDamage(enemy.getWeapon().getDamage(chosenMove) - player.getArmor());
-        printCharByChar(enemy.getName() + " dealt " + std::to_string(enemy.getWeapon().getDamage(chosenMove) - player.getArmor()) + " dmg");
-    }
-    else // if magic damage
-    {
-        enemy.takeDamage(player.getWeapon().getDamage(chosenMove) - enemy.getResistance());
-        printCharByChar(enemy.getName() + " dealt " + std::to_string(enemy.getWeapon().getDamage(chosenMove) - player.getResistance()) + " magic dmg");
-    }
-    pause();
-    std::cout << std::endl;
-    
+    // Using enemy move
+    dealWeaponMoveDamageAsCharacter1ToCharacter2(enemy, player, chosenMove);
     getSmartInput();
+}
+void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &character1, Character &character2, const WeaponMove chosenMove){
+    if (chosenMove.getDamagePercentage() != 0) // IF THE MOVE DOES DAMAGE
+    {
+        int damageDealt = 0;
+        
+        // FIGURE OUT HOW MUCH DMG TO DO TO CHARACTER_2
+        if (chosenMove.getAmountOfChecks() > 0) // IF THERE ARE CHECKS
+        {
+            int checksSucceeded = 0;
+            int randomNumberOutOf100 = rand() % 100;
+            printCharByChar(character1.getName() + " used <" + chosenMove.getName() + ">: ");
+            for (size_t i = 0; i < chosenMove.getAmountOfChecks() - 1; i++)
+            {
+                pause();
+                if (getCharacterAttributeValue(character1, chosenMove.getUsedAttribute()) > randomNumberOutOf100)
+                {
+                    checksSucceeded += 1;
+                    printCharByChar("[X]");
+                }
+                else
+                {
+                    printCharByChar("[ ]");
+                }
+                printCharByChar("~");
+                randomNumberOutOf100 = rand() % 100;
+            }
+            pause();
+            if (getCharacterAttributeValue(character1, chosenMove.getUsedAttribute()) > randomNumberOutOf100)
+            {
+                checksSucceeded += 1;
+                printCharByChar("[X]");
+            }
+            else
+            {
+                printCharByChar("[ ]");
+            }
+            // now deal the damage from success of checks
+            damageDealt = character1.getWeapon().getDamage(chosenMove) * ((static_cast<double>(checksSucceeded) / chosenMove.getAmountOfChecks()));
+            pause();
+        }
+        else // IF THERE ARE NO CHECKS
+        {
+            damageDealt = character1.getWeapon().getDamage(chosenMove);
+        }
+        
+        // DEAL THE DAMAGE DEALT
+        std::cout << std::endl;
+        if (character1.getWeapon().getDamageType() == physical)
+        {
+            character2.takeDamage(damageDealt - character2.getArmor());
+            printCharByChar(character1.getName() + " dealt " + std::to_string(damageDealt - character2.getArmor()) + " damage", fast);
+        }
+        else // if magic damage
+        {
+            character2.takeDamage(damageDealt - character2.getResistance());
+            printCharByChar(character1.getName() + " dealt " + std::to_string(damageDealt - character2.getResistance()) + " magic damage", fast);
+        }
+    }
+    else // IF THE MOVE DOES NO DAMAGE (SOMETHING SPECIAL)
+    {
+        
+    }
+    pause();
+    std::cout << std::endl;
 }
 void Game::determineWhoGoesFirst(){
     if (player.getDexterity() > enemy.getDexterity())
@@ -646,18 +681,15 @@ void Game::determineWhoGoesFirst(){
 void Game::enemyDeathCleanUp(){
     pause();
     displayHUD(player, enemy);
-    printCharByChar("\nYou defeated " + enemy.getName() + ".");
+    printCharByChar("\nYou defeated " + enemy.getName() + "!", fast);
     pause();
     int soulsHarvested = enemy.retrieveSoulsHeld();
-    printCharByChar("\nYou harvested " + std::to_string(enemy.retrieveSoulsHeld()) + " soul");
-    if (soulsHarvested != 1)
-    {
-        printCharByChar("s");
-    }
-    printCharByChar("!");
+    printCharByChar("\nSouls harvested: ", fast);
+    pause();
+    printCharByChar(std::to_string(enemy.retrieveSoulsHeld()));
     player.addSouls(soulsHarvested);
     pause();
-    printCharByChar("\nIn the next floor you see... ");
+    printCharByChar("\nIn the next floor you see... ", fast);
     pause();
     floor++;
     enemyTypesSeen.insert(enemy.getType());
@@ -674,5 +706,20 @@ void Game::createNewEnemy(){
     if (playerPrintSpeed == instant)
     {
         playerPrintSpeed = fast;
+    }
+}
+int Game::getCharacterAttributeValue(const Character &character, const WeaponMoveAttribute weaponMoveAttribute){
+    switch (weaponMoveAttribute)
+    {
+        case strength:
+            return character.getStrength();
+        case dexterity:
+            return character.getDexterity();
+        case intelligence:
+            return character.getIntelligence();
+        case faith:
+            return character.getFaith();
+        default:
+            throw "getCharacterAttribute error";
     }
 }

@@ -60,7 +60,7 @@ public:
     WeaponDamageType getDamageType() const;
     std::string getName() const;
     int getDamage() const; // weaponDamage + grade
-    int getDamage(WeaponMove&) const;
+    int getDamage(const WeaponMove&) const;
     int getGrade() const;
     std::vector<WeaponMove> getMoves() const;
     

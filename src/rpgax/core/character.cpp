@@ -25,6 +25,9 @@ Character::Character(std::string asciiArt, int hp, WeaponType weaponType, int we
 }
 
 // Accessors
+std::string Character::getName() const{
+    return description;
+}
 std::string Character::getAsciiArt() const{
     return asciiArt;
 }

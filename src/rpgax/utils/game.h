@@ -54,9 +54,11 @@ public:
     void engageInCombat();
     void performPlayerMove();
     void performEnemyMove();
+    void dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character&, Character&, const WeaponMove);
     void determineWhoGoesFirst();
     void enemyDeathCleanUp();
     void createNewEnemy();
+    int getCharacterAttributeValue(const Character&, const WeaponMoveAttribute);
 };
 
 #endif /* Game_hpp */

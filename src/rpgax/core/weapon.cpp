@@ -143,7 +143,7 @@ WeaponDamageType Weapon::getDamageType() const{
 int Weapon::getDamage() const{
     return baseDamage;
 }
-int Weapon::getDamage(WeaponMove &move) const{
+int Weapon::getDamage(const WeaponMove &move) const{
     return move.getDamagePercentage() * baseDamage;
 }
 int Weapon::getGrade() const{

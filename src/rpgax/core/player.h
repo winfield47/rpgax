@@ -33,7 +33,7 @@ public:
     Player(Origin origin, std::string playerName);
     
     // Accessors
-    std::string getName() const;
+    virtual std::string getName() const override;
     Origin getOrigin() const;
     int getSouls() const;
     int getLevel() const;

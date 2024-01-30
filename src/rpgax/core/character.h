@@ -18,6 +18,7 @@ public:
     Character(std::string asciiArt, int hp, WeaponType weaponType, int weaponGrade, int armor, int resistance, std::string description, int strength, int dexterity, int intelligence, int faith);
 
     // Accessors
+    virtual std::string getName() const;
     std::string getAsciiArt() const;
     std::string getDescription() const;
     const Weapon& getWeapon() const;

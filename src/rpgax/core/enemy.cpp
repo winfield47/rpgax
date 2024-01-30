@@ -100,7 +100,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
     
     weapon.setEnemyIntelligenceModifier(intelligence);
     weapon.setEnemyFaithModifier(faith);
-    chooseMove();
+    chooseNewMove();
 }
 void Enemy::varyStats(){
     strength += (rand() % variance / 2) - (rand() % variance / 2);
@@ -138,6 +138,6 @@ int Enemy::retrieveSoulsHeld(){
 }
 
 // Methods
-void Enemy::chooseMove(){
+void Enemy::chooseNewMove(){
     chosenMoveIndex = rand() % weapon.getMoves().size();
 }

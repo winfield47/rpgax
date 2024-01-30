@@ -33,13 +33,13 @@ public:
     void varyStats();
     
     // Accessors
-    std::string getName() const;
+    virtual std::string getName() const override;
     EnemyType getType() const;
     WeaponMove getChosenMove();
     int retrieveSoulsHeld();
     
     // Methods
-    void chooseMove();
+    void chooseNewMove();
 };
 
 #endif /* Enemy_hpp */
