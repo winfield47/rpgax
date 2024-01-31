@@ -20,6 +20,7 @@ Player::Player(Origin origin, std::string playerName){
     apparel = Apparel();
     cloak = Cloak();
     potion = Potion();
+    isCurrentlyDodging = false;
     
     switch (origin) {
             
@@ -247,6 +248,9 @@ Cloak Player::getCloak() const{
 Potion Player::getPotion() const{
     return potion;
 }
+bool Player::isDodging() const{
+    return isCurrentlyDodging;
+}
 
 // Methods
 int Player::spendSouls(int soulsSpent){
@@ -275,4 +279,10 @@ Potion Player::popPotion(){
     Potion usedPotion = potion;
     potion = Potion();
     return usedPotion;
+}
+void Player::startDodging(){
+    isCurrentlyDodging = true;
+}
+void Player::stopDodging(){
+    isCurrentlyDodging = false;
 }

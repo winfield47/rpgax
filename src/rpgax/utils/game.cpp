@@ -18,7 +18,7 @@ short Game::floor = 0;
 bool Game::playerGoesFirst = true;
 bool Game::playerIsPrinted = false;
 bool Game::enemyIsPrinted = false;
-PrintSpeed Game::playerPrintSpeed = normal;
+PrintSpeed Game::playerPrintSpeed = fast;
 PrintSpeed Game::universalPrintSpeed = normal;
 
 // Constructors
@@ -636,9 +636,6 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
         // Display Floor
         printCharByChar("Floor    : ", universalPrintSpeed);
         printCharByChar(std::to_string(floor), universalPrintSpeed);
-        
-        // Display Souls
-        printCharByChar("\nSouls    : " + std::to_string(player.getSouls()), playerPrintSpeed);
     }
     else
     {
@@ -657,13 +654,10 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
         pause();
         printCharByChar(std::to_string(floor));
         pause();
-        
-        // Display Souls
-        printCharByChar("\nSouls    : ");
-        pause();
-        printCharByChar(std::to_string(player.getSouls()));
-        pause();
     }
+    // Display Souls
+    printCharByChar("\nSouls    : " + std::to_string(player.getSouls()), playerPrintSpeed);
+    
     // Display Potion
     printCharByChar("\n<Potion> : " + player.getPotion().name + "\n", playerPrintSpeed);
     
@@ -687,7 +681,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     turnInfo += enemy.getName();
     if (playerGoesFirst)
     {
-        turnInfo += " is slower than you...";
+        turnInfo += " is slower than you!";
     }
     else
     {
@@ -695,10 +689,15 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     }
     printWithFormattingHUD(" " + getStringAttributes(player), turnInfo, addPipes);
     
-    // Display WEAPONS and MOVES
+    // Display WEAPONS and <MOVES>
     printWithFormattingHUD("\n-" + player.getWeapon().getName() + ":", "-" + enemy.getWeapon().getName() + ":");
     printMovesWithFormattingHUD(player.getWeapon(), enemy);
-    std::cout << std::endl;
+    
+    // Display <DEFAULT MOVES>
+    printCharByChar(" <Dodge> if enemy [ ], take 0 dmg", playerPrintSpeed);
+    
+    // Spacing
+    std::cout << std::endl << std::endl;
     enemyIsPrinted = true;
 }
 void Game::printWithFormattingHUD(const std::string &leftString, const std::string &rightString, const OptionSelectHUD optionSelectHUD){
@@ -721,7 +720,7 @@ void Game::printWithFormattingHUD(const std::string &leftString, const std::stri
     }
     if (!enemyIsPrinted)
     {
-        if (isSubset("is than you", rightString))
+        if (isSubset("is than you!", rightString))
         {
             pause();
             printCharByChar(rightString, slow);
@@ -853,6 +852,7 @@ void Game::engageInCombat(){
     }
 }
 void Game::performPlayerMove(){
+    player.stopDodging();
     char continueKey = ' ';
     short chosenMoveIndex = -1;
     input = "";
@@ -888,7 +888,7 @@ void Game::performPlayerMove(){
                 if (player.getPotion().name != "None")
                 {
                     // Confirm drinking potion
-                    continueKey = getContinueKey("Drink healing potion? (Y/n): ");
+                    continueKey = getContinueKey("Drink healing potion for " + std::to_string(player.getPotion().grade) + " HP? (Y/n): ");
                     if (continueKey == 'y')
                     {
                         printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!");
@@ -896,6 +896,7 @@ void Game::performPlayerMove(){
                         printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP");
                         pause();
                         std::cout << std::endl;
+                        getSmartInput();
                     }
                 }
                 else
@@ -903,19 +904,37 @@ void Game::performPlayerMove(){
                     printCharByChar("You don't have a potion...");
                     pause();
                     std::cout << std::endl;
+                    getSmartInput();
+                }
+            }
+            // DODGE
+            else if (isSubset(input, "dodge"))
+            {
+                // Confirm the user wants to dodge
+                if (getContinueKey("Perform <Dodge>? (Y/n): ") == 'y')
+                {
+                    std::cout << std::endl;
+                    player.startDodging();
+                    printCharByChar(player.getName() + " is watching " + enemy.getName() + " carefully", fast);
+                    pause();
+                    // printCharByChar("\n" + player.getName() + " will take 0 damage if " + enemy.getName() + " fails a [Check]...", fast);
+                    // pause();
+                    std::cout << std::endl;
+                    getSmartInput();
+                    return;
                 }
             }
             else
             {
                 printCharByChar("Please enter a valid move.\n");
+                getSmartInput();
             }
-            getSmartInput();
         }
         else // IF A VALID <MOVE> HAS BEEN PICKED
         {
             WeaponMove chosenMove = player.getWeapon().getMoves().at(chosenMoveIndex);
             // Confirm weapon move
-            continueKey = getContinueKey("Use <" + chosenMove.getName() + ">? (Y/n): ");
+            continueKey = getContinueKey("Perform <" + chosenMove.getName() + ">? (Y/n): ");
             if (continueKey == 'y')
             {
                 // IF THE USER CONFIRMS THE <MOVE>
@@ -983,6 +1002,32 @@ void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &charact
             {
                 printCharByChar("[ ]");
             }
+            // is the enemy attacking the player?
+            if (character1.getAsciiArt() == enemy.getAsciiArt()) // this will only be true if it is currently the enemy's move
+            {
+                // check to see if the player is dodging
+                if (player.isDodging())
+                {
+                    // now check to see if the enemy missed a: [X]
+                    if (checksSucceeded < chosenMove.getAmountOfChecks())
+                    {
+                        // PLAYER DODGED
+                        pause();
+                        printCharByChar("\n" + player.getName() + " dodged the attack!", fast);
+                        pause();
+                        std::cout << std::endl;
+                        return;
+                    }
+                    else
+                    {
+                        std::cout << std::endl;
+                        pause();
+                        printCharByChar(player.getName() + " couldn't dodge the attack", fast);
+                        pause();
+                        std::cout << std::endl;
+                    }
+                }
+            }
             // now deal the damage from success of checks
             damageDealt = character1.getWeapon().getDamage(chosenMove) * ((static_cast<double>(checksSucceeded) / chosenMove.getAmountOfChecks()));
             pause();
@@ -990,6 +1035,18 @@ void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &charact
         else // IF THERE ARE NO CHECKS
         {
             spacing = "";
+            // is the enemy attacking the player?
+            if (character1.getAsciiArt() == enemy.getAsciiArt()) // this will only be true if it is currently the enemy's move
+            {
+                // check to see if the player is dodging
+                if (player.isDodging())
+                {
+                    pause();
+                    printCharByChar(player.getName() + " couldn't dodge the attack", fast);
+                    pause();
+                    std::cout << std::endl;
+                }
+            }
             damageDealt = character1.getWeapon().getDamage(chosenMove);
         }
         
@@ -1005,7 +1062,7 @@ void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &charact
                 actualDamageDealt = 0;
             }
             character2.takeDamage(actualDamageDealt);
-            printCharByChar(character1.getName() + " dealt ");
+            printCharByChar(character1.getName() + " dealt ", fast);
             pause();
             printCharByChar(std::to_string(actualDamageDealt));
             pause();
@@ -1019,7 +1076,7 @@ void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &charact
                 actualDamageDealt = 0;
             }
             character2.takeDamage(actualDamageDealt);
-            printCharByChar(character1.getName() + " dealt ");
+            printCharByChar(character1.getName() + " dealt ", fast);
             pause();
             printCharByChar(std::to_string(actualDamageDealt));
             pause();
@@ -1083,7 +1140,7 @@ void Game::createNewEnemy(){
     enemyIsPrinted = false;
     if (playerPrintSpeed == instant)
     {
-        playerPrintSpeed = fast;
+        playerPrintSpeed = faster;
     }
 }
 int Game::getCharacterAttributeValue(const Character &character, const WeaponMoveAttribute weaponMoveAttribute){

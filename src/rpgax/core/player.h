@@ -27,6 +27,7 @@ private:
     Apparel apparel;
     Cloak cloak;
     Potion potion;
+    bool isCurrentlyDodging;
 public:
     // Constructors
     Player();
@@ -43,6 +44,7 @@ public:
     Apparel getApparel() const;
     Cloak getCloak() const;
     Potion getPotion() const;
+    bool isDodging() const;
     
     // Methods
     int spendSouls(int);
@@ -52,6 +54,8 @@ public:
     void replaceCloak(Cloak);
     void replacePotion(Potion);
     Potion popPotion();
+    void startDodging();
+    void stopDodging();
 };
 
 #endif /* Player_hpp */
