@@ -12,8 +12,6 @@
 #include <vector>
 #include "weaponmove.h"
 
-
-
 enum WeaponType
 {
     zweihander, flail, estoc, dagger, bow, spellbook, magicstaff, talisman, lightningspear, unarmed, randomized, special
@@ -71,7 +69,7 @@ public:
     static void setEnemyFaithModifier(int);
     
     // Public Property
-    static const unsigned short TOTAL_WEAPON_TYPES = 8;
+    static const unsigned short TOTAL_WEAPON_TYPES = 9;
 };
 
 #endif /* Weapon_hpp */

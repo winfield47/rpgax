@@ -12,6 +12,7 @@ Enemy::Enemy(){}
 Enemy::Enemy(EnemyType type, int floorLevel){
     this->type = type;
     this->floorLevel = floorLevel;
+    status = nostatus;
     variance = 3;
     switch (type)
     {
@@ -95,7 +96,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
     }
     varyStats();
     
-    hpMax = hp = 20 + ((floorLevel + 1) * 1.5) + (strength - 70) * 2;
+    hpMax = hp = (20 + ((floorLevel + 1) * 1.5) + (strength - (70 + (floorLevel / 2))) * 2) - (rand() % (1 + floorLevel / 2));
     if (hpMax <= 0) { hpMax = hp = 1; }
     
     weapon.setEnemyIntelligenceModifier(intelligence);
@@ -103,14 +104,16 @@ Enemy::Enemy(EnemyType type, int floorLevel){
     chooseNewMove();
 }
 void Enemy::varyStats(){
-    strength += (rand() % variance / 2) - (rand() % variance / 2);
-    dexterity += (rand() % variance) - (rand() % variance);
-    intelligence += (rand() % variance) - (rand() % variance);
-    faith += (rand() % variance) - (rand() % variance);
+    strength += (floorLevel / 2) + (rand() % variance / 2) - (rand() % variance / 2);
+    dexterity += (floorLevel / 2) + (rand() % variance) - (rand() % variance);
+    intelligence += (floorLevel / 2) + (rand() % variance) - (rand() % variance);
+    faith += (floorLevel / 2) + (rand() % variance) - (rand() % variance);
     if (floorLevel > 0)
     {
-        armor += ((rand() % floorLevel) - rand() % floorLevel) <= 0 ? 0 : (rand() % floorLevel);
-        resistance += (rand() % floorLevel) <= 0 ? 0 : (rand() % floorLevel);
+        int randomValueForArmor = rand();
+        int randomValueForResistance = rand();
+        armor += ((randomValueForArmor % floorLevel) - randomValueForArmor % floorLevel) <= 0 ? 0 : (randomValueForArmor % floorLevel);
+        armor += ((randomValueForResistance % floorLevel) - randomValueForResistance % floorLevel) <= 0 ? 0 : (randomValueForResistance % floorLevel);
     }
 } // This helps the constructor look prettier
 

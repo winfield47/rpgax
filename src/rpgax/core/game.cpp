@@ -578,7 +578,7 @@ void Game::displayOrigin(const Player &originCharacter, bool hasDisplayedOrigins
         printCharByChar(std::to_string(originCharacter.getHP()) + "/" + std::to_string(originCharacter.getHPMax()), currentPrintSpeed);
         printCharByChar("\n Weapon : ", currentPrintSpeed);
         printCharByChar(originCharacter.getWeapon().getName(), currentPrintSpeed);
-        printCharByChar(" (" + std::to_string(originCharacter.getWeapon().getDamage()) + " " + ((originCharacter.getWeapon().getDamageType() == physical) ? "physical" : "magic") + " damage)", currentPrintSpeed);
+        printCharByChar(" (" + std::to_string(originCharacter.getWeapon().getDamage(originCharacter.getWeapon().getMoves().at(0))) + " " + ((originCharacter.getWeapon().getDamageType() == physical) ? "physical" : "magic") + " damage)", currentPrintSpeed);
         if (originCharacter.getArmor() != 0)
         {
             printCharByChar("\n Armor  : ", currentPrintSpeed);
@@ -623,7 +623,7 @@ void Game::displayOrigin(const Player &originCharacter, bool hasDisplayedOrigins
         pause();
         printCharByChar(originCharacter.getWeapon().getName());
         pause();
-        printCharByChar(" (" + std::to_string(originCharacter.getWeapon().getDamage()) + " " + ((originCharacter.getWeapon().getDamageType() == physical) ? "physical" : "magic") + " damage)");
+        printCharByChar(" (" + std::to_string(originCharacter.getWeapon().getDamage(originCharacter.getWeapon().getMoves().at(0))) + " " + ((originCharacter.getWeapon().getDamageType() == physical) ? "physical" : "magic") + " damage)");
         pause();
         if (originCharacter.getArmor() != 0)
         {
@@ -705,7 +705,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     printCharByChar("\nSouls    : " + std::to_string(player.getSouls()), playerPrintSpeed);
     
     // Display Potion
-    printCharByChar("\n<Potion> : " + (player.getPotion().grade != 0 ? std::to_string(player.getPotion().grade) + " " : "") + player.getPotion().name + "\n", playerPrintSpeed);
+    printCharByChar("\n<Potion> : " + player.getPotion().name + (player.getPotion().grade != 0 ? " (Grade " + std::to_string(player.getPotion().grade) + ")" : "") + "\n", playerPrintSpeed);
    
     // Spacing
     printCharByChar("\n", playerPrintSpeed);
@@ -718,7 +718,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     std::string enemyDescriptionDisplayStr = "\"" + enemy.getDescription() + "\"";
     printWithFormattingHUD("\"" + player.getDescription() + "\"", "\"" + enemy.getDescription() + "\"", addVersus);
     
-    // Display HP, WPN, AMR, RES
+    // Display HP, AMR, RES
     printWithFormattingHUD(" " + getStringHpAmrRes(player), " " + getStringHpAmrRes(enemy), addPipes);
     
     // Display PLAYER ATTRIBUTES and TURN INFORMATION
@@ -736,7 +736,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     printWithFormattingHUD(" " + getStringAttributes(player), turnInfo, addPipes);
     
     // Display WEAPONS and <MOVES>
-    printWithFormattingHUD("\n-" + player.getWeapon().getName() + ":", "-" + enemy.getWeapon().getName() + ":");
+    printWithFormattingHUD("\n-Weapon: " + player.getWeapon().getName(), "-" + enemy.getWeapon().getName() + ":");
     printMovesWithFormattingHUD(player.getWeapon(), enemy);
     
     // Display <DEFAULT MOVES>
@@ -903,15 +903,16 @@ void Game::printGameOver(){
 
 // Combat
 void Game::engageInCombat(){
+    determineWhoGoesFirst();
     while (player.getHP() > 0)
     {
-        determineWhoGoesFirst();
         if (playerGoesFirst)
         {
             performPlayerMove();
             if (enemy.getHP() <= 0)
             {
                 enemyDeathCleanUp();
+                determineWhoGoesFirst();
             }
             else
             {
@@ -928,6 +929,7 @@ void Game::engageInCombat(){
             if (enemy.getHP() <= 0)
             {
                 enemyDeathCleanUp();
+                determineWhoGoesFirst();
             }
         }
         if (player.getHP() <= 0)
@@ -936,6 +938,7 @@ void Game::engageInCombat(){
             getSmartInput("");
             printGameOver();
         }
+        player.exitStatus(parrying);
     }
 }
 void Game::performPlayerMove(){
@@ -1026,7 +1029,7 @@ void Game::performPlayerMove(){
             {
                 // IF THE USER CONFIRMS THE <MOVE>
                 std::cout << std::endl;
-                dealWeaponMoveDamageAsCharacter1ToCharacter2(player, enemy, chosenMove);
+                setupWeaponMoveDamageAsCharacter1ToCharacter2(player, enemy, chosenMove);
                 getSmartInput();
             }
             else
@@ -1048,10 +1051,10 @@ void Game::performEnemyMove(){
     enemy.chooseNewMove();
     
     // Using enemy move
-    dealWeaponMoveDamageAsCharacter1ToCharacter2(enemy, player, chosenMove);
+    setupWeaponMoveDamageAsCharacter1ToCharacter2(enemy, player, chosenMove);
     getSmartInput();
 }
-void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &character1, Character &character2, const WeaponMove chosenMove){
+void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, Character &character2, const WeaponMove chosenMove){
     std::string spacing = "\n";
     if (chosenMove.getDamagePercentage() != 0) // IF THE MOVE DOES DAMAGE
     {
@@ -1061,34 +1064,7 @@ void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &charact
         
         if (chosenMove.getAmountOfChecks() > 0) // IF THERE ARE CHECKS
         {
-            int checksSucceeded = 0;
-            int randomNumberOutOf100 = rand() % 100;
-            printCharByChar(character1.getName() + " used <" + chosenMove.getName() + ">: ");
-            for (size_t i = 0; i < chosenMove.getAmountOfChecks() - 1; i++)
-            {
-                pause();
-                if (getCharacterAttributeValue(character1, chosenMove.getUsedAttribute()) > randomNumberOutOf100)
-                {
-                    checksSucceeded += 1;
-                    printCharByChar("[X]");
-                }
-                else
-                {
-                    printCharByChar("[ ]");
-                }
-                printCharByChar("~");
-                randomNumberOutOf100 = rand() % 100;
-            }
-            pause();
-            if (getCharacterAttributeValue(character1, chosenMove.getUsedAttribute()) > randomNumberOutOf100)
-            {
-                checksSucceeded += 1;
-                printCharByChar("[X]");
-            }
-            else
-            {
-                printCharByChar("[ ]");
-            }
+            int checksSucceeded = rollWeaponChecks(character1, chosenMove);
             // is the enemy attacking the player?
             if (character1.getAsciiArt() == enemy.getAsciiArt()) // this will only be true if it is currently the enemy's move
             {
@@ -1141,13 +1117,91 @@ void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &charact
         std::cout << spacing;
         
         // DEAL THE DAMAGE DEALT
-        if (character1.getWeapon().getDamageType() == physical)
+        finishDamageDealt(character1, character2, damageDealt);
+    }
+    else // IF THE MOVE DOES NO DAMAGE (SOMETHING SPECIAL)
+    {
+        pause();
+        if (chosenMove.getName() == "Heal")
         {
-            int actualDamageDealt = damageDealt - character2.getArmor();
-            if (actualDamageDealt < 0)
+            // HEAL
+            int healAmount = (character1.getFaith() - 70) < 0 ? 0 : (character1.getFaith() - 70);
+            printCharByChar(character1.getName() + " casted <Heal>!", fast);
+            pause();
+            printCharByChar("\n" + character1.getName() + " healed " + std::to_string(character1.heal(healAmount)) + " HP", fast);
+        }
+        else if (chosenMove.getName() == "Spellshield")
+        {
+            // SPELLSHIELD
+            int checksSucceeded = rollWeaponChecks(character1, chosenMove);
+            if (checksSucceeded == chosenMove.getAmountOfChecks())
             {
-                actualDamageDealt = 0;
+                character1.enterStatus(spellshield);
+                printCharByChar("\nSuccess!", fast);
+                pause();
+                printCharByChar("\n" + character1.getName() + " is now Spellshielded!");
             }
+            else
+            {
+                printCharByChar("\nFailure...", fast);
+            }
+        }
+        else if (chosenMove.getName() == "Oakskin")
+        {
+            // OAKSKIN
+            int checksSucceeded = rollWeaponChecks(character1, chosenMove);
+            if (checksSucceeded == chosenMove.getAmountOfChecks())
+            {
+                character1.enterStatus(oakskin);
+                printCharByChar("\nSuccess!", fast);
+                pause();
+                printCharByChar("\n" + character1.getName() + " now has Oakskin!");
+            }
+            else
+            {
+                printCharByChar("\nFailure...", fast);
+            }
+        }
+        else if (chosenMove.getName() == "Parry")
+        {
+            // PARRY
+            int checksSucceeded = rollWeaponChecks(character1, chosenMove);
+            if (checksSucceeded == chosenMove.getAmountOfChecks())
+            {
+                character1.enterStatus(parrying);
+                printCharByChar("\nSuccess!", fast);
+                pause();
+                printCharByChar("\n" + character1.getName() + " is now Parrying!");
+            }
+            else
+            {
+                printCharByChar("\nFailure...", fast);
+            }
+        }
+    }
+    pause();
+    std::cout << std::endl;
+}
+void Game::finishDamageDealt(Character &character1, Character &character2, int damageDealt){
+    if (character1.getWeapon().getDamageType() == physical)
+    {
+        int actualDamageDealt = damageDealt - character2.getArmor();
+        if (actualDamageDealt <= 0)
+        {
+            actualDamageDealt = 0;
+        }
+        if (character2.getStatus() == parrying && actualDamageDealt != 0)
+        {
+            character1.takeDamage(actualDamageDealt);
+            printCharByChar(character2.getName() + " parried!", fast);
+            pause();
+            std::cout << std::endl;
+            printCharByChar(std::to_string(actualDamageDealt));
+            pause();
+            printCharByChar(" damage was dealt to " + character1.getName() + " instead", fast);
+        }
+        else
+        {
             character2.takeDamage(actualDamageDealt);
             printCharByChar(character1.getName() + " dealt ", fast);
             pause();
@@ -1155,13 +1209,26 @@ void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &charact
             pause();
             printCharByChar(" damage", fast);
         }
-        else // if magic damage
+    }
+    else // if magic damage
+    {
+        int actualDamageDealt = damageDealt - character2.getResistance();
+        if (actualDamageDealt <= 0)
         {
-            int actualDamageDealt = damageDealt - character2.getResistance();
-            if (actualDamageDealt < 0)
-            {
-                actualDamageDealt = 0;
-            }
+            actualDamageDealt = 0;
+        }
+        if (character2.getStatus() == parrying && actualDamageDealt != 0)
+        {
+            character1.takeDamage(actualDamageDealt);
+            printCharByChar(character2.getName() + " parried!", fast);
+            pause();
+            std::cout << std::endl;
+            printCharByChar(std::to_string(actualDamageDealt));
+            pause();
+            printCharByChar(" magic damage was dealt to " + character1.getName() + " instead", fast);
+        }
+        else
+        {
             character2.takeDamage(actualDamageDealt);
             printCharByChar(character1.getName() + " dealt ", fast);
             pause();
@@ -1170,12 +1237,6 @@ void Game::dealWeaponMoveDamageAsCharacter1ToCharacter2(const Character &charact
             printCharByChar(" magic damage", fast);
         }
     }
-    else // IF THE MOVE DOES NO DAMAGE (SOMETHING SPECIAL)
-    {
-        
-    }
-    pause();
-    std::cout << std::endl;
 }
 void Game::determineWhoGoesFirst(){
     if (player.getDexterity() > enemy.getDexterity())
@@ -1199,6 +1260,9 @@ void Game::determineWhoGoesFirst(){
     }
 }
 void Game::enemyDeathCleanUp(){
+    // CLEAR STATUS
+    player.exitStatus();
+    
     // DISPLAY HUD
     displayHUD(player, enemy);
     pause();
@@ -1224,13 +1288,13 @@ void Game::enemyDeathCleanUp(){
     
     // ITEM GRADE ALGORITHM
     int newItemGrade = floor + (rand() % (floor - (floor / 2) + 2));
-    if (newItemGrade < 0)
+    if (newItemGrade < 1)
     {
-        newItemGrade = 0;
+        newItemGrade = 1;
     }
     
     // WEAPON
-    if (valueThatPicksWeaponDropped < 80)
+    if (valueThatPicksWeaponDropped < 75)
     {
         Weapon newWeapon = Weapon(randomized, newItemGrade);
         printCharByChar("\nYou found a weapon!", fast);
@@ -1238,17 +1302,17 @@ void Game::enemyDeathCleanUp(){
         printCharByChar("\n-" + newWeapon.getName() + ":\n", fast);
         printMovesWithFormattingHUD(newWeapon);
         pause();
-        if (getContinueKey("\nDo you want to replace your " + player.getWeapon().getName() + " with it? (Y/n): ") == 'y')
+        if (getContinueKey("\nDo you want to replace your " + player.getWeapon().getName() + " with " + newWeapon.getName() + "? (Y/n): ") == 'y')
         {
             player.replaceWeapon(newWeapon);
         }
     }
     
     // ITEMS
-    if (valueThatPicksItemDropped < 60)
+    if (valueThatPicksItemDropped < 75)
     {
         // POTION
-        if (valueThatPicksItemDropped < 20)
+        if (valueThatPicksItemDropped < 25)
         {
             int newPotionGrade = floor + static_cast<int>(enemy.getType()) + (player.getHPMax() / player.getHP()) + (rand() % (floor * (floor / 2) + 1)) + 1;
             Potion newPotion = Potion("Healing", newPotionGrade);
@@ -1257,24 +1321,28 @@ void Game::enemyDeathCleanUp(){
             // Confirm drinking potion
             if (getContinueKey("\nDo you want this potion? (Y/n): ") == 'y')
             {
-                if (getContinueKey("\nDo you want to drink your current potion for " + std::to_string(player.getPotion().grade) + " HP? (Y/n): ") == 'y')
+                if (player.getPotion().grade != 0 && player.getHP() < player.getHPMax())
                 {
-                    printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!", fast);
-                    pause();
-                    printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
-                    pause();
+                    if (getContinueKey("\nDo you want to drink your current potion for " + std::to_string(player.getPotion().grade) + " HP? (Y/n): ") == 'y')
+                    {
+                        printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!", fast);
+                        pause();
+                        printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
+                        pause();
+                    }
                 }
                 printCharByChar("\nYou took the Grade " + std::to_string(newPotion.grade) + ", Healing Potion!", fast);
                 player.replacePotion(newPotion);
+                std::cout << std::endl;
             }
         }
         // APPAREL
-        else if (valueThatPicksItemDropped < 40)
+        else if (valueThatPicksItemDropped < 50)
         {
             Apparel newApparel = Apparel("Apparel", newItemGrade);
             printCharByChar("\nYou found Apparel with " + std::to_string(newApparel.grade) + " Armor!", fast);
             pause();
-            if (getContinueKey("\nReplace what you're currently wearing? (Y/n): ") == 'y')
+            if (getContinueKey("\nSwap out what you're currently wearing? (Y/n): ") == 'y')
             {
                 player.replaceApparel(newApparel);
             }
@@ -1285,7 +1353,7 @@ void Game::enemyDeathCleanUp(){
             Cloak newCloak = Cloak("Cloak", newItemGrade);
             printCharByChar("\nYou found a Cloak with " + std::to_string(newCloak.grade) + " Resist!", fast);
             pause();
-            if (getContinueKey("\nReplace what you're currently wearing? (Y/n): ") == 'y')
+            if (getContinueKey("\nSwap out what you're currently wearing? (Y/n): ") == 'y')
             {
                 player.replaceCloak(newCloak);
             }
@@ -1310,8 +1378,6 @@ void Game::enemyDeathCleanUp(){
             pause();
             printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
             pause();
-            std::cout << std::endl;
-            getSmartInput();
         }
     }
     
@@ -1350,4 +1416,35 @@ int Game::getCharacterAttributeValue(const Character &character, const WeaponMov
         default:
             throw "getCharacterAttribute error";
     }
+}
+int Game::rollWeaponChecks(Character &character, const WeaponMove chosenMove){
+    int checksSucceeded = 0;
+    int randomNumberOutOf100 = rand() % 100;
+    printCharByChar(character.getName() + " used <" + chosenMove.getName() + ">: ");
+    for (size_t i = 0; i < chosenMove.getAmountOfChecks() - 1; i++)
+    {
+        pause();
+        if (getCharacterAttributeValue(character, chosenMove.getUsedAttribute()) > randomNumberOutOf100)
+        {
+            checksSucceeded += 1;
+            printCharByChar("[X]");
+        }
+        else
+        {
+            printCharByChar("[ ]");
+        }
+        printCharByChar("~");
+        randomNumberOutOf100 = rand() % 100;
+    }
+    pause();
+    if (getCharacterAttributeValue(character, chosenMove.getUsedAttribute()) > randomNumberOutOf100)
+    {
+        checksSucceeded += 1;
+        printCharByChar("[X]");
+    }
+    else
+    {
+        printCharByChar("[ ]");
+    }
+    return checksSucceeded;
 }

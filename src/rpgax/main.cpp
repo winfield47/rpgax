@@ -13,7 +13,7 @@ int main(){
     clearScreen();
     
     // Initialize the Game
-    // Game rpgax = Game(Player(brute, "Winfield"));
+    // Game rpgax = Game(Player(inquisitor, "Winfield"));
     Game rpgax = Game();
     
     // Fight Goblins Until Death (reverse pyramid development)

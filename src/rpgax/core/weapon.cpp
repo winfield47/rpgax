@@ -145,7 +145,12 @@ int Weapon::getDamage() const{
     return baseDamage;
 }
 int Weapon::getDamage(const WeaponMove &move) const{
-    return move.getDamagePercentage() * baseDamage;
+    int totalDamage = move.getDamagePercentage() * baseDamage;
+    if (totalDamage < 0)
+    {
+        totalDamage = 0;
+    }
+    return totalDamage;
 }
 int Weapon::getGrade() const{
     return grade;

@@ -61,6 +61,9 @@ int Character::getIntelligence() const{
 int Character::getFaith() const{
     return faith;
 }
+PlayerStatus Character::getStatus() const{
+    return status;
+}
 
 // Methods
 void Character::takeDamage(int damageTaken){
@@ -78,4 +81,54 @@ int Character::heal(int healthGained){
         hp = hpMax;
     }
     return healthGained;
+}
+void Character::enterStatus(PlayerStatus statusToEnter){
+    if (this->status != statusToEnter)
+    {
+        exitStatus();
+        this->status = statusToEnter;
+        switch (this->status)
+        {
+            case spellshield:
+                if (intelligence > 70)
+                {
+                    resistance += intelligence - 70;
+                }
+                break;
+            case oakskin:
+                if (intelligence > 70)
+                {
+                    armor += intelligence - 70;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+void Character::exitStatus(){
+    switch (this->status)
+    {
+        case spellshield:
+            if (intelligence > 70)
+            {
+                resistance -= intelligence - 70;
+            }
+            break;
+        case oakskin:
+            if (intelligence > 70)
+            {
+                armor -= intelligence - 70;
+            }
+            break;
+        default:
+            break;
+    }
+    this->status = nostatus;
+}
+void Character::exitStatus(PlayerStatus statusToExit){
+    if (this->status == statusToExit)
+    {
+        exitStatus();
+    }
 }

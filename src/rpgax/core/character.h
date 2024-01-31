@@ -10,6 +10,11 @@
 
 #include "weapon.h"
 
+enum PlayerStatus
+{
+    nostatus, spellshield, oakskin, parrying
+};
+
 class Character
 {
 public:
@@ -30,10 +35,14 @@ public:
     int getDexterity() const;
     int getIntelligence() const;
     int getFaith() const;
+    PlayerStatus getStatus() const;
     
     // Methods
     void takeDamage(int);
     int heal(int);
+    void enterStatus(PlayerStatus);
+    void exitStatus();
+    void exitStatus(PlayerStatus);
 
 protected:
     // Common attributes
@@ -48,6 +57,7 @@ protected:
     int dexterity;
     int intelligence;
     int faith;
+    PlayerStatus status;
 };
 
 #endif /* Character_hpp */

@@ -21,6 +21,7 @@ Player::Player(Origin origin, std::string playerName){
     cloak = Cloak();
     potion = Potion();
     isCurrentlyDodging = false;
+    status = nostatus;
     
     switch (origin) {
             
