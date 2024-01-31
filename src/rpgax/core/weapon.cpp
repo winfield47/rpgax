@@ -29,6 +29,7 @@ Weapon::Weapon(WeaponType type, int grade){
     switch (type)
     {
         default:
+            throw "Weapon constructor created a bad WeaponType";
         case zweihander:
             this->damageType = physical;
             this->baseDamage = 12;

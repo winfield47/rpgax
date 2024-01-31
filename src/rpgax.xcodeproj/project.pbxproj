@@ -41,6 +41,7 @@
 		F329C9A82B5123550078A42B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		F34CD4472B57337B000E64A0 /* utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utils.cpp; sourceTree = "<group>"; };
 		F34CD4482B57337B000E64A0 /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
+		F37E0AB42B69E80B00F68713 /* ascii.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ascii.h; path = rpgax/core/ascii.h; sourceTree = SOURCE_ROOT; };
 		F394B6E42B607A13006CF334 /* weaponmove.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = weaponmove.cpp; sourceTree = "<group>"; };
 		F394B6E52B607A13006CF334 /* weaponmove.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = weaponmove.h; sourceTree = "<group>"; };
 		F394B6E72B633544006CF334 /* enemy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = enemy.cpp; sourceTree = "<group>"; };
@@ -74,6 +75,8 @@
 				F31BCCFC2B57A8AF001BD9FF /* player.cpp */,
 				F394B6E82B633544006CF334 /* enemy.h */,
 				F394B6E72B633544006CF334 /* enemy.cpp */,
+				F3BB80832B6526610003E6F9 /* game.h */,
+				F3BB80822B6526610003E6F9 /* game.cpp */,
 			);
 			name = core;
 			path = rpgax/core;
@@ -110,8 +113,7 @@
 			children = (
 				F34CD4482B57337B000E64A0 /* utils.h */,
 				F34CD4472B57337B000E64A0 /* utils.cpp */,
-				F3BB80832B6526610003E6F9 /* game.h */,
-				F3BB80822B6526610003E6F9 /* game.cpp */,
+				F37E0AB42B69E80B00F68713 /* ascii.h */,
 			);
 			name = utils;
 			path = rpgax/utils;

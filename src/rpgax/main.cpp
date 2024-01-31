@@ -5,7 +5,7 @@
 //  Created by Kyle Winfield Burnham on 1/11/24.
 //
 
-#include "utils/game.h"
+#include "core/game.h"
 
 int main(){
     
@@ -13,8 +13,8 @@ int main(){
     clearScreen();
     
     // Initialize the Game
-    Game rpgax = Game(Player(brute, "Winfield"));
-    // Game rpgax = Game();
+    // Game rpgax = Game(Player(brute, "Winfield"));
+    Game rpgax = Game();
     
     // Fight Goblins Until Death (reverse pyramid development)
     while (rpgax.player.getHP() > 0)

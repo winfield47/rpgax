@@ -50,6 +50,7 @@ public:
     int spendSouls(int);
     void consumeSouls(int);
     void addSouls(int);
+    void replaceWeapon(Weapon);
     void replaceApparel(Apparel);
     void replaceCloak(Cloak);
     void replacePotion(Potion);

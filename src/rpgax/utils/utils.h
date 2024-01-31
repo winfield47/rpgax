@@ -8,8 +8,6 @@
 #ifndef utils_h
 #define utils_h
 
-#include "../core/player.h"
-#include "../core/enemy.h"
 #include <string>
 
 enum OptionSelectHUD

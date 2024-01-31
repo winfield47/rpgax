@@ -8,7 +8,9 @@
 #ifndef game_h
 #define game_h
 
-#include "utils.h"
+#include "../utils/utils.h"
+#include "player.h"
+#include "enemy.h"
 #include <set>
 
 class Game
@@ -46,9 +48,10 @@ public:
     
     // Display
     void printIntroductionParagraph(PrintSpeed);
-    void displayOrigin(const Player&);
+    void displayOrigin(const Player&, bool);
     void displayHUD(const Player&, const Enemy&);
     void printWithFormattingHUD(const std::string&, const std::string&, const OptionSelectHUD optionSelectHUD = addNothing);
+    void printMovesWithFormattingHUD(const Weapon&);
     void printMovesWithFormattingHUD(const Weapon&, const Enemy&);
     void printGameOver();
     

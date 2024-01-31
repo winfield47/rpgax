@@ -264,6 +264,9 @@ void Player::consumeSouls(int soulsSpent){
 void Player::addSouls(int soulsAdded){
     souls += soulsAdded;
 }
+void Player::replaceWeapon(Weapon newWeapon){
+    weapon = newWeapon;
+}
 void Player::replaceApparel(Apparel newApparel){
     apparel = newApparel;
     armor = apparel.grade;
