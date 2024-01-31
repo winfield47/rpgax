@@ -142,6 +142,10 @@ WeaponDamageType Weapon::getDamageType() const{
     return damageType;
 }
 int Weapon::getDamage() const{
+    if (baseDamage <= 0)
+    {
+        return 0;
+    }
     return baseDamage;
 }
 int Weapon::getDamage(const WeaponMove &move) const{

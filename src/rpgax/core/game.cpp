@@ -736,7 +736,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     printWithFormattingHUD(" " + getStringAttributes(player), turnInfo, addPipes);
     
     // Display WEAPONS and <MOVES>
-    printWithFormattingHUD("\n-Weapon: " + player.getWeapon().getName(), "-" + enemy.getWeapon().getName() + ":");
+    printWithFormattingHUD("\n-Weapon: " + player.getWeapon().getName(), "-Weapon:" + enemy.getWeapon().getName());
     printMovesWithFormattingHUD(player.getWeapon(), enemy);
     
     // Display <DEFAULT MOVES>
@@ -981,6 +981,7 @@ void Game::performPlayerMove(){
                     continueKey = getContinueKey("Drink healing potion for " + std::to_string(player.getPotion().grade) + " HP? (Y/n): ");
                     if (continueKey == 'y')
                     {
+                        std::cout << std::endl;
                         printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!");
                         pause();
                         printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP");
