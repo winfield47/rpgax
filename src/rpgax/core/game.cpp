@@ -736,7 +736,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     printWithFormattingHUD(" " + getStringAttributes(player), turnInfo, addPipes);
     
     // Display WEAPONS and <MOVES>
-    printWithFormattingHUD("\n-Weapon: " + player.getWeapon().getName(), "-Weapon: " + enemy.getWeapon().getName());
+    printWithFormattingHUD("\n-Weapon: " + player.getWeapon().getName(), "-Enemy Intent:");
     printMovesWithFormattingHUD(player.getWeapon(), enemy);
     
     // Display <DEFAULT MOVES>
@@ -1017,7 +1017,7 @@ void Game::performPlayerMove(){
             else if (isSubset(input, "dodge"))
             {
                 // Confirm the user wants to dodge
-                if (getContinueKey("Perform <Dodge>? (Y/n): ") == 'y')
+                if (getContinueKey("Attempt to <Dodge> the enemy's next attack? (Y/n): ") == 'y')
                 {
                     std::cout << std::endl;
                     player.startDodging();
@@ -1363,6 +1363,7 @@ void Game::enemyDeathCleanUp(){
     // "DEFEATED ENEMY"
     printCharByChar("You defeated " + enemy.getName() + "!", fast);
     enemyTypesSeen.insert(enemy.getType());
+    floor++;
     createNewEnemy();
     pause();
     
@@ -1380,7 +1381,7 @@ void Game::enemyDeathCleanUp(){
     unsigned short valueThatPicksWeaponDropped = rand() % 100;
     
     // ITEM GRADE ALGORITHM
-    int newItemGrade = floor + (rand() % (floor - (floor / 2) + 2));
+    int newItemGrade = floor + (rand() % (floor - (floor / 2) + 2)) - (rand() % (floor - (floor / 2) + 2));
     if (newItemGrade < 1)
     {
         newItemGrade = 1;
@@ -1468,7 +1469,6 @@ void Game::enemyDeathCleanUp(){
     std::cout << std::endl;
     printCharByChar("In the next floor you see ", fast);
     pause();
-    floor++;
     printCharByChar(enemy.getName() + "!");
     pause();
     
@@ -1486,6 +1486,7 @@ void Game::enemyDeathCleanUp(){
     }
     
     // "CONTINUE"
+    enemyIsPrinted = false;
     std::cout << std::endl;
     getSmartInput();
 }
@@ -1513,13 +1514,13 @@ void Game::runFromFight(){
     pause();
     
     // "CONTINUE"
+    enemyIsPrinted = false;
     std::cout << std::endl;
     getSmartInput();
 }
 void Game::createNewEnemy(){
     EnemyType newEnemyType = static_cast<EnemyType>(rand() % ((floor < TOTAL_ENEMY_TYPES ? floor : TOTAL_ENEMY_TYPES) + 1));
     enemy = Enemy(newEnemyType, floor);
-    enemyIsPrinted = false;
     if (playerPrintSpeed == instant)
     {
         // Change Print Speed
