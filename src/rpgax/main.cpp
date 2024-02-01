@@ -13,10 +13,9 @@ int main(){
     clearScreen();
     
     // Initialize the Game
-    // Game rpgax = Game(Player(brute, "Winfield"));
     Game rpgax = Game();
     
-    // Fight Goblins Until Death (reverse pyramid development)
+    // Fight Enemies Until Death (reverse pyramid development)
     while (rpgax.player.getHP() > 0)
     {
         rpgax.engageInCombat();

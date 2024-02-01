@@ -25,6 +25,7 @@ public:
     static bool playerGoesFirst;
     static bool playerIsPrinted;
     static bool enemyIsPrinted;
+    static bool playerRanFromFight;
     static PrintSpeed playerPrintSpeed;
     static PrintSpeed universalPrintSpeed;
     
@@ -63,6 +64,7 @@ public:
     void finishDamageDealt(Character&, Character&, int);
     void determineWhoGoesFirst();
     void enemyDeathCleanUp();
+    void runFromFight();
     void createNewEnemy();
     int getCharacterAttributeValue(const Character&, const WeaponMoveAttribute);
     int rollWeaponChecks(Character&, const WeaponMove);

@@ -18,6 +18,7 @@ short Game::floor = 0;
 bool Game::playerGoesFirst = true;
 bool Game::playerIsPrinted = false;
 bool Game::enemyIsPrinted = false;
+bool Game::playerRanFromFight = false;
 PrintSpeed Game::playerPrintSpeed = fast;
 PrintSpeed Game::universalPrintSpeed = normal;
 
@@ -410,7 +411,7 @@ _____----- |     ]              [ ||||||| ]              [     |
             pause();
             printCharByChar("When playing this game, please don't touch the keyboard while text is typing.");
             pause();
-            printCharByChar("\nIt ruins your further inputs, and I can't stop you from doing it on my end. [o_o]");
+            printCharByChar("\nIt'll ruin your inputs, and C++ won't let me stop you from doing it [o_o]");
             pause(1.5);
             printCharByChar("\n\nAlright, now that you know the rules, it's time to enter world of ASCII", fast);
             pause();
@@ -740,6 +741,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     
     // Display <DEFAULT MOVES>
     printCharByChar(" <Dodge>", playerPrintSpeed);
+    printCharByChar("\n <Run> []~[] DEX", playerPrintSpeed);
     
     // Spacing
     std::cout << std::endl << std::endl;
@@ -914,7 +916,13 @@ void Game::engageInCombat(){
         if (playerGoesFirst)
         {
             performPlayerMove();
-            if (enemy.getHP() <= 0)
+            // Did the player run?
+            if (playerRanFromFight)
+            {
+                runFromFight();
+            }
+            // or kill the enemy?
+            else if (enemy.getHP() <= 0)
             {
                 enemyDeathCleanUp();
                 determineWhoGoesFirst();
@@ -931,19 +939,22 @@ void Game::engageInCombat(){
             {
                 performPlayerMove();
             }
-            if (enemy.getHP() <= 0)
+            // did the player run
+            if (playerRanFromFight)
+            {
+                runFromFight();
+            }
+            // or kill the enemy?
+            else if (enemy.getHP() <= 0)
             {
                 enemyDeathCleanUp();
                 determineWhoGoesFirst();
             }
         }
-        if (player.getHP() <= 0)
-        {
-            printCharByChar("\n\nYou died...", slow);
-            getSmartInput("");
-            printGameOver();
-        }
     }
+    printCharByChar("\n\nYou died...", slow);
+    getSmartInput("");
+    printGameOver();
 }
 void Game::performPlayerMove(){
     player.stopDodging();
@@ -1013,6 +1024,54 @@ void Game::performPlayerMove(){
                     printCharByChar(player.getName() + " is watching " + enemy.getName() + " carefully", fast);
                     pause();
                     printCharByChar("\n" + player.getName() + " will take 0 damage if " + enemy.getName() + " fails a [Check]...", fast);
+                    pause();
+                    std::cout << std::endl;
+                    getSmartInput();
+                    return;
+                }
+            }
+            else if (isSubset(input, "run"))
+            {
+                // Confirm the user wants to dodge
+                if (getContinueKey("Attempt to <Run> from this fight? (Y/n): ") == 'y')
+                {
+                    // See if they succeed
+                    int checksSucceeded = 0;
+                    int randomNumberOutOf100 = rand() % 100;
+                    printCharByChar(player.getName() + " tried to <Run>: ");
+                    pause();
+                    if (getCharacterAttributeValue(player, dexterity) > randomNumberOutOf100)
+                    {
+                        checksSucceeded += 1;
+                        printCharByChar("[X]~");
+                    }
+                    else
+                    {
+                        printCharByChar("[ ]~");
+                    }
+                    randomNumberOutOf100 = rand() % 100;
+                    pause();
+                    if (getCharacterAttributeValue(player, dexterity) > randomNumberOutOf100)
+                    {
+                        checksSucceeded += 1;
+                        printCharByChar("[X]");
+                    }
+                    else
+                    {
+                        printCharByChar("[ ]");
+                    }
+                    // DID THE PLAYER RUN?
+                    if (checksSucceeded == 2)
+                    {
+                        printCharByChar("\nSuccess!", fast);
+                        pause();
+                        printCharByChar("\n\n" + player.getName() + " ran from the fight!");
+                        playerRanFromFight = true;
+                    }
+                    else
+                    {
+                        printCharByChar("\nFailure...", fast);
+                    }
                     pause();
                     std::cout << std::endl;
                     getSmartInput();
@@ -1425,6 +1484,33 @@ void Game::enemyDeathCleanUp(){
             pause();
         }
     }
+    
+    // "CONTINUE"
+    std::cout << std::endl;
+    getSmartInput();
+}
+void Game::runFromFight(){
+    
+    // CLEAR STATUS
+    player.exitStatus();
+    
+    // DISPLAY HUD
+    displayHUD(player, enemy);
+    pause();
+    
+    // "ESCAPED ENEMY"
+    printCharByChar("You escaped from " + enemy.getName() + "!", fast);
+    enemyTypesSeen.insert(enemy.getType());
+    createNewEnemy();
+    pause();
+    
+    // "NEXT FLOOR SEE"
+    std::cout << std::endl;
+    printCharByChar("In the next floor you see ", fast);
+    pause();
+    floor++;
+    printCharByChar(enemy.getName() + "!");
+    pause();
     
     // "CONTINUE"
     std::cout << std::endl;
