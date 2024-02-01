@@ -19,7 +19,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
         case pigeon:
             asciiArt = "<@\\";
             name = "Pigeon";
-            description = "A giant, fat pigeon… it can't even fly!";
+            description = "A bigger, weirdly muscular pigeon!";
             weapon = Weapon(unarmed);
             strength = 62;
             dexterity = 50;
