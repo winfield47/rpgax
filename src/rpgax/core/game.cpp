@@ -801,7 +801,7 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon){
         leftString = " <" + playerWeapon.getMoves().at(i).getName() + "> ";
         if (currentMove.getName() != "Heal")
         {
-            if (currentMoveDamage != 0)
+            if (currentMoveDamage != 0 || currentMove.getName() == "Magic Missile")
             {
                 leftString += std::to_string(currentMoveDamage);
                 leftString += getStringForWeaponDamageType(playerWeapon.getDamageType()) + " dmg";
@@ -818,6 +818,7 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon){
         }
         else
         {
+            // if the move is Heal
             leftString += std::to_string(playerWeapon.getPlayerFaithModifier()) + " HP";
         }
         printWithFormattingHUD(leftString, "");
@@ -1333,7 +1334,7 @@ void Game::enemyDeathCleanUp(){
         printCharByChar("\n-" + newWeapon.getName() + ":\n", fast);
         printMovesWithFormattingHUD(newWeapon);
         pause();
-        if (getContinueKey("\nDo you want to replace your " + player.getWeapon().getName() + " with " + newWeapon.getName() + "? (Y/n): ") == 'y')
+        if (getContinueKey("\nDo you want to replace your " + player.getWeapon().getName() + " (Grade " + std::to_string(player.getWeapon().getGrade()) + ") with " + newWeapon.getName() + " (Grade " + std::to_string(newWeapon.getGrade()) + ")? (Y/n): ") == 'y')
         {
             player.replaceWeapon(newWeapon);
         }
@@ -1350,7 +1351,16 @@ void Game::enemyDeathCleanUp(){
             printCharByChar("\nYou found a Grade " + std::to_string(newPotion.grade) + ", Healing Potion!", fast);
             pause();
             // Confirm drinking potion
-            if (getContinueKey("\nDo you want this potion? (Y/n): ") == 'y')
+            char continueKey = ' ';
+            if (player.getPotion().name == "None")
+            {
+                continueKey = getContinueKey("\nDo you want this potion? (Y/n): ");
+            }
+            else
+            {
+                continueKey = getContinueKey("\nSwap out the potion you currently have? (Y/n): ");
+            }
+            if (continueKey == 'y')
             {
                 if (player.getPotion().grade != 0 && player.getHP() < player.getHPMax())
                 {
@@ -1372,6 +1382,7 @@ void Game::enemyDeathCleanUp(){
         {
             Apparel newApparel = Apparel("Apparel", newItemGrade);
             printCharByChar("\nYou found Apparel with " + std::to_string(newApparel.grade) + " Armor!", fast);
+            printCharByChar("\nYou currently have Apparel with " + std::to_string(player.getArmor()) + " Armor.", fast);
             pause();
             if (getContinueKey("\nSwap out what you're currently wearing? (Y/n): ") == 'y')
             {
@@ -1383,6 +1394,7 @@ void Game::enemyDeathCleanUp(){
         {
             Cloak newCloak = Cloak("Cloak", newItemGrade);
             printCharByChar("\nYou found a Cloak with " + std::to_string(newCloak.grade) + " Resist!", fast);
+            printCharByChar("\nYou currently have a Cloak with " + std::to_string(player.getResistance()) + " Resist.", fast);
             pause();
             if (getContinueKey("\nSwap out what you're currently wearing? (Y/n): ") == 'y')
             {

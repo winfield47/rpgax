@@ -104,17 +104,22 @@ Enemy::Enemy(EnemyType type, int floorLevel){
     chooseNewMove();
 }
 void Enemy::varyStats(){
-    strength += (floorLevel / 2) + (rand() % variance / 2) - (rand() % variance / 2);
-    dexterity += (floorLevel / 2) + (rand() % variance) - (rand() % variance);
-    intelligence += (floorLevel / 2) + (rand() % variance) - (rand() % variance);
-    faith += (floorLevel / 2) + (rand() % variance) - (rand() % variance);
     if (floorLevel > 0)
     {
+        int maxValue = floorLevel + 1;
         int randomValueForArmor = rand();
         int randomValueForResistance = rand();
-        armor += ((randomValueForArmor % floorLevel) - randomValueForArmor % floorLevel) <= 0 ? 0 : (randomValueForArmor % floorLevel);
-        armor += ((randomValueForResistance % floorLevel) - randomValueForResistance % floorLevel) <= 0 ? 0 : (randomValueForResistance % floorLevel);
+        armor += ((randomValueForArmor % maxValue) - rand() % maxValue) <= 0 ? 0 : (randomValueForArmor % maxValue);
+        resistance += ((randomValueForResistance % maxValue) - rand() % maxValue) <= 0 ? 0 : (randomValueForResistance % maxValue);
     }
+    int strengthVariance = (rand() % ((floorLevel / 2) + 1)) + ((rand() % variance) / 2) - ((rand() % variance) / 2);
+    int dexterityVariance = (rand() % ((floorLevel / 2) + 1)) + (rand() % variance) - (rand() % variance);
+    int intelligenceVariance = (rand() % ((floorLevel / 2) + 1)) + (rand() % variance) - (rand() % variance);
+    int faithVariance = (rand() % ((floorLevel / 2) + 1)) + (rand() % variance) - (rand() % variance);
+    strength += strengthVariance;
+    dexterity += dexterityVariance;
+    intelligence += intelligenceVariance;
+    faith += faithVariance;
 } // This helps the constructor look prettier
 
 // Accessors
