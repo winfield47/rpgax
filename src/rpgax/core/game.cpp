@@ -943,7 +943,6 @@ void Game::engageInCombat(){
             getSmartInput("");
             printGameOver();
         }
-        player.exitStatus(parrying);
     }
 }
 void Game::performPlayerMove(){
@@ -1085,6 +1084,9 @@ void Game::performEnemyMove(){
     // Using enemy move
     setupWeaponMoveDamageAsCharacter1ToCharacter2(enemy, player, chosenMove);
     getSmartInput();
+    
+    // Passing the turn back to the Player
+    player.exitStatus(parrying);
 }
 void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, Character &character2, const WeaponMove chosenMove){
     std::string spacing = "\n";
@@ -1203,7 +1205,7 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
                 character1.enterStatus(parrying);
                 printCharByChar("\nSuccess!", fast);
                 pause();
-                printCharByChar("\n" + character1.getName() + " is now Parrying!");
+                printCharByChar("\n" + character1.getName() + " will attempt to parry the enemy's next attack!");
             }
             else
             {
