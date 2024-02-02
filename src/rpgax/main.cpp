@@ -13,7 +13,8 @@ int main(){
     clearScreen();
     
     // Initialize the Game
-    Game rpgax = Game();
+    Game rpgax = Game(Player(wizard, "Winfield")); // Testing
+    // Game rpgax = Game();
     
     // Fight Enemies Until Death (reverse pyramid development)
     while (rpgax.player.getHP() > 0)

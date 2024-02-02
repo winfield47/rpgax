@@ -229,7 +229,7 @@ std::string Game::getStringForWeaponDamageType(const int type, const bool displa
             }
             else
             {
-                return "";
+                return " phys";
             }
             break;
         case 1:
@@ -1003,11 +1003,6 @@ void Game::performPlayerMove(){
                         pause();
                         std::cout << std::endl;
                         getSmartInput();
-                        // ----------------------
-                        printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!", fast);
-                        pause();
-                        printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
-                        pause();
                         
                     }
                 }
