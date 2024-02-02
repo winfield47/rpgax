@@ -405,7 +405,7 @@ _____----- |     ]              [ ||||||| ]              [     |
             pause();
             printCharByChar("Welcome to rpgax!");
             pause();
-            printCharByChar("\n-The ASCII RPG");
+            printCharByChar("\n-The Roguelike ASCII RPG");
             pause();
             printCharByChar(asciiCastle, lightning);
             pause();
@@ -997,12 +997,18 @@ void Game::performPlayerMove(){
                     if (continueKey == 'y')
                     {
                         std::cout << std::endl;
-                        printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!");
+                        printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!", fast);
                         pause();
-                        printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP");
+                        printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
                         pause();
                         std::cout << std::endl;
                         getSmartInput();
+                        // ----------------------
+                        printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!", fast);
+                        pause();
+                        printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
+                        pause();
+                        
                     }
                 }
                 else
@@ -1033,7 +1039,7 @@ void Game::performPlayerMove(){
             else if (isSubset(input, "run"))
             {
                 // Confirm the user wants to dodge
-                if (getContinueKey("Attempt to <Run> from this fight? (Y/n): ") == 'y')
+                if (getContinueKey("\nAttempt to <Run> from this fight? (Y/n): ") == 'y')
                 {
                     // See if they succeed
                     int checksSucceeded = 0;
@@ -1494,6 +1500,7 @@ void Game::runFromFight(){
     
     // CLEAR STATUS
     player.exitStatus();
+    playerRanFromFight = false;
     
     // DISPLAY HUD
     displayHUD(player, enemy);
