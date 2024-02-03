@@ -1526,7 +1526,8 @@ void Game::runFromFight(){
     getSmartInput();
 }
 void Game::createNewEnemy(){
-    EnemyType newEnemyType = static_cast<EnemyType>(rand() % ((floor < TOTAL_ENEMY_TYPES ? floor : TOTAL_ENEMY_TYPES) + 1));
+    int chosenEnemyIndex = (rand() % ((floor < TOTAL_ENEMY_TYPES ? floor : TOTAL_ENEMY_TYPES) + 1));
+    EnemyType newEnemyType = static_cast<EnemyType>(chosenEnemyIndex);
     enemy = Enemy(newEnemyType, floor);
     if (playerPrintSpeed == instant)
     {
