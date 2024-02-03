@@ -14,12 +14,12 @@
 
 enum WeaponType
 {
-    zweihander, flail, estoc, dagger, bow, spellbook, magicstaff, talisman, lightningspear, unarmed, randomized, special
+    zweihander, flail, estoc, dagger, bow, spellbook, magicstaff, talisman, lightningspear, unarmed, ravenbook, ghoulweapon, randomized, special
 };
 
 static const std::string weaponTypes[] =
 {
-    "Zweihander", "Flail", "Estoc", "Dagger", "Bow", "Spellbook", "Magic Staff", "Talisman", "Lightning Spear", "Unarmed"
+    "Zweihander", "Flail", "Estoc", "Dagger", "Bow", "Spellbook", "Magic Staff", "Talisman", "Lightning Spear", "Unarmed", "Raven's Spellbook", "Ghoul Weapon"
 };
 
 enum WeaponDamageType
@@ -44,6 +44,9 @@ private:
     int grade; // this is a quality/rarity value for the weapon
     std::vector<WeaponMove> moves;
 public:
+    // Public Property
+    static const unsigned short TOTAL_PLAYER_WEAPON_TYPES = 9;
+    
     // Constructor
     Weapon();
     Weapon(WeaponType type, int grade = 0);
@@ -67,9 +70,6 @@ public:
     static void setPlayerFaithModifier(int);
     static void setEnemyIntelligenceModifier(int);
     static void setEnemyFaithModifier(int);
-    
-    // Public Property
-    static const unsigned short TOTAL_WEAPON_TYPES = 9;
 };
 
 #endif /* Weapon_hpp */

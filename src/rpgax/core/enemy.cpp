@@ -14,19 +14,52 @@ Enemy::Enemy(EnemyType type, int floorLevel){
     this->floorLevel = floorLevel;
     status = nostatus;
     variance = 3;
+    int variant = 0;
     switch (type)
     {
-        case pigeon:
-            asciiArt = "<@\\";
-            name = "Pigeon";
-            description = "A bigger, weirdly muscular pigeon!";
-            weapon = Weapon(unarmed);
-            strength = 62;
-            dexterity = 50;
-            intelligence = 50;
-            faith = 50;
-            armor = 0;
-            resistance = 0;
+        case bird:
+            variant = rand() % 3;
+            switch (variant) {
+                case 0:
+                    asciiArt = "<@\\";
+                    name = "Pigeon";
+                    description = "A bigger, weirdly muscular pigeon!";
+                    weapon = Weapon(unarmed);
+                    strength = 62;
+                    dexterity = 50;
+                    intelligence = 50;
+                    faith = 50;
+                    armor = 0;
+                    resistance = 0;
+                    break;
+                case 1:
+                    asciiArt = "<¢\\"; // ¡™£¢∞§¶•ªº–≠œ∑´®†¥¨ˆøπ“‘«åß∂ƒ©˙∆˚¬…æΩ≈ç√∫˜µ≤≥÷⁄€‹›ﬁﬂ‡°·‚—±Œ„´‰ˇÁ¨ˆØ∏”’»ÅÍÎÏ˝ÓÔÒÚÆ¸˛Ç◊ı˜Â¯˘¿``
+                    name = "Crow";
+                    description = "A crow with Ray-Bans!";
+                    weapon = Weapon(unarmed, floorLevel / 2);
+                    strength = 60;
+                    dexterity = 71;
+                    intelligence = 50;
+                    faith = 50;
+                    armor = 0;
+                    resistance = 0;
+                    break;
+                case 2:
+                    asciiArt = "∑C\\";
+                    name = "Raven";
+                    description = "A raven standing on a spellbook!";
+                    intelligence = 74;
+                    weapon.setEnemyIntelligenceModifier(intelligence);
+                    weapon = Weapon(ravenbook, floorLevel / 10);
+                    strength = 61;
+                    dexterity = 50;
+                    faith = 50;
+                    armor = 0;
+                    resistance = 0;
+                    break;
+                default:
+                    throw "creating bird bad case";
+            }
             break;
         case goblin:
             asciiArt = "\\g\\";
@@ -68,17 +101,45 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 resistance = 0;
             }
             break;
-        case slime:
-            asciiArt = "[Œ]";
-            description = "What is this thing..? It's made of slime and not letting you pass.";
-            weapon = Weapon();
-            // weapon = Weapon("It's body…", physical, 6, floorLevel, std::vector<WeaponMove>(WeaponMove("Pseudopod", 3, strength, 1)));
-            strength = 90;
-            dexterity = 0;
-            intelligence = 0;
+        case clergyman:
+            if (rand() % 2 == 0)
+            {
+                asciiArt = "/+\\";
+                name = "Holy Knight";
+                description = "A slightly emaciated paladin!";
+                weapon = Weapon(lightningspear, floorLevel);
+                strength = 64;
+                dexterity = 63;
+                intelligence = 69;
+                faith = 72;
+                armor = 4;
+                resistance = 1;
+            }
+            else
+            {
+                asciiArt = "†O\\";
+                name = "Cleric";
+                description = "A slightly pudgy priest eating rations!";
+                weapon = Weapon(talisman, floorLevel);
+                strength = 63;
+                dexterity = 64;
+                intelligence = 71;
+                faith = 74;
+                armor = 0;
+                resistance = 4;
+            }
+            break;
+        case ghoul:
+            asciiArt = "•∆•";
+            name = "Ghoul";
+            description = "A corpse walking around like it owns place!";
+            weapon = Weapon(ghoulweapon, floorLevel - 2);
+            strength = 63;
+            dexterity = 72;
+            intelligence = 40;
             faith = 0;
-            armor = 10;
-            resistance = 0;
+            armor = 0;
+            resistance = 1;
             break;
         default:
             variance = 0;

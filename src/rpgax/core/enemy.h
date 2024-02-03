@@ -10,10 +10,10 @@
 
 #include "character.h"
 
-const int TOTAL_ENEMY_TYPES = 2;
+const int TOTAL_ENEMY_TYPES = 3; // this starts from 0
 
 enum EnemyType {
-    pigeon, goblin, drow, slime, noEnemyType
+    bird, goblin, drow, ghoul, clergyman, noEnemyType
 };
 
 class Enemy : public Character

@@ -951,6 +951,12 @@ void Game::engageInCombat(){
                 determineWhoGoesFirst();
             }
         }
+        // if player killed enemy with a parry, check for that case
+        if (enemy.getHP() <= 0)
+        {
+            enemyDeathCleanUp();
+            determineWhoGoesFirst();
+        }
     }
     printCharByChar("\n\nYou died...", slow);
     getSmartInput("");
@@ -1003,7 +1009,6 @@ void Game::performPlayerMove(){
                         pause();
                         std::cout << std::endl;
                         getSmartInput();
-                        
                     }
                 }
                 else

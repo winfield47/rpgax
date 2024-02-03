@@ -17,7 +17,7 @@ Weapon::Weapon(){}
 Weapon::Weapon(WeaponType type, int grade){
     if (type == randomized)
     {
-        type = static_cast<WeaponType>(rand() % TOTAL_WEAPON_TYPES);
+        type = static_cast<WeaponType>(rand() % TOTAL_PLAYER_WEAPON_TYPES);
     }
     else if (type == special)
     {
@@ -96,11 +96,28 @@ Weapon::Weapon(WeaponType type, int grade){
             moves.push_back(WeaponMove("Smite", 2, faith, 1));
             break;
         case unarmed:
+            this->grade = 1; // always have access to punch and kick
             this->damageType = physical;
             this->baseDamage = 5;
-            this->grade = 1;
             moves.push_back(WeaponMove("Punch")); // creates a 60% dmg 100% accuracy move
             moves.push_back(WeaponMove("Kick", 2, strength)); // creates a kick move with 2 checks that use STR at 100% damage
+            break;
+        case ravenbook:
+            this->damageType = physical;
+            this->baseDamage = 2;
+            this->baseDamage += enemyIntelligenceModifier; // 69 is the minimum INT for floor 0 -> 1 dmg
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Fling (Pebble)"));
+            moves.push_back(WeaponMove("Fling (Stuff)", 2, intelligence, 1));
+            moves.push_back(WeaponMove("Fling (Glass)", 4, intelligence, 1.4));
+            break;
+        case ghoulweapon:
+            this->damageType = physical;
+            this->baseDamage = 5;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Scratch"));
+            moves.push_back(WeaponMove("Bite", 1, dexterity, 1));
+            moves.push_back(WeaponMove("Flurry", 3, strength, 1.5));
             break;
     }
     
