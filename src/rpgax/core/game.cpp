@@ -1351,13 +1351,13 @@ void Game::determineWhoGoesFirst(){
     }
     else
     {
-        if ((enemy.getChosenMove().getAmountOfChecks() + enemy.getHP() + player.getSouls() + floor) % 2 == 0)
+        if ((player.getSouls() + floor + enemy.getIntelligence() + player.getName().length()) % 2 == 0)
         {
-            playerGoesFirst = false;
+            playerGoesFirst = true;
         }
         else
         {
-            playerGoesFirst = true;
+            playerGoesFirst = false;
         }
     }
 }
