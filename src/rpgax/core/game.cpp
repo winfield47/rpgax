@@ -1136,6 +1136,9 @@ void Game::performPlayerMove(){
         }
     }
     while (chosenMoveIndex < 0);
+    
+    // Passing the turn back to the Player
+    enemy.exitStatus(parrying);
 }
 void Game::performEnemyMove(){
     
@@ -1261,7 +1264,7 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
                 printCharByChar("\nFailure...", fast);
             }
         }
-        else if (chosenMove.getName() == "Parry")
+        else if (chosenMove.getName() == "Riposte")
         {
             // PARRY
             int checksSucceeded = rollWeaponChecks(character1, chosenMove);
@@ -1526,7 +1529,15 @@ void Game::runFromFight(){
     getSmartInput();
 }
 void Game::createNewEnemy(){
-    int chosenEnemyIndex = (rand() % ((floor < TOTAL_ENEMY_TYPES ? floor : TOTAL_ENEMY_TYPES) + 1));
+    int chosenEnemyIndex = 0;
+    if (floor < TOTAL_ENEMY_TYPES)
+    {
+        chosenEnemyIndex = rand() % (floor + 1);
+    }
+    else
+    {
+        chosenEnemyIndex = rand() % (TOTAL_ENEMY_TYPES + 1);
+    }
     EnemyType newEnemyType = static_cast<EnemyType>(chosenEnemyIndex);
     enemy = Enemy(newEnemyType, floor);
     if (playerPrintSpeed == instant)
