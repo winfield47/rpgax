@@ -1195,6 +1195,12 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
             }
             // now deal the damage from success of checks
             damageDealt = character1.getWeapon().getDamage(chosenMove) * ((static_cast<double>(checksSucceeded) / chosenMove.getAmountOfChecks()));
+            // Assassinate pierces armor
+            if (chosenMove.getName() == "Assassinate" && damageDealt > 0)
+            {
+                damageDealt += character2.getArmor();
+                printCharByChar("\nThe attack ignored Armor!");
+            }
             pause();
         }
         else // IF THERE ARE NO CHECKS
@@ -1207,7 +1213,7 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
                 if (player.isDodging())
                 {
                     pause();
-                    printCharByChar(player.getName() + " couldn't dodge the attack", fast);
+                    printCharByChar(player.getName() + " can't dodge an infallible attack", fast);
                     pause();
                     std::cout << std::endl;
                 }
@@ -1532,7 +1538,7 @@ void Game::createNewEnemy(){
     int chosenEnemyIndex = 0;
     if (floor < TOTAL_ENEMY_TYPES)
     {
-        chosenEnemyIndex = rand() % (floor + 1);
+        chosenEnemyIndex = floor;
     }
     else
     {

@@ -33,12 +33,12 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     resistance = 0;
                     break;
                 case 1:
-                    asciiArt = "<¢\\"; // ¡™£¢∞§¶•ªº–≠œ∑´®†¥¨ˆøπ“‘«åß∂ƒ©˙∆˚¬…æΩ≈ç√∫˜µ≤≥÷⁄€‹›ﬁﬂ‡°·‚—±Œ„´‰ˇÁ¨ˆØ∏”’»ÅÍÎÏ˝ÓÔÒÚÆ¸˛Ç◊ı˜Â¯˘¿``
+                    asciiArt = "<¢\\";
                     name = "Crow";
-                    description = "A crow with Ray-Bans!";
+                    description = "A crow you can barely keep your eye on!";
                     weapon = Weapon(unarmed, floorLevel / 2);
                     strength = 60;
-                    dexterity = 71;
+                    dexterity = 78;
                     intelligence = 50;
                     faith = 50;
                     armor = 0;
@@ -101,6 +101,18 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 resistance = 0;
             }
             break;
+        case ghoul:
+            asciiArt = "•∆•";
+            name = "Ghoul";
+            description = "A corpse walking around like it owns place!";
+            weapon = Weapon(ghoulweapon, floorLevel - 2);
+            strength = 63;
+            dexterity = 72;
+            intelligence = 40;
+            faith = 0;
+            armor = 0;
+            resistance = 1;
+            break;
         case clergyman:
             if (rand() % 2 == 0)
             {
@@ -108,11 +120,11 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 name = "Holy Knight";
                 description = "A slightly emaciated paladin!";
                 weapon = Weapon(lightningspear, floorLevel);
-                strength = 64;
+                strength = 62;
                 dexterity = 63;
                 intelligence = 69;
                 faith = 72;
-                armor = 4;
+                armor = 3;
                 resistance = 1;
             }
             else
@@ -126,20 +138,8 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 intelligence = 71;
                 faith = 74;
                 armor = 0;
-                resistance = 4;
+                resistance = 3;
             }
-            break;
-        case ghoul:
-            asciiArt = "•∆•";
-            name = "Ghoul";
-            description = "A corpse walking around like it owns place!";
-            weapon = Weapon(ghoulweapon, floorLevel - 2);
-            strength = 63;
-            dexterity = 72;
-            intelligence = 40;
-            faith = 0;
-            armor = 0;
-            resistance = 1;
             break;
         default:
             variance = 0;

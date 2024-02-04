@@ -53,21 +53,21 @@ Weapon::Weapon(WeaponType type, int grade){
             break;
         case dagger:
             this->damageType = physical;
-            this->baseDamage = 2;
-            this->baseDamage += grade * 2;
-            moves.push_back(WeaponMove("Stab"));
-            moves.push_back(WeaponMove("Assassinate", 1, dexterity, 1));
+            this->baseDamage = 1;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Stab", 0, noWeaponMoveAttribute, 0.8));
+            moves.push_back(WeaponMove("Assassinate", 1, dexterity, 0.5));
             break;
         case bow:
             this->damageType = physical;
             this->baseDamage = 6;
-            this->baseDamage += grade;
+            this->baseDamage += grade + grade / 2;
             moves.push_back(WeaponMove("Called Shot"));
-            moves.push_back(WeaponMove("Triple Draw", 1, dexterity, 1));
+            moves.push_back(WeaponMove("Triple Draw", 3, dexterity, 1));
             break;
         case spellbook:
             this->damageType = magic;
-            this->baseDamage = 0 + playerIntelligenceModifier; // spell book gets damage from INT mod
+            this->baseDamage = grade / 3 + playerIntelligenceModifier; // spell book gets damage from INT mod
             moves.push_back(WeaponMove("Magic Missile", 0, noWeaponMoveAttribute, 1));
             // Spellshield will increase resistance by up to the int mod for the combat
             moves.push_back(WeaponMove("Spellshield", 3, intelligence, 0)); // does no dmg, but has a special effect
@@ -78,7 +78,9 @@ Weapon::Weapon(WeaponType type, int grade){
             this->damageType = magic;
             this->baseDamage = 4;
             this->baseDamage += grade * 2;
+            moves.push_back(WeaponMove("Ice Bolt", 2, intelligence, 0.8));
             moves.push_back(WeaponMove("Fireball", 5, intelligence, 1));
+            moves.push_back(WeaponMove("Time Blast", 1, intelligence, 1.2));
             break;
         case talisman:
             this->damageType = magic;
@@ -91,7 +93,7 @@ Weapon::Weapon(WeaponType type, int grade){
         case lightningspear:
             this->damageType = magic;
             this->baseDamage = 12;
-            this->baseDamage += grade;
+            this->baseDamage += grade + playerFaithModifier / 2;
             moves.push_back(WeaponMove("Zap"));
             moves.push_back(WeaponMove("Smite", 2, faith, 1));
             break;
@@ -117,7 +119,7 @@ Weapon::Weapon(WeaponType type, int grade){
             this->baseDamage += grade;
             moves.push_back(WeaponMove("Scratch"));
             moves.push_back(WeaponMove("Bite", 1, dexterity, 1));
-            moves.push_back(WeaponMove("Flurry", 3, strength, 1.5));
+            moves.push_back(WeaponMove("Flurry", 5, strength, 1.5));
             break;
     }
     
