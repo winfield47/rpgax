@@ -821,7 +821,12 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon){
         else
         {
             // if the move is Heal
-            leftString += std::to_string(playerWeapon.getPlayerFaithModifier()) + " HP";
+            int healAmount =playerWeapon.getPlayerFaithModifier();
+            if (healAmount < 0)
+            {
+                healAmount = 0;
+            }
+            leftString += std::to_string(healAmount) + " HP";
         }
         printWithFormattingHUD(leftString, "");
     }
@@ -866,7 +871,13 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
         }
         else
         {
-            leftString += std::to_string(playerWeapon.getPlayerFaithModifier()) + " HP";
+            // if the move is Heal
+            int healAmount =playerWeapon.getPlayerFaithModifier();
+            if (healAmount < 0)
+            {
+                healAmount = 0;
+            }
+            leftString += std::to_string(healAmount) + " HP";
         }
         
         // Enemy's NEXT INTENT MOVE display
@@ -1199,7 +1210,7 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
             if (chosenMove.getName() == "Assassinate" && damageDealt > 0)
             {
                 damageDealt += character2.getArmor();
-                printCharByChar("\nThe attack ignored Armor!");
+                printCharByChar("\nThe attack ignored your Armor!");
             }
             pause();
         }
