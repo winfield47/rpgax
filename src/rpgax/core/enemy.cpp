@@ -36,7 +36,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     asciiArt = "<¢\\";
                     name = "Crow";
                     description = "A crow you can barely keep your eye on!";
-                    weapon = Weapon(unarmed, floorLevel / 2);
+                    weapon = Weapon(talons, floorLevel);
                     strength = 60;
                     dexterity = 78;
                     intelligence = 50;
@@ -50,7 +50,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     description = "A raven standing on a spellbook!";
                     intelligence = 74;
                     weapon.setEnemyIntelligenceModifier(intelligence);
-                    weapon = Weapon(ravenbook, floorLevel / 10);
+                    weapon = Weapon(ravenbook, floorLevel / 5);
                     strength = 61;
                     dexterity = 50;
                     faith = 50;
@@ -62,50 +62,98 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             }
             break;
         case goblin:
-            asciiArt = "\\g\\";
-            name = "Goblin";
-            description = "A goblin trying to rob you of your life!";
-            weapon = Weapon(dagger, floorLevel);
-            strength = 63;
-            dexterity = 74;
-            intelligence = 65;
-            faith = 70;
-            armor = 0;
-            resistance = 0;
+            variant = rand() % 3;
+            switch (variant) 
+            {
+                case 0:
+                    asciiArt = "\\g\\";
+                    name = "Goblin";
+                    description = "A goblin trying to rob you of your life!";
+                    weapon = Weapon(dagger, floorLevel);
+                    strength = 63;
+                    dexterity = 74;
+                    intelligence = 65;
+                    faith = 70;
+                    armor = 0;
+                    resistance = 0;
+                    break;
+                case 1:
+                    asciiArt = "\\h\\";
+                    name = "Hobgoblin";
+                    description = "A hobgoblin trying to take your shoes!";
+                    weapon = Weapon(bow, floorLevel);
+                    strength = 64;
+                    dexterity = 72;
+                    intelligence = 70;
+                    faith = 70;
+                    armor = 1;
+                    resistance = 0;
+                    break;
+                case 2:
+                    asciiArt = "\\G\\";
+                    name = "Bugbear";
+                    description = "A huge goblin variant; the bugbear!";
+                    weapon = Weapon(zweihander, floorLevel);
+                    strength = 65;
+                    dexterity = 50;
+                    intelligence = 50;
+                    faith = 50;
+                    armor = 0;
+                    resistance = 0;
+                    break;
+                default:
+                    throw "creating goblin bad case";
+            }
             break;
         case drow:
-            if (rand() % 2 == 0)
+            variant = rand() % 3;
+            switch (variant)
             {
-                asciiArt = "}0{";
-                name = "Drow Mage";
-                description = "A dark elf mage with a funny hat!";
-                weapon = Weapon(magicstaff, floorLevel);
-                strength = 63;
-                dexterity = 67;
-                intelligence = 70;
-                faith = 65;
-                armor = 0;
-                resistance = 1;
-            }
-            else
-            {
-                asciiArt = "^0^";
-                name = "Drow Ranger";
-                description = "A dark elf woodsman with a feather hat!";
-                weapon = Weapon(bow, floorLevel);
-                strength = 64;
-                dexterity = 70;
-                intelligence = 65;
-                faith = 68;
-                armor = 0;
-                resistance = 0;
+                case 0:
+                    asciiArt = "}0{";
+                    name = "Drow Mage";
+                    description = "A dark elf mage with a funny hat!";
+                    weapon = Weapon(magicstaff, floorLevel);
+                    strength = 63;
+                    dexterity = 67;
+                    intelligence = 70;
+                    faith = 65;
+                    armor = 0;
+                    resistance = 1;
+                    break;
+                case 1:
+                    asciiArt = "^0^";
+                    name = "Drow Ranger";
+                    description = "A dark elf woodsman with a feather hat!";
+                    weapon = Weapon(bow, floorLevel);
+                    strength = 64;
+                    dexterity = 70;
+                    intelligence = 65;
+                    faith = 68;
+                    armor = 0;
+                    resistance = 0;
+                    break;
+                case 2:
+                    asciiArt = "~0^";
+                    name = "Drow Fencer";
+                    description = "A dark elf with a pointy sword!";
+                    weapon = Weapon(estoc, floorLevel);
+                    strength = 64;
+                    dexterity = 71;
+                    intelligence = 70;
+                    faith = 65;
+                    armor = 0;
+                    resistance = 0;
+                    break;
+                default:
+                    throw "creating drow bad case";
             }
             break;
         case ghoul:
             asciiArt = "•∆•";
             name = "Ghoul";
             description = "A corpse walking around like it owns place!";
-            weapon = Weapon(ghoulweapon, floorLevel - 2);
+            weapon = Weapon(ghoulweapon, floorLevel);
             strength = 63;
             dexterity = 72;
             intelligence = 40;

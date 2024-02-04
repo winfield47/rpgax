@@ -48,15 +48,16 @@ Weapon::Weapon(WeaponType type, int grade){
             this->baseDamage = 9;
             this->baseDamage += grade;
             moves.push_back(WeaponMove("Lunge"));
+            moves.push_back(WeaponMove("Lunge", 2, dexterity, 1));
             // parry will block all damage AND reflect what would have been dealt to the attacker
             moves.push_back(WeaponMove("Riposte", 1, dexterity, 0)); // does no dmg, but has a special effect
             break;
         case dagger:
             this->damageType = physical;
-            this->baseDamage = 1;
+            this->baseDamage = 2;
             this->baseDamage += grade;
-            moves.push_back(WeaponMove("Stab", 0, noWeaponMoveAttribute, 0.8));
             moves.push_back(WeaponMove("Assassinate", 1, dexterity, 0.5));
+            moves.push_back(WeaponMove("Stab", 0, noWeaponMoveAttribute, 0.8));
             break;
         case bow:
             this->damageType = physical;
@@ -77,7 +78,7 @@ Weapon::Weapon(WeaponType type, int grade){
         case magicstaff:
             this->damageType = magic;
             this->baseDamage = 4;
-            this->baseDamage += grade * 2;
+            this->baseDamage += grade + (grade / 2) + playerIntelligenceModifier / 2;
             moves.push_back(WeaponMove("Ice Bolt", 2, intelligence, 0.8));
             moves.push_back(WeaponMove("Fireball", 5, intelligence, 1));
             moves.push_back(WeaponMove("Time Blast", 1, intelligence, 1.2));
@@ -104,6 +105,12 @@ Weapon::Weapon(WeaponType type, int grade){
             moves.push_back(WeaponMove("Punch")); // creates a 60% dmg 100% accuracy move
             moves.push_back(WeaponMove("Kick", 2, strength)); // creates a kick move with 2 checks that use STR at 100% damage
             break;
+        case talons:
+            this->damageType = physical;
+            this->baseDamage = 2;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Talons"));
+            moves.push_back(WeaponMove("Pluck", 5, dexterity, 1.5));
         case ravenbook:
             this->damageType = physical;
             this->baseDamage = 2;

@@ -60,7 +60,7 @@ char getContinueKey(const std::string &prompt){
         }
         else
         {
-            printCharByChar("Please use 'y' or 'n' to answer.");
+            printCharByChar("Please use 'y' or 'n' to answer.\n");
         }
     }
 }

@@ -736,7 +736,7 @@ void Game::displayHUD(const Player &player, const Enemy &enemy){
     printWithFormattingHUD(" " + getStringAttributes(player), turnInfo, addPipes);
     
     // Display WEAPONS and <MOVES>
-    printWithFormattingHUD("\n-Weapon: " + player.getWeapon().getName(), "-Enemy Intent:");
+    printWithFormattingHUD("\n-Weapon: " + player.getWeapon().getName(), "-Enemy Intent (" + enemy.getWeapon().getName() + "):");
     printMovesWithFormattingHUD(player.getWeapon(), enemy);
     
     // Display <DEFAULT MOVES>
@@ -1042,6 +1042,7 @@ void Game::performPlayerMove(){
                     pause();
                     printCharByChar("\n" + player.getName() + " will take 0 damage if " + enemy.getName() + " fails a [Check]...", fast);
                     pause();
+                    enemy.exitStatus(parrying);
                     std::cout << std::endl;
                     getSmartInput();
                     return;
@@ -1258,7 +1259,7 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
                 character1.enterStatus(spellshield);
                 printCharByChar("\nSuccess!", fast);
                 pause();
-                printCharByChar("\n" + character1.getName() + " is now Spellshielded!");
+                printCharByChar("\n" + character1.getName() + " is now Spellshielded!", fast);
             }
             else
             {
@@ -1274,7 +1275,7 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
                 character1.enterStatus(oakskin);
                 printCharByChar("\nSuccess!", fast);
                 pause();
-                printCharByChar("\n" + character1.getName() + " now has Oakskin!");
+                printCharByChar("\n" + character1.getName() + " now has Oakskin!", fast);
             }
             else
             {
@@ -1290,7 +1291,7 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
                 character1.enterStatus(parrying);
                 printCharByChar("\nSuccess!", fast);
                 pause();
-                printCharByChar("\n" + character1.getName() + " will attempt to parry the enemy's next attack!");
+                printCharByChar("\n" + character1.getName() + " will attempt to parry the enemy's next attack!", fast);
             }
             else
             {
@@ -1556,7 +1557,12 @@ void Game::createNewEnemy(){
         chosenEnemyIndex = rand() % (TOTAL_ENEMY_TYPES + 1);
     }
     EnemyType newEnemyType = static_cast<EnemyType>(chosenEnemyIndex);
-    enemy = Enemy(newEnemyType, floor);
+    int grade = floor - chosenEnemyIndex;
+    if (floor > 0 && chosenEnemyIndex != 0)
+    {
+        grade = 1;
+    }
+    enemy = Enemy(newEnemyType, floor - chosenEnemyIndex);
     if (playerPrintSpeed == instant)
     {
         // Change Print Speed
