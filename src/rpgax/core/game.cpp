@@ -872,7 +872,7 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
         else
         {
             // if the move is Heal
-            int healAmount =playerWeapon.getPlayerFaithModifier();
+            int healAmount = playerWeapon.getPlayerFaithModifier();
             if (healAmount < 0)
             {
                 healAmount = 0;
@@ -899,6 +899,16 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
             {
                 rightString += getStringForAmountOfChecks(chosenMove.getAmountOfChecks());
                 rightString += " " + getStringForAttributeEnum(chosenMove.getUsedAttribute());
+            }
+            if (chosenMove.getName() == "Heal")
+            {
+                // if the move is Heal
+                int healAmount = enemy.getFaith() - 70;
+                if (healAmount < 0)
+                {
+                    healAmount = 0;
+                }
+                leftString += std::to_string(healAmount) + " HP";
             }
         }
         printWithFormattingHUD(leftString, rightString);
@@ -1557,12 +1567,7 @@ void Game::createNewEnemy(){
         chosenEnemyIndex = rand() % (TOTAL_ENEMY_TYPES + 1);
     }
     EnemyType newEnemyType = static_cast<EnemyType>(chosenEnemyIndex);
-    int grade = floor - chosenEnemyIndex;
-    if (floor > 0 && chosenEnemyIndex != 0)
-    {
-        grade = 1;
-    }
-    enemy = Enemy(newEnemyType, floor - chosenEnemyIndex);
+    enemy = Enemy(newEnemyType, floor);
     if (playerPrintSpeed == instant)
     {
         // Change Print Speed

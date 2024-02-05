@@ -83,14 +83,14 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     description = "A hobgoblin trying to take your shoes!";
                     weapon = Weapon(bow, floorLevel);
                     strength = 64;
-                    dexterity = 72;
+                    dexterity = 69;
                     intelligence = 70;
                     faith = 70;
                     armor = 1;
                     resistance = 0;
                     break;
                 case 2:
-                    asciiArt = "\\G\\";
+                    asciiArt = "\\B\\";
                     name = "Bugbear";
                     description = "A huge goblin variant; the bugbear!";
                     weapon = Weapon(zweihander, floorLevel);
@@ -122,12 +122,12 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     resistance = 1;
                     break;
                 case 1:
-                    asciiArt = "^0^";
+                    asciiArt = "«0^";
                     name = "Drow Ranger";
                     description = "A dark elf woodsman with a feather hat!";
                     weapon = Weapon(bow, floorLevel);
                     strength = 64;
-                    dexterity = 70;
+                    dexterity = 71;
                     intelligence = 65;
                     faith = 68;
                     armor = 0;
@@ -139,7 +139,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     description = "A dark elf with a pointy sword!";
                     weapon = Weapon(estoc, floorLevel);
                     strength = 64;
-                    dexterity = 71;
+                    dexterity = 72;
                     intelligence = 70;
                     faith = 65;
                     armor = 0;
@@ -189,8 +189,20 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 resistance = 3;
             }
             break;
+        case ogre:
+            asciiArt = "OGR"; // ¡Ω¡
+            name = "Ogre";
+            description = "A clumsy ogre with a brown shirt on!";
+            weapon = Weapon(giantclub, floorLevel);
+            strength = 85;
+            dexterity = 25;
+            intelligence = 25;
+            faith = 60;
+            armor = 0;
+            resistance = 0;
+            break;
         default:
-            variance = 0;
+            variance = 1;
             asciiArt = "\\ø/";
             name = "Enemy";
             description = "A lowly enemy… nothing but a foot soldier.";

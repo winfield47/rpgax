@@ -109,7 +109,7 @@ Weapon::Weapon(WeaponType type, int grade){
             this->damageType = physical;
             this->baseDamage = 2;
             this->baseDamage += grade;
-            moves.push_back(WeaponMove("Talons"));
+            moves.push_back(WeaponMove("Talons", 2, dexterity, 1));
             moves.push_back(WeaponMove("Pluck", 5, dexterity, 1.5));
         case ravenbook:
             this->damageType = physical;
@@ -127,6 +127,15 @@ Weapon::Weapon(WeaponType type, int grade){
             moves.push_back(WeaponMove("Scratch"));
             moves.push_back(WeaponMove("Bite", 1, dexterity, 1));
             moves.push_back(WeaponMove("Flurry", 5, strength, 1.5));
+            break;
+        case giantclub:
+            this->damageType = physical;
+            this->baseDamage = 18;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Stumble", 0, noWeaponMoveAttribute, 0.1));
+            moves.push_back(WeaponMove("Trip", 1, dexterity, 0.6));
+            moves.push_back(WeaponMove("Wall Clank", 1, intelligence, 0.6));
+            moves.push_back(WeaponMove("Clobber", 5, strength, 1));
             break;
     }
     
