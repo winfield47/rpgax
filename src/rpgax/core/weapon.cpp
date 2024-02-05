@@ -133,9 +133,9 @@ Weapon::Weapon(WeaponType type, int grade){
             this->baseDamage = 18;
             this->baseDamage += grade;
             moves.push_back(WeaponMove("Stumble", 0, noWeaponMoveAttribute, 0.1));
+            moves.push_back(WeaponMove("Clobber", 5, strength, 1));
             moves.push_back(WeaponMove("Trip", 1, dexterity, 0.6));
             moves.push_back(WeaponMove("Wall Clank", 1, intelligence, 0.6));
-            moves.push_back(WeaponMove("Clobber", 5, strength, 1));
             break;
     }
     
