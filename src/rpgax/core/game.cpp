@@ -668,6 +668,74 @@ void Game::displayOrigin(const Player &originCharacter, bool hasDisplayedOrigins
     std::cout << std::endl << std::endl;
     pause();
 }
+void Game::displayCamp(PrintSpeed currentPrintSpeed){
+    std::string asciiCamp = R"(
+                          __,--'\
+                    __,--'    :. \.
+               _,--'              \`.
+              /|\       `          \ `.
+             / | \        `:        \  `/
+            / '|  \        `:.       \
+           / , |   \                  \
+          /    |:   \              `:. \
+         /| '  |     \ :.           _,-'`.
+       \' |,  / \   ` \ `:.     _,-'_|jrei`/
+          '._;   \ .   \   `_,-'_,-'
+        \'    `- .\_   |\,-'_,-'
+               `--|_,`'
+                            `/
+)";
+    if (currentPrintSpeed == instant)
+    {
+        printCharByChar(asciiCamp, instant);
+    }
+    else
+    {
+        printCharByChar(asciiCamp, lightning);
+        pause();
+    }
+    printCharByChar("Actions:", currentPrintSpeed);
+    printCharByChar("\n <Rest>", currentPrintSpeed);
+    printCharByChar("\n <Level Up>", currentPrintSpeed);
+    printCharByChar("\n <Visit Campfire>", currentPrintSpeed);
+    printCharByChar("\n <Continue>\n\n", currentPrintSpeed);
+    
+}
+void Game::displayShop(PrintSpeed currentPrintSpeed){
+    std::string asciiShop = R"(
+jgs     ______
+       /     /\
+      /     /  \
+     /_____/----\_
+    "     "             "Hello traveller,
+ _ ___                     I'll trade anything for souls!"
+(@))_))                              \
+                      (              \  (}}}.
+                       )                v,v))
+                      (  (              \=_/'
+                          )             ,'-'.
+                    (    (  ,,      _.__|/ /|
+                     ) /\ -((------((_|___/ |
+                   (  // | (`'      ((  `'--|
+                 _ -.;_/ \\--._      \\ \-._/.
+                (_;-// | \ \-'.\    <_,\_\`--'|
+                ( `.__ _  ___,')      <_,-'__,'
+                 `'(_ )_)(_)_)'       jrei
+
+)";
+    if (currentPrintSpeed == instant)
+    {
+        printCharByChar(asciiShop, instant);
+    }
+    else
+    {
+        printCharByChar(asciiShop, lightning);
+        pause();
+    }
+    printCharByChar("Actions:", currentPrintSpeed);
+    printCharByChar("\n <Trade>", currentPrintSpeed);
+    printCharByChar("\n <Go to Tent>\n\n", currentPrintSpeed);
+}
 void Game::displayHUD(const Player &player, const Enemy &enemy){
 
     // Clear the screen
@@ -929,6 +997,77 @@ void Game::printGameOver(){
     clearScreen();
 }
 
+// Camp
+void Game::camp(){
+    PrintSpeed currentPrintSpeed = fast;
+    while (1)
+    {
+        clearScreen();
+        printCharByChar(player.getName() + " HP: " + std::to_string(player.getHP()) + "/" + std::to_string(player.getHPMax()), currentPrintSpeed);
+        displayCamp(currentPrintSpeed);
+        getSmartInput("Select an <Action>: ");
+        
+        if (isSubset(input, "rest"))
+        {
+            printCharByChar("\n" + player.getName() + " rested to " + std::to_string(player.getHPMax()) + " HP!", fast);
+            player.heal(player.getHPMax());
+            std::cout << std::endl;
+            getSmartInput();
+            currentPrintSpeed = instant;
+        }
+        else if (isSubset(input, "level up"))
+        {
+            
+            currentPrintSpeed = instant;
+        }
+        else if (isSubset(input, "visit campfire"))
+        {
+            shop();
+            currentPrintSpeed = fast;
+        }
+        else if (isSubset(input, "continue"))
+        {
+            if (getContinueKey("Are you sure you want to leave camp? (Y/n): "))
+            {
+                break;
+            }
+        }
+        else
+        {
+            printCharByChar("Please enter a valid <Action>\n", fast);
+            getSmartInput();
+            currentPrintSpeed = instant;
+        }
+    }
+}
+void Game::shop(){
+    PrintSpeed currentPrintSpeed = fast;
+    while (1)
+    {
+        clearScreen();
+        printCharByChar("Souls: " + std::to_string(player.getSouls()));
+        displayShop(currentPrintSpeed);
+        getSmartInput("Select an <Action>: ");
+        
+        if (isSubset(input, "trade"))
+        {
+            printCharByChar("shopping!", fast);
+            std::cout << std::endl;
+            getSmartInput();
+        }
+        else if (isSubset(input, "go to tent"))
+        {
+            break;
+        }
+        else
+        {
+            printCharByChar("Please enter a valid <Action>\n", fast);
+            getSmartInput();
+        }
+        currentPrintSpeed = instant;
+    }
+}
+
 // Combat
 void Game::engageInCombat(){
     determineWhoGoesFirst();
@@ -946,7 +1085,7 @@ void Game::engageInCombat(){
             else if (enemy.getHP() <= 0)
             {
                 enemyDeathCleanUp();
-                determineWhoGoesFirst();
+                return;
             }
             else
             {
@@ -969,14 +1108,14 @@ void Game::engageInCombat(){
             else if (enemy.getHP() <= 0)
             {
                 enemyDeathCleanUp();
-                determineWhoGoesFirst();
+                return;
             }
         }
         // if player killed enemy with a parry, check for that case
         if (enemy.getHP() <= 0)
         {
             enemyDeathCleanUp();
-            determineWhoGoesFirst();
+            return;
         }
     }
     printCharByChar("\n\nYou died...", slow);
@@ -1071,22 +1210,22 @@ void Game::performPlayerMove(){
                     if (getCharacterAttributeValue(player, dexterity) > randomNumberOutOf100)
                     {
                         checksSucceeded += 1;
-                        printCharByChar("[X]~");
+                        printCharByChar("[X]~", slow);
                     }
                     else
                     {
-                        printCharByChar("[ ]~");
+                        printCharByChar("[ ]~", slow);
                     }
                     randomNumberOutOf100 = rand() % 100;
                     pause();
                     if (getCharacterAttributeValue(player, dexterity) > randomNumberOutOf100)
                     {
                         checksSucceeded += 1;
-                        printCharByChar("[X]");
+                        printCharByChar("[X]", slow);
                     }
                     else
                     {
-                        printCharByChar("[ ]");
+                        printCharByChar("[ ]", slow);
                     }
                     // DID THE PLAYER RUN?
                     if (checksSucceeded == 2)
@@ -1558,7 +1697,7 @@ void Game::runFromFight(){
 }
 void Game::createNewEnemy(){
     int chosenEnemyIndex = 0;
-    if (floor < TOTAL_ENEMY_TYPES)
+    if (floor <= TOTAL_ENEMY_TYPES)
     {
         chosenEnemyIndex = floor;
     }
@@ -1606,11 +1745,11 @@ int Game::rollWeaponChecks(Character &character, const WeaponMove chosenMove){
         if (getCharacterAttributeValue(character, chosenMove.getUsedAttribute()) > randomNumberOutOf100)
         {
             checksSucceeded += 1;
-            printCharByChar("[X]");
+            printCharByChar("[X]", slow);
         }
         else
         {
-            printCharByChar("[ ]");
+            printCharByChar("[ ]", slow);
         }
         printCharByChar("~");
         randomNumberOutOf100 = rand() % 100;
@@ -1619,11 +1758,11 @@ int Game::rollWeaponChecks(Character &character, const WeaponMove chosenMove){
     if (getCharacterAttributeValue(character, chosenMove.getUsedAttribute()) > randomNumberOutOf100)
     {
         checksSucceeded += 1;
-        printCharByChar("[X]");
+        printCharByChar("[X]", slow);
     }
     else
     {
-        printCharByChar("[ ]");
+        printCharByChar("[ ]", slow);
     }
     return checksSucceeded;
 }

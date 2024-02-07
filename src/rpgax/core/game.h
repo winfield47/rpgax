@@ -50,11 +50,17 @@ public:
     // Display
     void printIntroductionParagraph(PrintSpeed);
     void displayOrigin(const Player&, bool);
+    void displayCamp(PrintSpeed);
+    void displayShop(PrintSpeed);
     void displayHUD(const Player&, const Enemy&);
     void printWithFormattingHUD(const std::string&, const std::string&, const OptionSelectHUD optionSelectHUD = addNothing);
     void printMovesWithFormattingHUD(const Weapon&);
     void printMovesWithFormattingHUD(const Weapon&, const Enemy&);
     void printGameOver();
+    
+    // Camp
+    void camp();
+    void shop();
     
     // Combat
     void engageInCombat();

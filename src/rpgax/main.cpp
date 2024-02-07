@@ -13,13 +13,13 @@ int main(){
     clearScreen();
     
     // Initialize the Game
-    // Game rpgax = Game(Player(wizard, "Winfield")); // Testing
+    // Game rpgax = Game(Player(brute, "Winfield")); // Testing
     Game rpgax = Game();
     
+    // First stop: camp!
+    rpgax.camp();
+    
     // Fight Enemies Until Death (reverse pyramid development)
-    while (rpgax.player.getHP() > 0)
-    {
-        rpgax.engageInCombat();
-    }
+    rpgax.engageInCombat();
     return 0;
 }

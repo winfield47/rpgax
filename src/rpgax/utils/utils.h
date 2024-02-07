@@ -17,13 +17,13 @@ enum OptionSelectHUD
 
 enum PrintSpeed
 {
-    instant = 0, lightning = 1, faster = 10, fast = 25, normal = 50, slow = 75
+    instant = 0, lightning = 1, faster = 10, fast = 20, normal = 25, slow = 50
 };
 
 // Display
 void clearScreen();
 unsigned int printCharByChar(const std::string&, const PrintSpeed milliseconds = normal);
-void pause(const double seconds = 0.5);
+void pause(const double seconds = 0.4);
 
 // User Input
 char getContinueKey(const std::string& = "Continue? (Y/n): ");

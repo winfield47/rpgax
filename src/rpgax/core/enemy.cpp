@@ -168,11 +168,11 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 name = "Holy Knight";
                 description = "A slightly emaciated paladin!";
                 weapon = Weapon(lightningspear, floorLevel);
-                strength = 62;
+                strength = 63;
                 dexterity = 63;
                 intelligence = 69;
                 faith = 72;
-                armor = 3;
+                armor = 4;
                 resistance = 1;
             }
             else
@@ -181,7 +181,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 name = "Cleric";
                 description = "A slightly pudgy priest eating rations!";
                 weapon = Weapon(talisman, floorLevel);
-                strength = 63;
+                strength = 64;
                 dexterity = 64;
                 intelligence = 71;
                 faith = 74;
