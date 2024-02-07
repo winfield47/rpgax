@@ -22,10 +22,12 @@ public:
     static Enemy enemy;
     static std::set<EnemyType> enemyTypesSeen;
     static short floor;
+    static short lastCampFloor;
     static bool playerGoesFirst;
     static bool playerIsPrinted;
     static bool enemyIsPrinted;
     static bool playerRanFromFight;
+    static bool nextFloorIsCamp;
     static PrintSpeed playerPrintSpeed;
     static PrintSpeed universalPrintSpeed;
     
@@ -58,6 +60,9 @@ public:
     void printMovesWithFormattingHUD(const Weapon&);
     void printMovesWithFormattingHUD(const Weapon&, const Enemy&);
     void printGameOver();
+    
+    // Game Loop
+    void play();
     
     // Camp
     void camp();

@@ -13,13 +13,9 @@ int main(){
     clearScreen();
     
     // Initialize the Game
-    Game rpgax = Game(Player(nomad, "Winfield")); // Testing
-    // Game rpgax = Game();
+    // Game rpgax = Game(Player(nomad, "Winfield")); // Testing
+    Game rpgax = Game();
+    rpgax.play();
     
-    // First stop: camp!
-    rpgax.camp();
-    
-    // Fight Enemies Until Death (reverse pyramid development)
-    rpgax.engageInCombat();
     return 0;
 }

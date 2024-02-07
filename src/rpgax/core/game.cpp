@@ -15,10 +15,12 @@ Player Game::player = Player();
 Enemy Game::enemy = Enemy();
 std::set<EnemyType> Game::enemyTypesSeen = {};
 short Game::floor = 0;
+short Game::lastCampFloor = 0;
 bool Game::playerGoesFirst = true;
 bool Game::playerIsPrinted = false;
 bool Game::enemyIsPrinted = false;
 bool Game::playerRanFromFight = false;
+bool Game::nextFloorIsCamp = true;
 PrintSpeed Game::playerPrintSpeed = fast;
 PrintSpeed Game::universalPrintSpeed = normal;
 
@@ -1005,7 +1007,7 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
                 {
                     healAmount = 0;
                 }
-                leftString += std::to_string(healAmount) + " HP";
+                rightString += std::to_string(healAmount) + " HP";
             }
         }
         printWithFormattingHUD(leftString, rightString);
@@ -1024,6 +1026,19 @@ void Game::printGameOver(){
     printCharByChar(gameOverLiteral, lightning);
     getSmartInput("Thanks for playing!");
     clearScreen();
+}
+
+// Game Loop
+void Game::play(){
+    do
+    {
+        if (nextFloorIsCamp)
+        {
+            camp();
+        }
+        engageInCombat();
+    }
+    while (player.getHP() > 0);
 }
 
 // Camp
@@ -1068,6 +1083,7 @@ void Game::camp(){
             currentPrintSpeed = instant;
         }
     }
+    nextFloorIsCamp = false;
 }
 void Game::shop(){
     PrintSpeed currentPrintSpeed = fast;
@@ -1776,19 +1792,35 @@ void Game::enemyDeathCleanUp(){
     std::cout << std::endl;
     printCharByChar("In the next floor you see ", fast);
     pause();
-    printCharByChar(enemy.getName() + "!");
-    pause();
     
-    // CHECK IF PLAYER WANTS TO USE POTION
-    if (player.getPotion().grade != 0 && player.getHP() < player.getHPMax())
+    if (floor >= (lastCampFloor + 4 + (rand() % 4)))
     {
-        // Confirm drinking potion
-        if (getContinueKey("\nWould you like to drink your healing potion for " + std::to_string(player.getPotion().grade) + " HP? (Y/n): ") == 'y')
+        nextFloorIsCamp = true;
+        lastCampFloor = floor;
+    }
+    
+    if (nextFloorIsCamp)
+    {
+        printCharByChar("Camp!");
+        pause();
+    }
+    else
+    {
+        createNewEnemy();
+        printCharByChar(enemy.getName() + "!");
+        pause();
+        
+        // CHECK IF PLAYER WANTS TO USE POTION
+        if (player.getPotion().grade != 0 && player.getHP() < player.getHPMax())
         {
-            printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!", fast);
-            pause();
-            printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
-            pause();
+            // Confirm drinking potion
+            if (getContinueKey("\nWould you like to drink your healing potion for " + std::to_string(player.getPotion().grade) + " HP? (Y/n): ") == 'y')
+            {
+                printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!", fast);
+                pause();
+                printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
+                pause();
+            }
         }
     }
     
@@ -1810,6 +1842,7 @@ void Game::runFromFight(){
     // "ESCAPED ENEMY"
     printCharByChar("You escaped from " + enemy.getName() + "!", fast);
     enemyTypesSeen.insert(enemy.getType());
+    floor++;
     createNewEnemy();
     pause();
     
@@ -1817,9 +1850,41 @@ void Game::runFromFight(){
     std::cout << std::endl;
     printCharByChar("In the next floor you see ", fast);
     pause();
-    floor++;
-    printCharByChar(enemy.getName() + "!");
-    pause();
+    
+    if (floor >= (lastCampFloor + 4 + (rand() % 4)))
+    {
+        nextFloorIsCamp = true;
+        lastCampFloor = floor;
+    }
+    else
+    {
+        nextFloorIsCamp = false;
+    }
+    
+    if (nextFloorIsCamp)
+    {
+        printCharByChar("Camp!");
+        pause();
+    }
+    else
+    {
+        createNewEnemy();
+        printCharByChar(enemy.getName() + "!");
+        pause();
+        
+        // CHECK IF PLAYER WANTS TO USE POTION
+        if (player.getPotion().grade != 0 && player.getHP() < player.getHPMax())
+        {
+            // Confirm drinking potion
+            if (getContinueKey("\nWould you like to drink your healing potion for " + std::to_string(player.getPotion().grade) + " HP? (Y/n): ") == 'y')
+            {
+                printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!", fast);
+                pause();
+                printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
+                pause();
+            }
+        }
+    }
     
     // "CONTINUE"
     enemyIsPrinted = false;
