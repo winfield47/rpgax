@@ -13,8 +13,8 @@ int main(){
     clearScreen();
     
     // Initialize the Game
-    // Game rpgax = Game(Player(brute, "Winfield")); // Testing
-    Game rpgax = Game();
+    Game rpgax = Game(Player(nomad, "Winfield")); // Testing
+    // Game rpgax = Game();
     
     // First stop: camp!
     rpgax.camp();

@@ -91,9 +91,8 @@ void Game::createNewPlayer(){
             else
             {
                 printCharByChar(" " + currentPlayerOrigin.getAsciiArt());
-                pause(0.2);
                 printCharByChar(" " + currentPlayerOrigin.getDescription(), fast);
-                pause(0.3);
+                pause();
             }
             std::cout << "\t\n" << std::endl;
         }
@@ -134,7 +133,21 @@ void Game::createNewPlayer(){
     pause();
     printCharByChar(", a name flutters past your thoughts...");
     pause();
-    inputName = getLineFromPrompt("\n\nWhat was your name? ");
+    while (1)
+    {
+        inputName = getLineFromPrompt("\n\nWhat was your name? ");
+        if (inputName != "")
+        {
+            if (getContinueKey("Are you sure it was " + inputName + "? (Y/n): ") == 'y')
+            {
+                break;
+            }
+        }
+        else
+        {
+            printCharByChar("Please enter name that isn't blank.");
+        }
+    }
     
     clearScreen();
     
@@ -564,8 +577,8 @@ _____----- |     ]              [ ||||||| ]              [     |
         {
             // THE PLAYER HAS PLAYED BEFORE AND SKIPPED IT ALL
             clearScreen();
-            printCharByChar("With your flesh rotting and the smell of souls clouding your mind,", fast);
-            printCharByChar("\nyou try desperately to remember who you were...", fast);
+            printCharByChar("With your flesh rotting and the smell of souls clouding your mind,", faster);
+            printCharByChar("\nyou try desperately to remember who you were...", faster);
             pause();
         }
     }
@@ -628,30 +641,24 @@ void Game::displayOrigin(const Player &originCharacter, bool hasDisplayedOrigins
         printCharByChar(originCharacter.getAsciiArt(), fast);
         pause();
         printCharByChar("\n\nStarting Stats/Gear:", fast);
-        pause();
         printCharByChar("\n\n HP     : ", fast);
         printCharByChar(std::to_string(originCharacter.getHP()) + "/" + std::to_string(originCharacter.getHPMax()), fast);
-        pause();
         printCharByChar("\n Weapon : ", fast);
         printCharByChar(originCharacter.getWeapon().getName(), fast);
-        pause();
         printCharByChar(" (" + std::to_string(originCharacter.getWeapon().getDamage(originCharacter.getWeapon().getMoves().at(0))) + " " + ((originCharacter.getWeapon().getDamageType() == physical) ? "physical" : "magic") + " damage)", fast);
-        pause();
         if (originCharacter.getArmor() != 0)
         {
             printCharByChar("\n Armor  : ", fast);
             printCharByChar(std::to_string(originCharacter.getArmor()), fast);
-            pause();
         }
         if (originCharacter.getResistance() != 0)
         {
             printCharByChar("\n Resist : ", fast);
             printCharByChar(std::to_string(originCharacter.getResistance()), fast);
-            pause();
         }
+        pause();
         printCharByChar("\n\n Souls  : ", fast);
         printCharByChar(std::to_string(originCharacter.getSouls()), fast);
-        pause();
         printCharByChar("\n Potion : ", fast);
         printCharByChar((originCharacter.getPotion().grade != 0 ? std::to_string(originCharacter.getPotion().grade) + " " : "") + originCharacter.getPotion().name, fast);
         pause();
@@ -682,8 +689,7 @@ void Game::displayCamp(PrintSpeed currentPrintSpeed){
        \' |,  / \   ` \ `:.     _,-'_|jrei`/
           '._;   \ .   \   `_,-'_,-'
         \'    `- .\_   |\,-'_,-'
-               `--|_,`'
-                            `/
+                `   '--  \'
 )";
     if (currentPrintSpeed == instant)
     {
@@ -696,18 +702,18 @@ void Game::displayCamp(PrintSpeed currentPrintSpeed){
     }
     printCharByChar("Actions:", currentPrintSpeed);
     printCharByChar("\n <Rest>", currentPrintSpeed);
-    printCharByChar("\n <Level Up>", currentPrintSpeed);
+    printCharByChar("\n <Ingest Souls>", currentPrintSpeed);
     printCharByChar("\n <Visit Campfire>", currentPrintSpeed);
     printCharByChar("\n <Continue>\n\n", currentPrintSpeed);
     
 }
 void Game::displayShop(PrintSpeed currentPrintSpeed){
     std::string asciiShop = R"(
-jgs     ______
+        ______
        /     /\
       /     /  \
      /_____/----\_
-    "     "             "Hello traveller,
+    "     " jgs          "Hello traveller,
  _ ___                     I'll trade anything for souls!"
 (@))_))                              \
                       (              \  (}}}.
@@ -734,7 +740,30 @@ jgs     ______
     }
     printCharByChar("Actions:", currentPrintSpeed);
     printCharByChar("\n <Trade>", currentPrintSpeed);
-    printCharByChar("\n <Go to Tent>\n\n", currentPrintSpeed);
+    printCharByChar("\n <Return to Tent>\n\n", currentPrintSpeed);
+}
+void Game::displayLevelUpScreen(PrintSpeed currentPrintSpeed){
+    printCharByChar(player.getName() + ":", currentPrintSpeed);
+    if (currentPrintSpeed == instant)
+    {
+        printCharByChar(player.getFullBlownASCII(), instant);
+    }
+    else
+    {
+        printCharByChar(player.getFullBlownASCII(), lightning);
+        pause();
+    }
+    printCharByChar("HP~" + std::to_string(player.getHP()) + "/" + std::to_string(player.getHPMax()), currentPrintSpeed);
+    printCharByChar("\n" + getStringAttributes(player), currentPrintSpeed);
+    printCharByChar("\n\nSouls  : " + std::to_string(player.getSouls()), currentPrintSpeed);
+    printCharByChar("\nNeeded : " + std::to_string(player.getSoulsNeededToLevelUp()), currentPrintSpeed);
+    printCharByChar("\n\n <Strength>     : increases health", currentPrintSpeed);
+    printCharByChar("\n <Dexterity>    : dictates speed", currentPrintSpeed);
+    printCharByChar("\n <Intelligence> : Spellbook power : (INT - 70)", currentPrintSpeed);
+    printCharByChar("\n <Faith>        : Talisman's Heal : (FAI - 70)", currentPrintSpeed);
+    printCharByChar("\n <Done>", currentPrintSpeed);
+    std::cout << std::endl << std::endl;
+    
 }
 void Game::displayHUD(const Player &player, const Enemy &enemy){
 
@@ -1003,7 +1032,7 @@ void Game::camp(){
     while (1)
     {
         clearScreen();
-        printCharByChar(player.getName() + " HP: " + std::to_string(player.getHP()) + "/" + std::to_string(player.getHPMax()), currentPrintSpeed);
+        printCharByChar(player.getName() + ", HP: " + std::to_string(player.getHP()) + "/" + std::to_string(player.getHPMax()) + ", Souls: " + std::to_string(player.getSouls()), currentPrintSpeed);
         displayCamp(currentPrintSpeed);
         getSmartInput("Select an <Action>: ");
         
@@ -1015,10 +1044,10 @@ void Game::camp(){
             getSmartInput();
             currentPrintSpeed = instant;
         }
-        else if (isSubset(input, "level up"))
+        else if (isSubset(input, "ingest souls"))
         {
-            
-            currentPrintSpeed = instant;
+            ingestSouls();
+            currentPrintSpeed = fast;
         }
         else if (isSubset(input, "visit campfire"))
         {
@@ -1027,7 +1056,7 @@ void Game::camp(){
         }
         else if (isSubset(input, "continue"))
         {
-            if (getContinueKey("Are you sure you want to leave camp? (Y/n): "))
+            if (getContinueKey("Are you sure you want to leave camp? (Y/n): ") == 'y')
             {
                 break;
             }
@@ -1045,17 +1074,16 @@ void Game::shop(){
     while (1)
     {
         clearScreen();
-        printCharByChar("Souls: " + std::to_string(player.getSouls()));
         displayShop(currentPrintSpeed);
         getSmartInput("Select an <Action>: ");
         
         if (isSubset(input, "trade"))
         {
-            printCharByChar("shopping!", fast);
+            printCharByChar("\n[This feature is not implemented yet!]", fast);
             std::cout << std::endl;
             getSmartInput();
         }
-        else if (isSubset(input, "go to tent"))
+        else if (isSubset(input, "return to tent"))
         {
             break;
         }
@@ -1063,6 +1091,109 @@ void Game::shop(){
         {
             printCharByChar("Please enter a valid <Action>\n", fast);
             getSmartInput();
+        }
+        currentPrintSpeed = instant;
+    }
+}
+void Game::ingestSouls(){
+    PrintSpeed currentPrintSpeed = faster;
+    while (1)
+    {
+        clearScreen();
+        displayLevelUpScreen(currentPrintSpeed);
+        getSmartInput("Select an <Option>: ");
+        
+        if (player.getSouls() >= player.getSoulsNeededToLevelUp())
+        {
+            if (isSubset(input, "strength"))
+            {
+                if (getContinueKey("Improve Strength? (Y/n): ") == 'y')
+                {
+                    printCharByChar("\n" + player.getName() + "'s Strength went up from ", fast);
+                    pause();
+                    printCharByChar(std::to_string(player.getStrength()), slow);
+                    pause();
+                    printCharByChar(" to ");
+                    pause();
+                    player.levelUp(player.getSoulsNeededToLevelUp(), "str");
+                    printCharByChar(std::to_string(player.getStrength()), slow);
+                    pause();
+                    std::cout << std::endl;
+                    getSmartInput();
+                }
+            }
+            else if (isSubset(input, "dexterity"))
+            {
+                if (getContinueKey("Improve Dexterity? (Y/n): ") == 'y')
+                {
+                    printCharByChar("\n" + player.getName() + "'s Dexterity went up from ", fast);
+                    pause();
+                    printCharByChar(std::to_string(player.getDexterity()), slow);
+                    pause();
+                    printCharByChar(" to ");
+                    pause();
+                    player.levelUp(player.getSoulsNeededToLevelUp(), "dex");
+                    printCharByChar(std::to_string(player.getDexterity()), slow);
+                    pause();
+                    std::cout << std::endl;
+                    getSmartInput();
+                }
+            }
+            else if (isSubset(input, "intelligence"))
+            {
+                if (getContinueKey("Improve Intelligence? (Y/n): ") == 'y')
+                {
+                    printCharByChar("\n" + player.getName() + "'s Intelligence went up from ", fast);
+                    pause();
+                    printCharByChar(std::to_string(player.getIntelligence()), slow);
+                    pause();
+                    printCharByChar(" to ");
+                    pause();
+                    player.levelUp(player.getSoulsNeededToLevelUp(), "int");
+                    printCharByChar(std::to_string(player.getIntelligence()), slow);
+                    pause();
+                    std::cout << std::endl;
+                    getSmartInput();
+                }
+            }
+            else if (isSubset(input, "faith"))
+            {
+                if (getContinueKey("Improve Faith? (Y/n): ") == 'y')
+                {
+                    printCharByChar("\n" + player.getName() + "'s Faith went up from ", fast);
+                    pause();
+                    printCharByChar(std::to_string(player.getFaith()), slow);
+                    pause();
+                    printCharByChar(" to ");
+                    pause();
+                    player.levelUp(player.getSoulsNeededToLevelUp(), "fai");
+                    printCharByChar(std::to_string(player.getFaith()), slow);
+                    pause();
+                    std::cout << std::endl;
+                    getSmartInput();
+                }
+            }
+            else if (isSubset(input, "done"))
+            {
+                break;
+            }
+            else
+            {
+                printCharByChar("Please enter a valid <Action>\n", fast);
+                getSmartInput();
+            }
+        }
+        else
+        {
+            if (isSubset(input, "done"))
+            {
+                break;
+            }
+            else
+            {
+                printCharByChar("You don't have enough souls!\n", fast);
+                getSmartInput();
+            }
         }
         currentPrintSpeed = instant;
     }

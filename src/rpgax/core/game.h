@@ -52,6 +52,7 @@ public:
     void displayOrigin(const Player&, bool);
     void displayCamp(PrintSpeed);
     void displayShop(PrintSpeed);
+    void displayLevelUpScreen(PrintSpeed);
     void displayHUD(const Player&, const Enemy&);
     void printWithFormattingHUD(const std::string&, const std::string&, const OptionSelectHUD optionSelectHUD = addNothing);
     void printMovesWithFormattingHUD(const Weapon&);
@@ -61,6 +62,7 @@ public:
     // Camp
     void camp();
     void shop();
+    void ingestSouls();
     
     // Combat
     void engageInCombat();

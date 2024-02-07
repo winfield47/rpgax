@@ -23,7 +23,7 @@ private:
     Origin origin;
     int level;
     int souls; // This is the currency AND the resource for leveling up in the game
-    int vigor; // This is the name for "EXPERIENCE" in this game since you consum souls to become vigorous
+    int vigor; // This is the name for "EXPERIENCE" in this game since you consume souls to become vigorous
     Apparel apparel;
     Cloak cloak;
     Potion potion;
@@ -39,6 +39,8 @@ public:
     Origin getOrigin() const;
     int getSouls() const;
     int getLevel() const;
+    int getVigor() const;
+    int getSoulsNeededToLevelUp() const;
     virtual int getArmor() const override;
     virtual int getResistance() const override;
     Apparel getApparel() const;
@@ -48,7 +50,7 @@ public:
     
     // Methods
     int spendSouls(int);
-    void consumeSouls(int);
+    void levelUp(int soulsConsumed, std::string attributeToIncrease);
     void addSouls(int);
     void replaceWeapon(Weapon);
     void replaceApparel(Apparel);

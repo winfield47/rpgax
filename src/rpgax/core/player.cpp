@@ -234,6 +234,19 @@ int Player::getSouls() const{
 int Player::getLevel() const{
     return level;
 }
+int Player::getVigor() const{
+    return vigor;
+}
+int Player::getSoulsNeededToLevelUp() const{
+    if (level == 0)
+    {
+        return 10;
+    }
+    else
+    {
+        return vigor * 1.2;
+    }
+}
 int Player::getArmor() const{
     return armor;
 }
@@ -258,9 +271,41 @@ int Player::spendSouls(int soulsSpent){
     souls -= soulsSpent;
     return soulsSpent;
 }
-void Player::consumeSouls(int soulsSpent){
-    souls -= soulsSpent;
-    vigor += soulsSpent;
+void Player::levelUp(int soulsConsumed, std::string attributeToIncrease){
+    if (soulsConsumed == getSoulsNeededToLevelUp())
+    {
+        souls -= soulsConsumed;
+        vigor = soulsConsumed;
+        level += 1;
+        if (attributeToIncrease == "str")
+        {
+            strength += 1;
+            hpMax += 2;
+            heal(2);
+        }
+        else if (attributeToIncrease == "dex")
+        {
+            dexterity += 1;
+        }
+        else if (attributeToIncrease == "int")
+        {
+            intelligence += 1;
+            weapon.setPlayerIntelligenceModifier(intelligence);
+        }
+        else if (attributeToIncrease == "fai")
+        {
+            faith += 1;
+            weapon.setPlayerFaithModifier(faith);
+        }
+        else
+        {
+            throw "bad attribute to level up";
+        }
+    }
+    else
+    {
+        throw "consumed invalid amount of souls to level up";
+    }
 }
 void Player::addSouls(int soulsAdded){
     souls += soulsAdded;
