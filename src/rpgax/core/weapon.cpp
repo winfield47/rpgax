@@ -47,7 +47,6 @@ Weapon::Weapon(WeaponType type, int grade){
             this->damageType = physical;
             this->baseDamage = 9;
             this->baseDamage += grade;
-            moves.push_back(WeaponMove("Lunge"));
             moves.push_back(WeaponMove("Lunge", 2, dexterity, 1));
             // parry will block all damage AND reflect what would have been dealt to the attacker
             moves.push_back(WeaponMove("Riposte", 1, dexterity, 0)); // does no dmg, but has a special effect
@@ -71,9 +70,9 @@ Weapon::Weapon(WeaponType type, int grade){
             this->baseDamage = grade / 3 + playerIntelligenceModifier; // spell book gets damage from INT mod
             moves.push_back(WeaponMove("Magic Missile", 0, noWeaponMoveAttribute, 1));
             // Spellshield will increase resistance by up to the int mod for the combat
-            moves.push_back(WeaponMove("Spellshield", 3, intelligence, 0)); // does no dmg, but has a special effect
+            moves.push_back(WeaponMove("Spellshield", 1, intelligence, 0)); // does no dmg, but has a special effect
             // oakskin will increase armor by up to the int mod for the combat
-            moves.push_back(WeaponMove("Oakskin", 3, intelligence, 0)); // does no dmg, but has a special effect
+            moves.push_back(WeaponMove("Oakskin", 2, intelligence, 0)); // does no dmg, but has a special effect
             break;
         case magicstaff:
             this->damageType = magic;

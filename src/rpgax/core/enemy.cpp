@@ -195,8 +195,8 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             description = "A clumsy ogre with a brown shirt on!";
             weapon = Weapon(giantclub, floorLevel);
             strength = 85;
-            dexterity = 25;
-            intelligence = 25;
+            dexterity = 15;
+            intelligence = 15;
             faith = 60;
             armor = 0;
             resistance = 0;

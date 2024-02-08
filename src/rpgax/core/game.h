@@ -66,8 +66,9 @@ public:
     
     // Camp
     void camp();
-    void shop();
     void ingestSouls();
+    void visitCampfire();
+    void trade();
     
     // Combat
     void engageInCombat();

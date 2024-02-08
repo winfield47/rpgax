@@ -1066,7 +1066,7 @@ void Game::camp(){
         }
         else if (isSubset(input, "visit campfire"))
         {
-            shop();
+            visitCampfire();
             currentPrintSpeed = fast;
         }
         else if (isSubset(input, "continue"))
@@ -1084,32 +1084,6 @@ void Game::camp(){
         }
     }
     nextFloorIsCamp = false;
-}
-void Game::shop(){
-    PrintSpeed currentPrintSpeed = fast;
-    while (1)
-    {
-        clearScreen();
-        displayShop(currentPrintSpeed);
-        getSmartInput("Select an <Action>: ");
-        
-        if (isSubset(input, "trade"))
-        {
-            printCharByChar("\n[This feature is not implemented yet!]", fast);
-            std::cout << std::endl;
-            getSmartInput();
-        }
-        else if (isSubset(input, "return to tent"))
-        {
-            break;
-        }
-        else
-        {
-            printCharByChar("Please enter a valid <Action>\n", fast);
-            getSmartInput();
-        }
-        currentPrintSpeed = instant;
-    }
 }
 void Game::ingestSouls(){
     PrintSpeed currentPrintSpeed = faster;
@@ -1214,6 +1188,35 @@ void Game::ingestSouls(){
         currentPrintSpeed = instant;
     }
 }
+void Game::visitCampfire(){
+    PrintSpeed currentPrintSpeed = fast;
+    while (1)
+    {
+        clearScreen();
+        displayShop(currentPrintSpeed);
+        getSmartInput("Select an <Action>: ");
+        
+        // TRADING
+        if (isSubset(input, "trade"))
+        {
+            trade();
+        }
+        else if (isSubset(input, "return to tent"))
+        {
+            break;
+        }
+        else
+        {
+            printCharByChar("Please enter a valid <Action>\n", fast);
+            getSmartInput();
+        }
+        currentPrintSpeed = instant;
+    }
+}
+void Game::trade(){
+    printCharByChar("\n[This feature is not implemented yet!]\n", fast);
+    getSmartInput();
+}
 
 // Combat
 void Game::engageInCombat(){
@@ -1227,6 +1230,7 @@ void Game::engageInCombat(){
             if (playerRanFromFight)
             {
                 runFromFight();
+                return;
             }
             // or kill the enemy?
             else if (enemy.getHP() <= 0)
@@ -1250,6 +1254,7 @@ void Game::engageInCombat(){
             if (playerRanFromFight)
             {
                 runFromFight();
+                return;
             }
             // or kill the enemy?
             else if (enemy.getHP() <= 0)
@@ -1353,7 +1358,7 @@ void Game::performPlayerMove(){
                     int checksSucceeded = 0;
                     int randomNumberOutOf100 = rand() % 100;
                     printCharByChar(player.getName() + " tried to <Run>: ");
-                    pause();
+                    pause(0.5);
                     if (getCharacterAttributeValue(player, dexterity) > randomNumberOutOf100)
                     {
                         checksSucceeded += 1;
@@ -1364,7 +1369,7 @@ void Game::performPlayerMove(){
                         printCharByChar("[ ]~", slow);
                     }
                     randomNumberOutOf100 = rand() % 100;
-                    pause();
+                    pause(0.5);
                     if (getCharacterAttributeValue(player, dexterity) > randomNumberOutOf100)
                     {
                         checksSucceeded += 1;
@@ -1793,12 +1798,18 @@ void Game::enemyDeathCleanUp(){
     printCharByChar("In the next floor you see ", fast);
     pause();
     
+    // DETERMINE NEXT FLOOR AS CAMP
     if (floor >= (lastCampFloor + 4 + (rand() % 4)))
     {
         nextFloorIsCamp = true;
         lastCampFloor = floor;
     }
+    else
+    {
+        nextFloorIsCamp = false;
+    }
     
+    // EXECUTE NEXT FLOOR
     if (nextFloorIsCamp)
     {
         printCharByChar("Camp!");
@@ -1806,7 +1817,6 @@ void Game::enemyDeathCleanUp(){
     }
     else
     {
-        createNewEnemy();
         printCharByChar(enemy.getName() + "!");
         pause();
         
@@ -1851,6 +1861,7 @@ void Game::runFromFight(){
     printCharByChar("In the next floor you see ", fast);
     pause();
     
+    // DETERMINE NEXT FLOOR AS CAMP
     if (floor >= (lastCampFloor + 4 + (rand() % 4)))
     {
         nextFloorIsCamp = true;
@@ -1861,6 +1872,7 @@ void Game::runFromFight(){
         nextFloorIsCamp = false;
     }
     
+    // EXECUTE NEXT FLOOR
     if (nextFloorIsCamp)
     {
         printCharByChar("Camp!");
@@ -1868,7 +1880,6 @@ void Game::runFromFight(){
     }
     else
     {
-        createNewEnemy();
         printCharByChar(enemy.getName() + "!");
         pause();
         
@@ -1937,7 +1948,7 @@ int Game::rollWeaponChecks(Character &character, const WeaponMove chosenMove){
     printCharByChar(character.getName() + " used <" + chosenMove.getName() + ">: ");
     for (size_t i = 0; i < chosenMove.getAmountOfChecks() - 1; i++)
     {
-        pause();
+        pause(0.5);
         if (getCharacterAttributeValue(character, chosenMove.getUsedAttribute()) > randomNumberOutOf100)
         {
             checksSucceeded += 1;
@@ -1950,7 +1961,7 @@ int Game::rollWeaponChecks(Character &character, const WeaponMove chosenMove){
         printCharByChar("~");
         randomNumberOutOf100 = rand() % 100;
     }
-    pause();
+    pause(0.5);
     if (getCharacterAttributeValue(character, chosenMove.getUsedAttribute()) > randomNumberOutOf100)
     {
         checksSucceeded += 1;
