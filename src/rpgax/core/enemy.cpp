@@ -39,7 +39,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     weapon = Weapon(talons, floorLevel);
                     strength = 60;
                     dexterity = 78;
-                    intelligence = 50;
+                    intelligence = 70;
                     faith = 50;
                     armor = 0;
                     resistance = 0;
@@ -154,7 +154,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             name = "Ghoul";
             description = "A corpse walking around like it owns place!";
             weapon = Weapon(ghoulweapon, floorLevel);
-            strength = 63;
+            strength = 60;
             dexterity = 72;
             intelligence = 40;
             faith = 0;
@@ -233,8 +233,8 @@ void Enemy::varyStats(){
         armor += ((randomValueForArmor % maxValue) - rand() % maxValue) <= 0 ? 0 : (randomValueForArmor % maxValue);
         resistance += ((randomValueForResistance % maxValue) - rand() % maxValue) <= 0 ? 0 : (randomValueForResistance % maxValue);
     }
-    int strengthVariance = (rand() % ((floorLevel / 2) + 1)) + ((rand() % variance) / 2) - ((rand() % variance) / 2);
-    int dexterityVariance = (rand() % ((floorLevel / 2) + 1)) + (rand() % variance) - (rand() % variance);
+    int strengthVariance = (rand() % ((floorLevel / 3) + 1)) + ((rand() % variance) / 2) - ((rand() % variance) / 2);
+    int dexterityVariance = (rand() % ((floorLevel / 3) + 1)) + (rand() % variance) - (rand() % variance);
     int intelligenceVariance = (rand() % ((floorLevel / 2) + 1)) + (rand() % variance) - (rand() % variance);
     int faithVariance = (rand() % ((floorLevel / 2) + 1)) + (rand() % variance) - (rand() % variance);
     strength += strengthVariance;

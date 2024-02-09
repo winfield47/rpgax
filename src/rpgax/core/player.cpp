@@ -277,6 +277,8 @@ void Player::levelUp(int soulsConsumed, std::string attributeToIncrease){
         souls -= soulsConsumed;
         vigor = soulsConsumed;
         level += 1;
+        hpMax += 1;
+        heal(1);
         if (attributeToIncrease == "str")
         {
             strength += 1;

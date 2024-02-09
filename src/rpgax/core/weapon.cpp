@@ -55,8 +55,8 @@ Weapon::Weapon(WeaponType type, int grade){
             this->damageType = physical;
             this->baseDamage = 2;
             this->baseDamage += grade;
-            moves.push_back(WeaponMove("Assassinate", 1, dexterity, 0.5));
-            moves.push_back(WeaponMove("Stab", 0, noWeaponMoveAttribute, 0.8));
+            moves.push_back(WeaponMove("Assassinate", 1, dexterity, 0.6));
+            moves.push_back(WeaponMove("Stab", 0, noWeaponMoveAttribute, 1));
             break;
         case bow:
             this->damageType = physical;
@@ -67,7 +67,8 @@ Weapon::Weapon(WeaponType type, int grade){
             break;
         case spellbook:
             this->damageType = magic;
-            this->baseDamage = grade / 3 + playerIntelligenceModifier; // spell book gets damage from INT mod
+            this->baseDamage = 0;
+            this->baseDamage = grade + (playerIntelligenceModifier * 2); // spell book gets damage from INT mod
             moves.push_back(WeaponMove("Magic Missile", 0, noWeaponMoveAttribute, 1));
             // Spellshield will increase resistance by up to the int mod for the combat
             moves.push_back(WeaponMove("Spellshield", 1, intelligence, 0)); // does no dmg, but has a special effect
@@ -76,8 +77,8 @@ Weapon::Weapon(WeaponType type, int grade){
             break;
         case magicstaff:
             this->damageType = magic;
-            this->baseDamage = 4;
-            this->baseDamage += grade + (grade / 2) + playerIntelligenceModifier / 2;
+            this->baseDamage = 7;
+            this->baseDamage += grade + grade / 2;
             moves.push_back(WeaponMove("Ice Bolt", 2, intelligence, 0.8));
             moves.push_back(WeaponMove("Fireball", 5, intelligence, 1));
             moves.push_back(WeaponMove("Time Blast", 1, intelligence, 1.2));
@@ -110,6 +111,7 @@ Weapon::Weapon(WeaponType type, int grade){
             this->baseDamage += grade;
             moves.push_back(WeaponMove("Talons", 2, dexterity, 1));
             moves.push_back(WeaponMove("Pluck", 5, dexterity, 1.5));
+            break;
         case ravenbook:
             this->damageType = physical;
             this->baseDamage = 2;
