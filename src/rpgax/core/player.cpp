@@ -86,7 +86,7 @@ Player::Player(Origin origin, std::string playerName){
             break;
     }
     
-    hpMax = hp = 20 + (strength - 70) * 2;
+    hpMax = hp = 20 + (strength - 70) * 1.5;
     armor = apparel.grade;
     resistance = cloak.grade;
     weapon.setPlayerIntelligenceModifier(intelligence);

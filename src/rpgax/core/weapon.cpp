@@ -55,7 +55,7 @@ Weapon::Weapon(WeaponType type, int grade){
             this->damageType = physical;
             this->baseDamage = 2;
             this->baseDamage += grade;
-            moves.push_back(WeaponMove("Assassinate", 1, dexterity, 0.6));
+            moves.push_back(WeaponMove("Assassinate", 1, dexterity, 0.5));
             moves.push_back(WeaponMove("Stab", 0, noWeaponMoveAttribute, 1));
             break;
         case bow:

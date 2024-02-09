@@ -92,13 +92,13 @@ void Character::enterStatus(PlayerStatus statusToEnter){
             case spellshield:
                 if (intelligence > 70)
                 {
-                    resistance += intelligence - 70;
+                    resistance += (intelligence - 70) * 2;
                 }
                 break;
             case oakskin:
                 if (intelligence > 70)
                 {
-                    armor += intelligence - 70;
+                    armor += (intelligence - 70) * 2;
                 }
                 break;
             default:

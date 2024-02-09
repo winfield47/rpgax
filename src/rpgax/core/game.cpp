@@ -920,7 +920,7 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon){
         else
         {
             // if the move is Heal
-            int healAmount =playerWeapon.getPlayerFaithModifier();
+            int healAmount = playerWeapon.getPlayerFaithModifier() * 2;
             if (healAmount < 0)
             {
                 healAmount = 0;
@@ -971,7 +971,7 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
         else
         {
             // if the move is Heal
-            int healAmount = playerWeapon.getPlayerFaithModifier();
+            int healAmount = playerWeapon.getPlayerFaithModifier() * 2;
             if (healAmount < 0)
             {
                 healAmount = 0;
@@ -1002,7 +1002,7 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
             if (chosenMove.getName() == "Heal")
             {
                 // if the move is Heal
-                int healAmount = enemy.getFaith() - 70;
+                int healAmount = (enemy.getFaith() * 2) - 70;
                 if (healAmount < 0)
                 {
                     healAmount = 0;
@@ -1546,7 +1546,7 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
         if (chosenMove.getName() == "Heal")
         {
             // HEAL
-            int healAmount = (character1.getFaith() - 70) < 0 ? 0 : (character1.getFaith() - 70);
+            int healAmount = (character1.getFaith() * 2 - 70) < 0 ? 0 : (character1.getFaith() * 2 - 70);
             printCharByChar(character1.getName() + " casted <Heal>!", fast);
             pause();
             printCharByChar("\n" + character1.getName() + " healed " + std::to_string(character1.heal(healAmount)) + " HP", fast);
@@ -1670,7 +1670,7 @@ void Game::determineWhoGoesFirst(){
     }
     else
     {
-        if ((player.getSouls() + floor + enemy.getIntelligence() + player.getName().length()) % 2 == 0)
+        if (player.getIntelligence() > enemy.getIntelligence())
         {
             playerGoesFirst = true;
         }
