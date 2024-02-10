@@ -35,6 +35,7 @@ public:
     int getDexterity() const;
     int getIntelligence() const;
     int getFaith() const;
+    std::string getHighestAttribute() const;
     PlayerStatus getStatus() const;
     
     // Methods

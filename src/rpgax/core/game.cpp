@@ -14,6 +14,7 @@ std::string Game::input = "";
 Player Game::player = Player();
 Enemy Game::enemy = Enemy();
 std::set<EnemyType> Game::enemyTypesSeen = {};
+std::vector<Weapon> Game::shopWeapons = {};
 short Game::floor = 0;
 short Game::lastCampFloor = 0;
 bool Game::playerGoesFirst = true;
@@ -709,7 +710,7 @@ void Game::displayCamp(PrintSpeed currentPrintSpeed){
     printCharByChar("\n <Continue>\n\n", currentPrintSpeed);
     
 }
-void Game::displayShop(PrintSpeed currentPrintSpeed){
+void Game::displayCampfire(PrintSpeed currentPrintSpeed){
     std::string asciiShop = R"(
         ______
        /     /\
@@ -743,6 +744,58 @@ void Game::displayShop(PrintSpeed currentPrintSpeed){
     printCharByChar("Actions:", currentPrintSpeed);
     printCharByChar("\n <Trade>", currentPrintSpeed);
     printCharByChar("\n <Return to Tent>\n\n", currentPrintSpeed);
+}
+void Game::displayShop(PrintSpeed currentPrintSpeed, std::vector<Weapon> weapons){
+    std::string asciiWeapons = R"(
+   |\                     /)
+ /\_\\__               (_//
+|   `>\-`     _._       //`)
+ \ /` \\  _.-`:::`-._  //
+  `    \|`    :::    `|/
+        |     :::     |
+        |.....:::.....|
+        |:::::jgs:::::|
+        |     :::     |
+        \     :::     /
+         \    :::    /
+          `-. ::: .-'
+           //`:::`\\
+          //   '   \\
+         |/         \\
+)";
+    short amountOfWeapons = weapons.size();
+    if (amountOfWeapons != 4)
+    {
+        throw "amount of shop weapons is wrong";
+    }
+    if (currentPrintSpeed == instant)
+    {
+        printCharByChar(asciiWeapons, instant);
+    }
+    else
+    {
+        printCharByChar(asciiWeapons, lightning);
+        pause();
+    }
+    // Player Stuff
+    printCharByChar("\nSouls   : " + std::to_string(player.getSouls()), currentPrintSpeed);
+    printCharByChar("\nWeapon  : " + player.getWeapon().getName() + " " + std::to_string(player.getWeapon().getGrade()), currentPrintSpeed);
+    printCharByChar("\nApparel : " + std::to_string(player.getApparel().grade), currentPrintSpeed);
+    printCharByChar("\nCloak   : " + std::to_string(player.getCloak().grade), currentPrintSpeed);
+    
+    // SHOP
+    printCharByChar("\n\nFor Sale:", currentPrintSpeed);
+    printCharByChar("\n <Upgrade> your " + weapons.at(0).getName() + " to Grade " + std::to_string(weapons.at(0).getGrade()), currentPrintSpeed);
+    printCharByChar("\n <" + weapons.at(1).getName() + "> " + std::to_string(weapons.at(1).getGrade()), currentPrintSpeed);
+    printCharByChar("\n <" + weapons.at(2).getName() + "> " + std::to_string(weapons.at(2).getGrade()), currentPrintSpeed);
+    printCharByChar("\n <" + weapons.at(3).getName() + "> " + std::to_string(weapons.at(3).getGrade()), currentPrintSpeed);
+    printCharByChar("\n\n <Apparel> " + std::to_string(floor + 1), currentPrintSpeed);
+    printCharByChar("\n <Cloak> " + std::to_string(floor + 1), currentPrintSpeed);
+    printCharByChar("\n <Potion> " + std::to_string(floor + 1), currentPrintSpeed);
+    printCharByChar("\n\n <Done>", currentPrintSpeed);
+    
+    // Tutorial
+    printCharByChar("\n\nThe number after each item is both the cost and grade of the item.\n", currentPrintSpeed);
 }
 void Game::displayLevelUpScreen(PrintSpeed currentPrintSpeed){
     printCharByChar(player.getName() + ":", currentPrintSpeed);
@@ -1043,6 +1096,40 @@ void Game::play(){
 
 // Camp
 void Game::camp(){
+    
+    // Upgrade current weapon
+    short newWeaponGrade = player.getWeapon().getGrade();
+    if (newWeaponGrade < floor + (floor / 2) + 1)
+    {
+        newWeaponGrade = floor + (floor / 2) + 1;
+    }
+    else
+    {
+        newWeaponGrade += log2(newWeaponGrade + 1) + 1;
+    }
+    shopWeapons.push_back(Weapon(player.getWeapon().getType(), newWeaponGrade));
+    
+    // Make a weapon that utilizes the player's highest attribute
+    bool makingWeapon = true;
+    Weapon weapon = Weapon();
+    while (makingWeapon)
+    {
+        weapon = Weapon(randomized, floor + 2);
+        for (WeaponMove move : weapon.getMoves())
+        {
+            if (lowercase(getStringForAttributeEnum(static_cast<int>(move.getUsedAttribute()))) == player.getHighestAttribute())
+            {
+                makingWeapon = false;
+            }
+        }
+    }
+    shopWeapons.push_back(weapon);
+    
+    // Create 2 random weapons
+    shopWeapons.push_back(Weapon(randomized, floor + log2(floor + 1) + 1));
+    shopWeapons.push_back(Weapon(randomized, floor + static_cast<int>(enemy.getType()) + 1));
+    
+    
     PrintSpeed currentPrintSpeed = fast;
     while (1)
     {
@@ -1193,13 +1280,14 @@ void Game::visitCampfire(){
     while (1)
     {
         clearScreen();
-        displayShop(currentPrintSpeed);
+        displayCampfire(currentPrintSpeed);
         getSmartInput("Select an <Action>: ");
         
         // TRADING
         if (isSubset(input, "trade"))
         {
             trade();
+            currentPrintSpeed = fast;
         }
         else if (isSubset(input, "return to tent"))
         {
@@ -1209,13 +1297,65 @@ void Game::visitCampfire(){
         {
             printCharByChar("Please enter a valid <Action>\n", fast);
             getSmartInput();
+            currentPrintSpeed = instant;
         }
-        currentPrintSpeed = instant;
     }
 }
 void Game::trade(){
-    printCharByChar("\n[This feature is not implemented yet!]\n", fast);
-    getSmartInput();
+    PrintSpeed currentPrintSpeed = fast;
+    while (1)
+    {
+        clearScreen();
+        displayShop(currentPrintSpeed, shopWeapons);
+        getSmartInput("Select an <Option>: ");
+        
+        // TRADING
+        if (isSubset(input, "upgrade"))
+        {
+            printCharByChar(input);
+            getSmartInput();
+        }
+        else if (isSubset(input, lowercase(shopWeapons.at(1).getName())))
+        {
+            printCharByChar(input);
+            getSmartInput();
+        }
+        else if (isSubset(input, lowercase(shopWeapons.at(2).getName())))
+        {
+            printCharByChar(input);
+            getSmartInput();
+        }
+        else if (isSubset(input, lowercase(shopWeapons.at(3).getName())))
+        {
+            printCharByChar(input);
+            getSmartInput();
+        }
+        else if (isSubset(input, "apparel"))
+        {
+            printCharByChar(input);
+            getSmartInput();
+        }
+        else if (isSubset(input, "cloak"))
+        {
+            printCharByChar(input);
+            getSmartInput();
+        }
+        else if (isSubset(input, "potion"))
+        {
+            printCharByChar(input);
+            getSmartInput();
+        }
+        else if (isSubset(input, "done"))
+        {
+            break;
+        }
+        else
+        {
+            printCharByChar("Please enter a valid <Option>\n", fast);
+            getSmartInput();
+        }
+        currentPrintSpeed = instant;
+    }
 }
 
 // Combat

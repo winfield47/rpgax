@@ -11,13 +11,43 @@ int Weapon::playerIntelligenceModifier = 0;
 int Weapon::playerFaithModifier = 0;
 int Weapon::enemyIntelligenceModifier = 0;
 int Weapon::enemyFaithModifier = 0;
+std::deque<WeaponType> Weapon::last4RandomizedWeaponTypes = {};
 
 // Constructors
 Weapon::Weapon(){}
 Weapon::Weapon(WeaponType type, int grade){
     if (type == randomized)
     {
-        type = static_cast<WeaponType>(rand() % TOTAL_PLAYER_WEAPON_TYPES);
+        bool randomizing = true;
+        while (randomizing)
+        {
+            // keep randomizing the type until we get one we haven't seen in the last 4 randomized types
+            type = static_cast<WeaponType>(rand() % TOTAL_PLAYER_WEAPON_TYPES);
+            if (last4RandomizedWeaponTypes.size() != 0)
+            {
+                for (WeaponType weaponType : last4RandomizedWeaponTypes)
+                {
+                    if (type == weaponType)
+                    {
+                        randomizing = true;
+                        break;
+                    }
+                    else
+                    {
+                        randomizing = false;
+                    }
+                }
+            }
+            else
+            {
+                randomizing = false;
+            }
+        }
+        last4RandomizedWeaponTypes.push_back(type);
+        if (last4RandomizedWeaponTypes.size() > 4)
+        {
+            last4RandomizedWeaponTypes.pop_front();
+        }
     }
     else if (type == special)
     {

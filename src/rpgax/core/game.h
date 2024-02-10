@@ -15,12 +15,13 @@
 
 class Game
 {
-public:
+private:
     // Properties
     static std::string input;
     static Player player;
     static Enemy enemy;
     static std::set<EnemyType> enemyTypesSeen;
+    static std::vector<Weapon> shopWeapons;
     static short floor;
     static short lastCampFloor;
     static bool playerGoesFirst;
@@ -31,6 +32,7 @@ public:
     static PrintSpeed playerPrintSpeed;
     static PrintSpeed universalPrintSpeed;
     
+public:
     // Constructors
     Game();
     Game(const Player&);
@@ -53,7 +55,8 @@ public:
     void printIntroductionParagraph(PrintSpeed);
     void displayOrigin(const Player&, bool);
     void displayCamp(PrintSpeed);
-    void displayShop(PrintSpeed);
+    void displayCampfire(PrintSpeed);
+    void displayShop(PrintSpeed, std::vector<Weapon>);
     void displayLevelUpScreen(PrintSpeed);
     void displayHUD(const Player&, const Enemy&);
     void printWithFormattingHUD(const std::string&, const std::string&, const OptionSelectHUD optionSelectHUD = addNothing);

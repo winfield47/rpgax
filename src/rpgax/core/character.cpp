@@ -61,6 +61,39 @@ int Character::getIntelligence() const{
 int Character::getFaith() const{
     return faith;
 }
+std::string Character::getHighestAttribute() const{
+    int highestValue = strength;
+    if (dexterity > highestValue)
+    {
+        highestValue = dexterity;
+    }
+    if (intelligence > highestValue)
+    {
+        highestValue = intelligence;
+    }
+    if (faith > highestValue)
+    {
+        highestValue = faith;
+    }
+    
+    if (strength == highestValue)
+    {
+        return "str";
+    }
+    else if (dexterity == highestValue)
+    {
+        return "dex";
+    }
+    else if (intelligence == highestValue)
+    {
+        return "int";
+    }
+    else if (faith == highestValue)
+    {
+        return "fai";
+    }
+    throw "getHighestAttribute function failed";
+}
 PlayerStatus Character::getStatus() const{
     return status;
 }

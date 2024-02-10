@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <deque>
 #include "weaponmove.h"
 
 enum WeaponType
@@ -63,6 +64,7 @@ private:
     static int playerFaithModifier; // this is for keeping track of how much healing the talisman does
     static int enemyIntelligenceModifier; // this is for keeping track of how much damage the spell book magic missile does
     static int enemyFaithModifier; // this is for keeping track of how much healing the talisman does
+    static std::deque<WeaponType> last4RandomizedWeaponTypes;
     
     // Properties
     std::string name;
