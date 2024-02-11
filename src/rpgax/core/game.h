@@ -72,6 +72,7 @@ public:
     void ingestSouls();
     void visitCampfire();
     void trade();
+    void makeShopItems();
     
     // Combat
     void engageInCombat();

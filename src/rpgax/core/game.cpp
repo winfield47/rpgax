@@ -785,7 +785,7 @@ void Game::displayShop(PrintSpeed currentPrintSpeed, std::vector<Weapon> weapons
     
     // SHOP
     printCharByChar("\n\nFor Sale:", currentPrintSpeed);
-    printCharByChar("\n <Upgrade> your " + weapons.at(0).getName() + " to Grade " + std::to_string(weapons.at(0).getGrade()), currentPrintSpeed);
+    printCharByChar("\n <Upgrade> " + weapons.at(0).getName() + " -> " + std::to_string(weapons.at(0).getGrade()), currentPrintSpeed);
     printCharByChar("\n <" + weapons.at(1).getName() + "> " + std::to_string(weapons.at(1).getGrade()), currentPrintSpeed);
     printCharByChar("\n <" + weapons.at(2).getName() + "> " + std::to_string(weapons.at(2).getGrade()), currentPrintSpeed);
     printCharByChar("\n <" + weapons.at(3).getName() + "> " + std::to_string(weapons.at(3).getGrade()), currentPrintSpeed);
@@ -1096,40 +1096,7 @@ void Game::play(){
 
 // Camp
 void Game::camp(){
-    
-    // Upgrade current weapon
-    short newWeaponGrade = player.getWeapon().getGrade();
-    if (newWeaponGrade < floor + (floor / 2) + 1)
-    {
-        newWeaponGrade = floor + (floor / 2) + 1;
-    }
-    else
-    {
-        newWeaponGrade += log2(newWeaponGrade + 1) + 1;
-    }
-    shopWeapons.push_back(Weapon(player.getWeapon().getType(), newWeaponGrade));
-    
-    // Make a weapon that utilizes the player's highest attribute
-    bool makingWeapon = true;
-    Weapon weapon = Weapon();
-    while (makingWeapon)
-    {
-        weapon = Weapon(randomized, floor + 2);
-        for (WeaponMove move : weapon.getMoves())
-        {
-            if (lowercase(getStringForAttributeEnum(static_cast<int>(move.getUsedAttribute()))) == player.getHighestAttribute())
-            {
-                makingWeapon = false;
-            }
-        }
-    }
-    shopWeapons.push_back(weapon);
-    
-    // Create 2 random weapons
-    shopWeapons.push_back(Weapon(randomized, floor + log2(floor + 1) + 1));
-    shopWeapons.push_back(Weapon(randomized, floor + static_cast<int>(enemy.getType()) + 1));
-    
-    
+    makeShopItems();
     PrintSpeed currentPrintSpeed = fast;
     while (1)
     {
@@ -1310,39 +1277,39 @@ void Game::trade(){
         getSmartInput("Select an <Option>: ");
         
         // TRADING
-        if (isSubset(input, "upgrade"))
+        if (isSubset(input, lowercase(shopWeapons.at(1).getName())))
         {
-            printCharByChar(input);
-            getSmartInput();
-        }
-        else if (isSubset(input, lowercase(shopWeapons.at(1).getName())))
-        {
-            printCharByChar(input);
+            printCharByChar(shopWeapons.at(1).getName(), fast);
             getSmartInput();
         }
         else if (isSubset(input, lowercase(shopWeapons.at(2).getName())))
         {
-            printCharByChar(input);
+            printCharByChar(shopWeapons.at(2).getName(), fast);
             getSmartInput();
         }
         else if (isSubset(input, lowercase(shopWeapons.at(3).getName())))
         {
-            printCharByChar(input);
+            printCharByChar(shopWeapons.at(3).getName(), fast);
+            getSmartInput();
+        }
+        else if (isSubset(input, "upgrade"))
+        {
+            printCharByChar("Upgraded", fast);
             getSmartInput();
         }
         else if (isSubset(input, "apparel"))
         {
-            printCharByChar(input);
+            printCharByChar("Apparel", fast);
             getSmartInput();
         }
         else if (isSubset(input, "cloak"))
         {
-            printCharByChar(input);
+            printCharByChar("Cloak", fast);
             getSmartInput();
         }
         else if (isSubset(input, "potion"))
         {
-            printCharByChar(input);
+            printCharByChar("Potion", fast);
             getSmartInput();
         }
         else if (isSubset(input, "done"))
@@ -1356,6 +1323,41 @@ void Game::trade(){
         }
         currentPrintSpeed = instant;
     }
+}
+void Game::makeShopItems(){
+    // Upgrade current weapon
+    short newWeaponGrade = player.getWeapon().getGrade() + 1;
+    if (newWeaponGrade < floor + (floor / 2) + 1)
+    {
+        newWeaponGrade = floor + (floor / 2) + 1;
+    }
+    else
+    {
+        newWeaponGrade += log2(newWeaponGrade + 1) + 1;
+    }
+    shopWeapons.push_back(Weapon(player.getWeapon().getType(), newWeaponGrade));
+    
+    // Make a weapon that utilizes the player's highest attribute
+    bool makingWeapon = true;
+    Weapon weapon = Weapon();
+    while (makingWeapon)
+    {
+        weapon = Weapon(randomized, floor + 2);
+        for (WeaponMove move : weapon.getMoves())
+        {
+            if (lowercase(getStringForAttributeEnum(static_cast<int>(move.getUsedAttribute()))) == player.getHighestAttribute())
+            {
+                makingWeapon = false;
+            }
+        }
+    }
+    shopWeapons.push_back(weapon);
+    
+    // Create 2 random weapons
+    shopWeapons.push_back(Weapon(randomized, floor + log2(floor + 1) + 1));
+    shopWeapons.push_back(Weapon(randomized, floor + static_cast<int>(enemy.getType()) + 1));
+    
+    
 }
 
 // Combat
