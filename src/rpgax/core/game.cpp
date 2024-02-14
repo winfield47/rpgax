@@ -14,7 +14,7 @@ std::string Game::input = "";
 Player Game::player = Player();
 Enemy Game::enemy = Enemy();
 std::set<EnemyType> Game::enemyTypesSeen = {};
-std::vector<Weapon> Game::shopWeapons = {};
+std::deque<Weapon> Game::shopWeapons = {};
 short Game::floor = 0;
 short Game::lastCampFloor = 0;
 bool Game::playerGoesFirst = true;
@@ -22,6 +22,8 @@ bool Game::playerIsPrinted = false;
 bool Game::enemyIsPrinted = false;
 bool Game::playerRanFromFight = false;
 bool Game::nextFloorIsCamp = true;
+bool Game::playerHasNotRestedYet = true;
+bool Game::playerHasNotTradedYet = true;
 PrintSpeed Game::playerPrintSpeed = fast;
 PrintSpeed Game::universalPrintSpeed = normal;
 
@@ -528,15 +530,15 @@ _____----- |     ]              [ ||||||| ]              [     |
                 printCharByChar("You look down at yourself.");
                 pause();
                 printCharByChar("\n\nYour flesh is rotting...", fast);
-                pause(2);
+                pause(1);
                 printCharByChar(" but there is no pain...", slow);
                 pause();
-                printCharByChar("\n\nThese clothes seem familiar to you",slow);
-                pause(2);
-                printCharByChar(",\nand an old memory washes over you in a wave of warmth.", slow);
-                pause(3);
-                printCharByChar("\nBut it fades as fast as a dream.", slow);
-                pause(2);
+                printCharByChar("\n\nThese clothes seem familiar to you,",slow);
+                pause(1);
+                printCharByChar("\nand an old memory washes over you in a wave of warmth.", slow);
+                pause(1);
+                printCharByChar("\nBut it fades as fast as a dream...", slow);
+                pause(1);
                 
                 // SMELLING SOULS
                 printCharByChar("\n\nThe smell of ", slow);
@@ -704,9 +706,15 @@ void Game::displayCamp(PrintSpeed currentPrintSpeed){
         pause();
     }
     printCharByChar("Actions:", currentPrintSpeed);
-    printCharByChar("\n <Rest>", currentPrintSpeed);
+    if (playerHasNotRestedYet && playerHasNotTradedYet)
+    {
+        printCharByChar("\n <Rest>", currentPrintSpeed);
+    }
     printCharByChar("\n <Ingest Souls>", currentPrintSpeed);
-    printCharByChar("\n <Visit Campfire>", currentPrintSpeed);
+    if (playerHasNotRestedYet)
+    {
+        printCharByChar("\n <Visit Trader>", currentPrintSpeed);
+    }
     printCharByChar("\n <Continue>\n\n", currentPrintSpeed);
     
 }
@@ -743,9 +751,9 @@ void Game::displayCampfire(PrintSpeed currentPrintSpeed){
     }
     printCharByChar("Actions:", currentPrintSpeed);
     printCharByChar("\n <Trade>", currentPrintSpeed);
-    printCharByChar("\n <Return to Tent>\n\n", currentPrintSpeed);
+    printCharByChar("\n <Back to Camp>\n\n", currentPrintSpeed);
 }
-void Game::displayShop(PrintSpeed currentPrintSpeed, std::vector<Weapon> weapons){
+void Game::displayShop(PrintSpeed currentPrintSpeed, std::deque<Weapon> weapons){
     std::string asciiWeapons = R"(
    |\                     /)
  /\_\\__               (_//
@@ -766,6 +774,7 @@ void Game::displayShop(PrintSpeed currentPrintSpeed, std::vector<Weapon> weapons
     short amountOfWeapons = weapons.size();
     if (amountOfWeapons != 4)
     {
+        std::cout << "amount of shop weapons is wrong" << std::endl;
         throw "amount of shop weapons is wrong";
     }
     if (currentPrintSpeed == instant)
@@ -778,10 +787,19 @@ void Game::displayShop(PrintSpeed currentPrintSpeed, std::vector<Weapon> weapons
         pause();
     }
     // Player Stuff
-    printCharByChar("\nSouls   : " + std::to_string(player.getSouls()), currentPrintSpeed);
-    printCharByChar("\nWeapon  : " + player.getWeapon().getName() + " " + std::to_string(player.getWeapon().getGrade()), currentPrintSpeed);
-    printCharByChar("\nApparel : " + std::to_string(player.getApparel().grade), currentPrintSpeed);
-    printCharByChar("\nCloak   : " + std::to_string(player.getCloak().grade), currentPrintSpeed);
+    printCharByChar("\n" + player.getName() + "'s Inventory:", currentPrintSpeed);
+    printCharByChar("\n Souls   : " + std::to_string(player.getSouls()), currentPrintSpeed);
+    printCharByChar("\n Weapon  : " + player.getWeapon().getName() + " " + std::to_string(player.getWeapon().getGrade()), currentPrintSpeed);
+    printCharByChar("\n Apparel : " + std::to_string(player.getApparel().grade), currentPrintSpeed);
+    printCharByChar("\n Cloak   : " + std::to_string(player.getCloak().grade), currentPrintSpeed);
+    if (player.getPotion().grade != 0)
+    {
+        printCharByChar("\n Potion  : " + std::to_string(player.getPotion().grade) + " " + player.getPotion().name, currentPrintSpeed);
+    }
+    else
+    {
+        printCharByChar("\n Potion  : None", currentPrintSpeed);
+    }
     
     // SHOP
     printCharByChar("\n\nFor Sale:", currentPrintSpeed);
@@ -1055,7 +1073,7 @@ void Game::printMovesWithFormattingHUD(const Weapon &playerWeapon, const Enemy &
             if (chosenMove.getName() == "Heal")
             {
                 // if the move is Heal
-                int healAmount = (enemy.getFaith() * 2) - 70;
+                int healAmount = (enemy.getFaith() - 70) * 2;
                 if (healAmount < 0)
                 {
                     healAmount = 0;
@@ -1105,12 +1123,16 @@ void Game::camp(){
         displayCamp(currentPrintSpeed);
         getSmartInput("Select an <Action>: ");
         
-        if (isSubset(input, "rest"))
+        if (playerHasNotRestedYet && playerHasNotTradedYet && isSubset(input, "rest"))
         {
-            printCharByChar("\n" + player.getName() + " rested to " + std::to_string(player.getHPMax()) + " HP!", fast);
-            player.heal(player.getHPMax());
-            std::cout << std::endl;
-            getSmartInput();
+            if (getContinueKey("If you rest, there will be no time to trade.\n\nAre you sure you want to rest? (Y/n): ") == 'y')
+            {
+                printCharByChar("\n" + player.getName() + " rested to " + std::to_string(player.getHPMax()) + " HP!", fast);
+                player.heal(player.getHPMax());
+                playerHasNotRestedYet = false;
+                std::cout << std::endl;
+                getSmartInput();
+            }
             currentPrintSpeed = instant;
         }
         else if (isSubset(input, "ingest souls"))
@@ -1118,10 +1140,23 @@ void Game::camp(){
             ingestSouls();
             currentPrintSpeed = fast;
         }
-        else if (isSubset(input, "visit campfire"))
+        else if (playerHasNotRestedYet && isSubset(input, "visit trader"))
         {
-            visitCampfire();
-            currentPrintSpeed = fast;
+            if (playerHasNotTradedYet == false)
+            {
+                visitCampfire();
+                currentPrintSpeed = fast;
+            }
+            else if (getContinueKey("If you visit the trader, there will be no time to rest.\n\nAre you sure you want to visit the trader? (Y/n): ") == 'y')
+            {
+                visitCampfire();
+                playerHasNotTradedYet = false;
+                currentPrintSpeed = fast;
+            }
+            else
+            {
+                currentPrintSpeed = instant;
+            }
         }
         else if (isSubset(input, "continue"))
         {
@@ -1138,6 +1173,8 @@ void Game::camp(){
         }
     }
     nextFloorIsCamp = false;
+    playerHasNotTradedYet = true;
+    playerHasNotRestedYet = true;
 }
 void Game::ingestSouls(){
     PrintSpeed currentPrintSpeed = faster;
@@ -1253,10 +1290,13 @@ void Game::visitCampfire(){
         // TRADING
         if (isSubset(input, "trade"))
         {
+            // std::cout << "[This feature isn't implemented yet! :]" << std::endl;
+            // getSmartInput();
+            // currentPrintSpeed = instant;
             trade();
             currentPrintSpeed = fast;
         }
-        else if (isSubset(input, "return to tent"))
+        else if (isSubset(input, "back to camp"))
         {
             break;
         }
@@ -1269,7 +1309,7 @@ void Game::visitCampfire(){
     }
 }
 void Game::trade(){
-    PrintSpeed currentPrintSpeed = fast;
+    PrintSpeed currentPrintSpeed = faster;
     while (1)
     {
         clearScreen();
@@ -1277,44 +1317,157 @@ void Game::trade(){
         getSmartInput("Select an <Option>: ");
         
         // TRADING
-        if (isSubset(input, lowercase(shopWeapons.at(1).getName())))
+        if (isSubset(input, "done"))
         {
-            printCharByChar(shopWeapons.at(1).getName(), fast);
-            getSmartInput();
+            break;
+        }
+        else if (isSubset(input, lowercase(shopWeapons.at(1).getName())))
+        {
+            std::string prompt = "Buy " + shopWeapons.at(1).getName() + " (Grade " + std::to_string(shopWeapons.at(1).getGrade()) + ") for " + std::to_string(shopWeapons.at(1).getGrade()) + ((shopWeapons.at(1).getGrade()) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
+            if (player.getSouls() >= shopWeapons.at(1).getGrade())
+            {
+                if (getContinueKey(prompt) == 'y')
+                {
+                    player.spendSouls(shopWeapons.at(1).getGrade());
+                    player.replaceWeapon(Weapon(shopWeapons.at(1).getType(), shopWeapons.at(1).getGrade()));
+                    printCharByChar("\n" + player.getName() + " spent " + (std::to_string(shopWeapons.at(1).getGrade()) + ((shopWeapons.at(1).getGrade()) == 1 ? " soul" : " souls")) + " and gained Grade " + std::to_string(shopWeapons.at(1).getGrade()) + " " + player.getWeapon().getName() + "\n");
+                    pause();
+                    getSmartInput();
+                }
+            }
+            else
+            {
+                printCharByChar("\nYou don't have enough souls!\n");
+                getSmartInput();
+            }
         }
         else if (isSubset(input, lowercase(shopWeapons.at(2).getName())))
         {
-            printCharByChar(shopWeapons.at(2).getName(), fast);
-            getSmartInput();
+            std::string prompt = "Buy " + shopWeapons.at(2).getName() + " (Grade " + std::to_string(shopWeapons.at(2).getGrade()) + ") for " + std::to_string(shopWeapons.at(2).getGrade()) + ((shopWeapons.at(2).getGrade()) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
+            if (player.getSouls() >= shopWeapons.at(2).getGrade())
+            {
+                if (getContinueKey(prompt) == 'y')
+                {
+                    player.spendSouls(shopWeapons.at(2).getGrade());
+                    player.replaceWeapon(Weapon(shopWeapons.at(2).getType(), shopWeapons.at(2).getGrade()));
+                    printCharByChar("\n" + player.getName() + " spent " + (std::to_string(shopWeapons.at(2).getGrade()) + ((shopWeapons.at(2).getGrade()) == 1 ? " soul" : " souls")) + " and gained Grade " + std::to_string(shopWeapons.at(2).getGrade()) + " " + player.getWeapon().getName() + "\n");
+                    pause();
+                    getSmartInput();
+                }
+            }
+            else
+            {
+                printCharByChar("\nYou don't have enough souls!\n");
+                getSmartInput();
+            }
         }
         else if (isSubset(input, lowercase(shopWeapons.at(3).getName())))
         {
-            printCharByChar(shopWeapons.at(3).getName(), fast);
-            getSmartInput();
+            std::string prompt = "Buy " + shopWeapons.at(3).getName() + " (Grade " + std::to_string(shopWeapons.at(3).getGrade()) + ") for " + std::to_string(shopWeapons.at(3).getGrade()) + ((shopWeapons.at(3).getGrade()) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
+            if (player.getSouls() >= shopWeapons.at(3).getGrade())
+            {
+                if (getContinueKey(prompt) == 'y')
+                {
+                    player.spendSouls(shopWeapons.at(3).getGrade());
+                    player.replaceWeapon(Weapon(shopWeapons.at(3).getType(), shopWeapons.at(3).getGrade()));
+                    printCharByChar("\n" + player.getName() + " spent " + (std::to_string(shopWeapons.at(3).getGrade()) + ((shopWeapons.at(3).getGrade()) == 1 ? " soul" : " souls")) + " and gained Grade " + std::to_string(shopWeapons.at(3).getGrade()) + " " + player.getWeapon().getName() + "\n");
+                    pause();
+                    getSmartInput();
+                }
+            }
+            else
+            {
+                printCharByChar("\nYou don't have enough souls!\n");
+                getSmartInput();
+            }
         }
         else if (isSubset(input, "upgrade"))
         {
-            printCharByChar("Upgraded", fast);
-            getSmartInput();
+            if (player.getWeapon().getName() == "Unarmed")
+            {
+                printCharByChar("\nYou must have a weapon to upgrade!\n");
+                getSmartInput();
+            }
+            else
+            {
+                std::string prompt = "Upgrade your weapon to (Grade " + std::to_string(shopWeapons.at(0).getGrade()) + ") for " + std::to_string(shopWeapons.at(0).getGrade()) + ((shopWeapons.at(0).getGrade()) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
+                if (player.getSouls() >= shopWeapons.at(0).getGrade())
+                {
+                    if (getContinueKey(prompt) == 'y')
+                    {
+                        player.spendSouls(shopWeapons.at(0).getGrade());
+                        player.replaceWeapon(Weapon(shopWeapons.at(0).getType(), shopWeapons.at(0).getGrade()));
+                        printCharByChar("\n" + player.getName() + " spent " + (std::to_string(shopWeapons.at(0).getGrade()) + ((shopWeapons.at(0).getGrade()) == 1 ? " soul" : " souls")) + " and upgraded to a Grade " + std::to_string(shopWeapons.at(0).getGrade()) + " " + player.getWeapon().getName() + "\n");
+                        pause();
+                        getSmartInput();
+                    }
+                }
+                else
+                {
+                    printCharByChar("\nYou don't have enough souls!\n");
+                    getSmartInput();
+                }
+            }
         }
         else if (isSubset(input, "apparel"))
         {
-            printCharByChar("Apparel", fast);
-            getSmartInput();
+            std::string prompt = "Buy Apparel (Grade " + std::to_string(floor + 1) + ") for " + std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
+            if (player.getSouls() >= floor + 1)
+            {
+                if (getContinueKey(prompt) == 'y')
+                {
+                    player.spendSouls(floor + 1);
+                    player.replaceApparel(Apparel("Apparel", floor + 1));
+                    printCharByChar("\n" + player.getName() + " spent " + (std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul" : " souls")) + " and gained Grade " + std::to_string(floor + 1) + " Apparel\n");
+                    pause();
+                    getSmartInput();
+                }
+            }
+            else
+            {
+                printCharByChar("You don't have enough souls!");
+                getSmartInput();
+            }
         }
         else if (isSubset(input, "cloak"))
         {
-            printCharByChar("Cloak", fast);
-            getSmartInput();
+            std::string prompt = "Buy Cloak (Grade " + std::to_string(floor + 1) + ") for " + std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
+            if (player.getSouls() >= floor + 1)
+            {
+                if (getContinueKey(prompt) == 'y')
+                {
+                    player.spendSouls(floor + 1);
+                    player.replaceCloak(Cloak("Cloak", floor + 1));
+                    printCharByChar("\n" + player.getName() + " spent " + (std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul" : " souls")) + " and gained Grade " + std::to_string(floor + 1) + " Cloak\n");
+                    pause();
+                    getSmartInput();
+                }
+            }
+            else
+            {
+                printCharByChar("\nYou don't have enough souls!\n");
+                getSmartInput();
+            }
         }
         else if (isSubset(input, "potion"))
         {
-            printCharByChar("Potion", fast);
-            getSmartInput();
-        }
-        else if (isSubset(input, "done"))
-        {
-            break;
+            std::string prompt = "Buy Potion (Grade " + std::to_string(floor + 1) + ") for " + std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
+            if (player.getSouls() >= floor + 1)
+            {
+                if (getContinueKey(prompt) == 'y')
+                {
+                    player.spendSouls(floor + 1);
+                    player.replacePotion(Potion("Healing", floor + 1));
+                    printCharByChar("\n" + player.getName() + " spent " + (std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul" : " souls")) + " and gained Grade " + std::to_string(floor + 1) + " Healing Potion\n");
+                    pause();
+                    getSmartInput();
+                }
+            }
+            else
+            {
+                printCharByChar("\nYou don't have enough souls!\n");
+                getSmartInput();
+            }
         }
         else
         {
@@ -1357,6 +1510,10 @@ void Game::makeShopItems(){
     shopWeapons.push_back(Weapon(randomized, floor + log2(floor + 1) + 1));
     shopWeapons.push_back(Weapon(randomized, floor + static_cast<int>(enemy.getType()) + 1));
     
+    while (shopWeapons.size() > 4)
+    {
+        shopWeapons.pop_front();
+    }
     
 }
 
@@ -1654,7 +1811,7 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
             if (chosenMove.getName() == "Assassinate" && damageDealt > 0)
             {
                 damageDealt += character2.getArmor();
-                printCharByChar("\nThe attack ignored your Armor!");
+                printCharByChar("\nIt ignored all Armor!");
             }
             pause();
         }
@@ -1833,9 +1990,6 @@ void Game::enemyDeathCleanUp(){
     // "DEFEATED ENEMY"
     printCharByChar("You defeated " + enemy.getName() + "!", fast);
     enemyTypesSeen.insert(enemy.getType());
-    floor++;
-    createNewEnemy();
-    pause();
     
     // "HARVESTED SOULS"
     int soulsHarvested = enemy.retrieveSoulsHeld();
@@ -1845,6 +1999,11 @@ void Game::enemyDeathCleanUp(){
     player.addSouls(soulsHarvested);
     pause();
     std::cout << std::endl;
+    
+    // Move to next floor
+    floor++;
+    createNewEnemy();
+    pause();
     
     // "YOU FOUND LOOT"
     unsigned short valueThatPicksItemDropped = rand() % 100;

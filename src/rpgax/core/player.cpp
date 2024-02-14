@@ -31,7 +31,7 @@ Player::Player(Origin origin, std::string playerName){
             dexterity = 69;
             intelligence = 65;
             faith = 71;
-            souls = 2;
+            souls = 0;
             weapon = Weapon(zweihander);
             apparel = Apparel("Hide", 2);
             break;
@@ -42,7 +42,7 @@ Player::Player(Origin origin, std::string playerName){
             dexterity = 75;
             intelligence = 67;
             faith = 70;
-            souls = 5;
+            souls = 2;
             weapon = Weapon(estoc);
             apparel = Apparel("Leather", 1);
             cloak = Cloak("Tattered", 1);
@@ -54,11 +54,11 @@ Player::Player(Origin origin, std::string playerName){
             dexterity = 72;
             intelligence = 75;
             faith = 68;
-            souls = 4;
+            souls = 0;
             weapon.setPlayerIntelligenceModifier(intelligence);
             weapon = Weapon(spellbook);
             cloak = Cloak("Hooded", 2);
-            potion = Potion("Healing", 5);
+            potion = Potion("Healing", 10);
             break;
             
         case inquisitor:
@@ -67,7 +67,7 @@ Player::Player(Origin origin, std::string playerName){
             dexterity = 65;
             intelligence = 68;
             faith = 75;
-            souls = 1;
+            souls = 0;
             weapon = Weapon(talisman);
             apparel = Apparel("Leather", 1);
             cloak = Cloak("Tattered", 1);

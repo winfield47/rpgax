@@ -21,7 +21,7 @@ private:
     static Player player;
     static Enemy enemy;
     static std::set<EnemyType> enemyTypesSeen;
-    static std::vector<Weapon> shopWeapons;
+    static std::deque<Weapon> shopWeapons;
     static short floor;
     static short lastCampFloor;
     static bool playerGoesFirst;
@@ -29,6 +29,8 @@ private:
     static bool enemyIsPrinted;
     static bool playerRanFromFight;
     static bool nextFloorIsCamp;
+    static bool playerHasNotRestedYet;
+    static bool playerHasNotTradedYet;
     static PrintSpeed playerPrintSpeed;
     static PrintSpeed universalPrintSpeed;
     
@@ -56,7 +58,7 @@ public:
     void displayOrigin(const Player&, bool);
     void displayCamp(PrintSpeed);
     void displayCampfire(PrintSpeed);
-    void displayShop(PrintSpeed, std::vector<Weapon>);
+    void displayShop(PrintSpeed, std::deque<Weapon>);
     void displayLevelUpScreen(PrintSpeed);
     void displayHUD(const Player&, const Enemy&);
     void printWithFormattingHUD(const std::string&, const std::string&, const OptionSelectHUD optionSelectHUD = addNothing);
