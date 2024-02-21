@@ -715,10 +715,10 @@ void Game::displayCamp(PrintSpeed currentPrintSpeed){
     {
         printCharByChar("\n <Visit Trader>", currentPrintSpeed);
     }
-    printCharByChar("\n <Continue>\n\n", currentPrintSpeed);
+    printCharByChar("\n <Done>\n\n", currentPrintSpeed);
     
 }
-void Game::displayCampfire(PrintSpeed currentPrintSpeed){
+void Game::displayShop(PrintSpeed currentPrintSpeed, std::deque<Weapon> weapons){
     std::string asciiShop = R"(
         ______
        /     /\
@@ -740,37 +740,6 @@ void Game::displayCampfire(PrintSpeed currentPrintSpeed){
                  `'(_ )_)(_)_)'       jrei
 
 )";
-    if (currentPrintSpeed == instant)
-    {
-        printCharByChar(asciiShop, instant);
-    }
-    else
-    {
-        printCharByChar(asciiShop, lightning);
-        pause();
-    }
-    printCharByChar("Actions:", currentPrintSpeed);
-    printCharByChar("\n <Trade>", currentPrintSpeed);
-    printCharByChar("\n <Back to Camp>\n\n", currentPrintSpeed);
-}
-void Game::displayShop(PrintSpeed currentPrintSpeed, std::deque<Weapon> weapons){
-    std::string asciiWeapons = R"(
-   |\                     /)
- /\_\\__               (_//
-|   `>\-`     _._       //`)
- \ /` \\  _.-`:::`-._  //
-  `    \|`    :::    `|/
-        |     :::     |
-        |.....:::.....|
-        |:::::jgs:::::|
-        |     :::     |
-        \     :::     /
-         \    :::    /
-          `-. ::: .-'
-           //`:::`\\
-          //   '   \\
-         |/         \\
-)";
     short amountOfWeapons = weapons.size();
     if (amountOfWeapons != 4)
     {
@@ -779,11 +748,11 @@ void Game::displayShop(PrintSpeed currentPrintSpeed, std::deque<Weapon> weapons)
     }
     if (currentPrintSpeed == instant)
     {
-        printCharByChar(asciiWeapons, instant);
+        printCharByChar(asciiShop, instant);
     }
     else
     {
-        printCharByChar(asciiWeapons, lightning);
+        printCharByChar(asciiShop, lightning);
         pause();
     }
     // Player Stuff
@@ -1144,12 +1113,12 @@ void Game::camp(){
         {
             if (playerHasNotTradedYet == false)
             {
-                visitCampfire();
+                trade();
                 currentPrintSpeed = fast;
             }
             else if (getContinueKey("If you visit the trader, there will be no time to rest.\n\nAre you sure you want to visit the trader? (Y/n): ") == 'y')
             {
-                visitCampfire();
+                trade();
                 playerHasNotTradedYet = false;
                 currentPrintSpeed = fast;
             }
@@ -1158,11 +1127,15 @@ void Game::camp(){
                 currentPrintSpeed = instant;
             }
         }
-        else if (isSubset(input, "continue"))
+        else if (isSubset(input, "done"))
         {
             if (getContinueKey("Are you sure you want to leave camp? (Y/n): ") == 'y')
             {
                 break;
+            }
+            else
+            {
+                currentPrintSpeed = instant;
             }
         }
         else
@@ -1277,35 +1250,6 @@ void Game::ingestSouls(){
             }
         }
         currentPrintSpeed = instant;
-    }
-}
-void Game::visitCampfire(){
-    PrintSpeed currentPrintSpeed = fast;
-    while (1)
-    {
-        clearScreen();
-        displayCampfire(currentPrintSpeed);
-        getSmartInput("Select an <Action>: ");
-        
-        // TRADING
-        if (isSubset(input, "trade"))
-        {
-            // std::cout << "[This feature isn't implemented yet! :]" << std::endl;
-            // getSmartInput();
-            // currentPrintSpeed = instant;
-            trade();
-            currentPrintSpeed = fast;
-        }
-        else if (isSubset(input, "back to camp"))
-        {
-            break;
-        }
-        else
-        {
-            printCharByChar("Please enter a valid <Action>\n", fast);
-            getSmartInput();
-            currentPrintSpeed = instant;
-        }
     }
 }
 void Game::trade(){

@@ -57,7 +57,6 @@ public:
     void printIntroductionParagraph(PrintSpeed);
     void displayOrigin(const Player&, bool);
     void displayCamp(PrintSpeed);
-    void displayCampfire(PrintSpeed);
     void displayShop(PrintSpeed, std::deque<Weapon>);
     void displayLevelUpScreen(PrintSpeed);
     void displayHUD(const Player&, const Enemy&);
@@ -72,7 +71,6 @@ public:
     // Camp
     void camp();
     void ingestSouls();
-    void visitCampfire();
     void trade();
     void makeShopItems();
     
