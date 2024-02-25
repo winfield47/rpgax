@@ -209,8 +209,8 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     break;
                 case 1:
                     asciiArt = "\\l/";
-                    name = "Hollowed Soldier";
-                    description = "An armored warrior with eyes that have no soul left...";
+                    name = "Hollow";
+                    description = "An armored warrior with eyes that are soulless!";
                     weapon = Weapon(talisman, floorLevel);
                     strength = 64;
                     dexterity = 67;
@@ -274,6 +274,18 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             faith = 60;
             armor = 0;
             resistance = 0;
+            break;
+        case hallowedarmor:
+            asciiArt = "[ ]"; // ¡Ω¡
+            name = "Hallowed Armor";
+            description = "A empty suit of armor trying to kill you!";
+            weapon = Weapon(hallowedarmorweapon, floorLevel);
+            strength = 60;
+            dexterity = 71;
+            intelligence = 0;
+            faith = 0;
+            armor = 12 + floorLevel / 2;
+            resistance = 8 + floorLevel / 3;
             break;
         default:
             variance = 1;

@@ -62,14 +62,14 @@ Weapon::Weapon(WeaponType type, int grade){
             throw "Weapon constructor created a bad WeaponType";
         case zweihander:
             this->damageType = physical;
-            this->baseDamage = 12;
+            this->baseDamage = 11;
             this->baseDamage += grade;
             moves.push_back(WeaponMove("Pommel Strike")); // creates a 60% dmg 100% accuracy move
             moves.push_back(WeaponMove("Great Slash", 4, strength)); // name, checks, attr
             break;
         case flail:
             this->damageType = physical;
-            this->baseDamage = 8;
+            this->baseDamage = 7;
             this->baseDamage += grade;
             moves.push_back(WeaponMove("Reckless Attack", 0, noWeaponMoveAttribute, 1)); // creates a 100% dmg 100% accuracy move
             break;
@@ -174,6 +174,15 @@ Weapon::Weapon(WeaponType type, int grade){
             moves.push_back(WeaponMove("Clobber", 5, strength, 1));
             moves.push_back(WeaponMove("Trip", 1, dexterity, 0.6));
             moves.push_back(WeaponMove("Wall Clank", 1, intelligence, 0.6));
+            break;
+        case hallowedarmorweapon:
+            this->damageType = physical;
+            this->baseDamage = 10;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Flail"));
+            moves.push_back(WeaponMove("Tackle", 1, strength, 0.8));
+            moves.push_back(WeaponMove("Pound", 2, dexterity, 0.9));
+            moves.push_back(WeaponMove("Slam", 4, strength, 1));
             break;
     }
     

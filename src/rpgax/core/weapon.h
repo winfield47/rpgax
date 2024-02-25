@@ -30,6 +30,7 @@ enum WeaponType
     goop,
     ghoulweapon,
     giantclub,
+    hallowedarmorweapon,
     randomized,
     special
 };
@@ -49,8 +50,9 @@ static const std::string weaponTypes[] =
     "Talons",
     "Raven's Spellbook",
     "Goop",
-    "Ghoul Weapon",
-    "Giant Club"
+    "Ghoul",
+    "Giant Club",
+    "Armor"
 };
 
 enum WeaponDamageType
