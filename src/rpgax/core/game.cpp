@@ -801,8 +801,8 @@ void Game::displayLevelUpScreen(PrintSpeed currentPrintSpeed){
     printCharByChar("\nNeeded : " + std::to_string(player.getSoulsNeededToLevelUp()), currentPrintSpeed);
     printCharByChar("\n\n <Strength>     : increases health", currentPrintSpeed);
     printCharByChar("\n <Dexterity>    : dictates speed", currentPrintSpeed);
-    printCharByChar("\n <Intelligence> : Spellbook power : (INT - 70)", currentPrintSpeed);
-    printCharByChar("\n <Faith>        : Talisman's Heal : (FAI - 70)", currentPrintSpeed);
+    printCharByChar("\n <Intelligence> : Spellbook power", currentPrintSpeed);
+    printCharByChar("\n <Faith>        : Talisman's Heal", currentPrintSpeed);
     printCharByChar("\n <Done>", currentPrintSpeed);
     std::cout << std::endl << std::endl;
     
@@ -1820,7 +1820,7 @@ void Game::setupWeaponMoveDamageAsCharacter1ToCharacter2(Character &character1, 
         if (chosenMove.getName() == "Heal")
         {
             // HEAL
-            int healAmount = (character1.getFaith() * 2 - 70) < 0 ? 0 : (character1.getFaith() * 2 - 70);
+            int healAmount = ((character1.getFaith() - 70) * 2) < 0 ? 0 : ((character1.getFaith() - 70) * 2);
             printCharByChar(character1.getName() + " casted <Heal>!", fast);
             pause();
             printCharByChar("\n" + character1.getName() + " healed " + std::to_string(character1.heal(healAmount)) + " HP", fast);

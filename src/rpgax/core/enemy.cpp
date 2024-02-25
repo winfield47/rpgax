@@ -157,11 +157,11 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     name = "Slime";
                     description = "A big, bouncing blob of blubber!";
                     weapon = Weapon(goop, floorLevel);
-                    strength = 82;
+                    strength = 75;
                     dexterity = 50;
                     intelligence = 0;
                     faith = 0;
-                    armor = 5;
+                    armor = 4;
                     resistance = 0;
                     break;
                 case 1:
@@ -169,11 +169,11 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     name = "Jelly";
                     description = "A giant, gelatinous jelly of gel!";
                     weapon = Weapon(goop, floorLevel);
-                    strength = 87;
+                    strength = 80;
                     dexterity = 15;
                     intelligence = 0;
                     faith = 0;
-                    armor = 10;
+                    armor = 5;
                     resistance = 0;
                     break;
                 case 2:
@@ -181,11 +181,11 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     name = "Gelatinous Cube";
                     description = "A splendiferous cube of the gelatinous kind!";
                     weapon = Weapon(goop, floorLevel * floorLevel);
-                    strength = 92;
-                    dexterity = 0;
+                    strength = 85;
+                    dexterity = 5;
                     intelligence = 0;
                     faith = 0;
-                    armor = 10 + floorLevel;
+                    armor = floorLevel + 3;
                     resistance = 0;
                     break;
                 default:
@@ -210,7 +210,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 case 1:
                     asciiArt = "\\l/";
                     name = "Hollow";
-                    description = "An armored warrior with eyes that are soulless!";
+                    description = "An armored warrior with soulless eyes!";
                     weapon = Weapon(talisman, floorLevel);
                     strength = 64;
                     dexterity = 67;
