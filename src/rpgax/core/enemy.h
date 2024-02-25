@@ -11,7 +11,7 @@
 #include "character.h"
 
 enum EnemyType {
-    bird, goblin, drow, slime, ghoul, clergyman, ogre, noEnemyType
+    bird, goblin, drow, slime, undead, clergyman, ogre, noEnemyType
 };
 
 const int TOTAL_ENEMY_TYPES = static_cast<int>(noEnemyType) - 1;

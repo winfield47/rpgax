@@ -58,7 +58,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     resistance = 0;
                     break;
                 default:
-                    throw "creating bird bad case";
+                    break;
             }
             break;
         case goblin:
@@ -102,7 +102,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     resistance = 0;
                     break;
                 default:
-                    throw "creating goblin bad case";
+                    break;
             }
             break;
         case drow:
@@ -146,7 +146,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     resistance = 0;
                     break;
                 default:
-                    throw "creating drow bad case";
+                    break;
             }
             break;
         case slime:
@@ -189,20 +189,51 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     resistance = 0;
                     break;
                 default:
-                    throw "creating slime bad case";
+                    break;
             }
             break;
-        case ghoul:
-            asciiArt = "•∆•";
-            name = "Ghoul";
-            description = "A corpse walking around like it owns place!";
-            weapon = Weapon(ghoulweapon, floorLevel);
-            strength = 60;
-            dexterity = 72;
-            intelligence = 40;
-            faith = 0;
-            armor = 0;
-            resistance = 1;
+        case undead:
+            variant = rand() % 3;
+            switch (variant) {
+                case 0:
+                    asciiArt = "\\7\\";
+                    name = "Ghoul";
+                    description = "A corpse walking around like it owns the place!";
+                    weapon = Weapon(ghoulweapon, floorLevel);
+                    strength = 62;
+                    dexterity = 72;
+                    intelligence = 40;
+                    faith = 0;
+                    armor = 0;
+                    resistance = 1;
+                    break;
+                case 1:
+                    asciiArt = "\\l/";
+                    name = "Hollowed Soldier";
+                    description = "An armored warrior with eyes that have no soul left...";
+                    weapon = Weapon(talisman, floorLevel);
+                    strength = 64;
+                    dexterity = 67;
+                    intelligence = 40;
+                    faith = 71;
+                    armor = 5;
+                    resistance = 0;
+                    break;
+                case 2:
+                    asciiArt = "\\i\\";
+                    name = "Skeleton";
+                    description = "A spooky, scary skeleton; shivers run down your spine!";
+                    weapon = Weapon(dagger, floorLevel);
+                    strength = 61;
+                    dexterity = 66;
+                    intelligence = 40;
+                    faith = 0;
+                    armor = 3;
+                    resistance = 3;
+                    break;
+                default:
+                    break;
+            }
             break;
         case clergyman:
             if (rand() % 2 == 0)
@@ -227,7 +258,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 strength = 64;
                 dexterity = 64;
                 intelligence = 71;
-                faith = 74;
+                faith = 73;
                 armor = 0;
                 resistance = 3;
             }
