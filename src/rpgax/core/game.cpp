@@ -1149,6 +1149,7 @@ void Game::camp(){
                         pause();
                     }
                 }
+                getSmartInput();
                 break;
             }
             else
