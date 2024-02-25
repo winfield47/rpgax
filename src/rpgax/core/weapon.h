@@ -27,6 +27,7 @@ enum WeaponType
     unarmed,
     talons,
     ravenbook,
+    goop,
     ghoulweapon,
     giantclub,
     randomized,
@@ -47,6 +48,7 @@ static const std::string weaponTypes[] =
     "Unarmed",
     "Talons",
     "Raven's Spellbook",
+    "Goop",
     "Ghoul Weapon",
     "Giant Club"
 };

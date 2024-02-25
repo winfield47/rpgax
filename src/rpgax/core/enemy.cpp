@@ -63,7 +63,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             break;
         case goblin:
             variant = rand() % 3;
-            switch (variant) 
+            switch (variant)
             {
                 case 0:
                     asciiArt = "\\g\\";
@@ -147,6 +147,49 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     break;
                 default:
                     throw "creating drow bad case";
+            }
+            break;
+        case slime:
+            variant = rand() % 3;
+            switch (variant) {
+                case 0:
+                    asciiArt = "(o)";
+                    name = "Slime";
+                    description = "A big, bouncing blob of blubber!";
+                    weapon = Weapon(goop, floorLevel);
+                    strength = 82;
+                    dexterity = 50;
+                    intelligence = 0;
+                    faith = 0;
+                    armor = 5;
+                    resistance = 0;
+                    break;
+                case 1:
+                    asciiArt = "{0}";
+                    name = "Jelly";
+                    description = "A giant, gelatinous jelly of gel!";
+                    weapon = Weapon(goop, floorLevel);
+                    strength = 87;
+                    dexterity = 15;
+                    intelligence = 0;
+                    faith = 0;
+                    armor = 10;
+                    resistance = 0;
+                    break;
+                case 2:
+                    asciiArt = "[O]";
+                    name = "Gelatinous Cube";
+                    description = "A splendiferous cube of the gelatinous kind!";
+                    weapon = Weapon(goop, floorLevel * floorLevel);
+                    strength = 92;
+                    dexterity = 0;
+                    intelligence = 0;
+                    faith = 0;
+                    armor = 10 + floorLevel;
+                    resistance = 0;
+                    break;
+                default:
+                    throw "creating slime bad case";
             }
             break;
         case ghoul:

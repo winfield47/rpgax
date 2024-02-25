@@ -1131,6 +1131,24 @@ void Game::camp(){
         {
             if (getContinueKey("Are you sure you want to leave camp? (Y/n): ") == 'y')
             {
+                std::cout << std::endl;
+                printCharByChar("In the next floor you see ", fast);
+                pause();
+                printCharByChar(enemy.getName() + "!");
+                pause();
+                
+                // CHECK IF PLAYER WANTS TO USE POTION
+                if (player.getPotion().grade != 0 && player.getHP() < player.getHPMax())
+                {
+                    // Confirm drinking potion
+                    if (getContinueKey("\nWould you like to drink your healing potion for " + std::to_string(player.getPotion().grade) + " HP? (Y/n): ") == 'y')
+                    {
+                        printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!", fast);
+                        pause();
+                        printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
+                        pause();
+                    }
+                }
                 break;
             }
             else
@@ -1265,6 +1283,26 @@ void Game::trade(){
         {
             break;
         }
+        else if (isSubset(input, "apparel"))
+        {
+            std::string prompt = "Buy Apparel (Grade " + std::to_string(floor + 1) + ") for " + std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
+            if (player.getSouls() >= floor + 1)
+            {
+                if (getContinueKey(prompt) == 'y')
+                {
+                    player.spendSouls(floor + 1);
+                    player.replaceApparel(Apparel("Apparel", floor + 1));
+                    printCharByChar("\n" + player.getName() + " spent " + (std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul" : " souls")) + " and gained Grade " + std::to_string(floor + 1) + " Apparel\n");
+                    pause();
+                    getSmartInput();
+                }
+            }
+            else
+            {
+                printCharByChar("You don't have enough souls!");
+                getSmartInput();
+            }
+        }
         else if (isSubset(input, lowercase(shopWeapons.at(1).getName())))
         {
             std::string prompt = "Buy " + shopWeapons.at(1).getName() + " (Grade " + std::to_string(shopWeapons.at(1).getGrade()) + ") for " + std::to_string(shopWeapons.at(1).getGrade()) + ((shopWeapons.at(1).getGrade()) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
@@ -1353,26 +1391,6 @@ void Game::trade(){
                 }
             }
         }
-        else if (isSubset(input, "apparel"))
-        {
-            std::string prompt = "Buy Apparel (Grade " + std::to_string(floor + 1) + ") for " + std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
-            if (player.getSouls() >= floor + 1)
-            {
-                if (getContinueKey(prompt) == 'y')
-                {
-                    player.spendSouls(floor + 1);
-                    player.replaceApparel(Apparel("Apparel", floor + 1));
-                    printCharByChar("\n" + player.getName() + " spent " + (std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul" : " souls")) + " and gained Grade " + std::to_string(floor + 1) + " Apparel\n");
-                    pause();
-                    getSmartInput();
-                }
-            }
-            else
-            {
-                printCharByChar("You don't have enough souls!");
-                getSmartInput();
-            }
-        }
         else if (isSubset(input, "cloak"))
         {
             std::string prompt = "Buy Cloak (Grade " + std::to_string(floor + 1) + ") for " + std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul? (Y/n): " : " souls? (Y/n): ");
@@ -1400,6 +1418,18 @@ void Game::trade(){
             {
                 if (getContinueKey(prompt) == 'y')
                 {
+                    // CHECK IF PLAYER WANTS TO USE POTION
+                    if (player.getPotion().grade != 0 && player.getHP() < player.getHPMax())
+                    {
+                        // Confirm drinking potion
+                        if (getContinueKey("\nWould you like to drink your current healing potion for " + std::to_string(player.getPotion().grade) + " HP? (Y/n): ") == 'y')
+                        {
+                            printCharByChar(player.getName() + " drank the " + lowercase(player.getPotion().name) + " potion!", fast);
+                            pause();
+                            printCharByChar("\n" + player.getName() + " healed " + std::to_string(player.heal(player.popPotion().grade)) + " HP", fast);
+                            pause();
+                        }
+                    }
                     player.spendSouls(floor + 1);
                     player.replacePotion(Potion("Healing", floor + 1));
                     printCharByChar("\n" + player.getName() + " spent " + (std::to_string(floor + 1) + ((floor + 1) == 1 ? " soul" : " souls")) + " and gained Grade " + std::to_string(floor + 1) + " Healing Potion\n");

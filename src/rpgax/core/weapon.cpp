@@ -151,6 +151,13 @@ Weapon::Weapon(WeaponType type, int grade){
             moves.push_back(WeaponMove("Fling (Stuff)", 2, intelligence, 1));
             moves.push_back(WeaponMove("Fling (Glass)", 4, intelligence, 1.4));
             break;
+        case goop:
+            this->damageType = physical;
+            this->baseDamage = 1;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Pseudopod", 4, dexterity, 1));
+            moves.push_back(WeaponMove("Touch", 1, dexterity, 2));
+            break;
         case ghoulweapon:
             this->damageType = physical;
             this->baseDamage = 5;

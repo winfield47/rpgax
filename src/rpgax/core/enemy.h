@@ -10,11 +10,11 @@
 
 #include "character.h"
 
-const int TOTAL_ENEMY_TYPES = 5;
-
 enum EnemyType {
-    bird, goblin, drow, ghoul, clergyman, ogre, noEnemyType
+    bird = 1, goblin, drow, slime, ghoul, clergyman, ogre, noEnemyType
 };
+
+const int TOTAL_ENEMY_TYPES = static_cast<int>(noEnemyType);
 
 class Enemy : public Character
 {
