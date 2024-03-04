@@ -128,10 +128,24 @@ Weapon::Weapon(WeaponType type, int grade){
             moves.push_back(WeaponMove("Zap"));
             moves.push_back(WeaponMove("Smite", 2, faith, 1));
             break;
+        case shamanstaff:
+            this->damageType = magic;
+            this->baseDamage = 7;
+            this->baseDamage += grade + grade / 2;
+            moves.push_back(WeaponMove("Judgement"));
+            moves.push_back(WeaponMove("Smite", 2, faith, 1));
+            moves.push_back(WeaponMove("Turn Undead", 1, faith, 1.2));
+            // heal will heal the user for: FAI mod + grade
+            moves.push_back(WeaponMove("Heal", 0, noWeaponMoveAttribute, 0)); // does no dmg, but has a special effect
+            break;
         case unarmed:
-            this->grade = 1; // always have access to punch and kick
             this->damageType = physical;
             this->baseDamage = 5;
+            this->baseDamage += grade;
+            if (grade == 0)
+            {
+                this->grade = 1; // always have access to punch and kick
+            }
             moves.push_back(WeaponMove("Punch")); // creates a 60% dmg 100% accuracy move
             moves.push_back(WeaponMove("Kick", 2, strength)); // creates a kick move with 2 checks that use STR at 100% damage
             break;
@@ -155,8 +169,8 @@ Weapon::Weapon(WeaponType type, int grade){
             this->damageType = physical;
             this->baseDamage = 1;
             this->baseDamage += grade;
-            moves.push_back(WeaponMove("Pseudopod", 3, dexterity, 1));
-            moves.push_back(WeaponMove("Touch", 1, dexterity, 2));
+            moves.push_back(WeaponMove("Touch", 3, dexterity, 0.8));
+            moves.push_back(WeaponMove("Pseudopod", 1, dexterity, 1));
             break;
         case ghoulweapon:
             this->damageType = physical;

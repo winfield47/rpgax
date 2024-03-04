@@ -24,6 +24,7 @@ enum WeaponType
     magicstaff,
     talisman,
     lightningspear,
+    shamanstaff,
     unarmed,
     talons,
     ravenbook,
@@ -46,6 +47,7 @@ static const std::string weaponTypes[] =
     "Magic Staff",
     "Talisman",
     "Lightning Spear",
+    "Shaman Staff",
     "Unarmed",
     "Talons",
     "Raven's Spellbook",
@@ -79,7 +81,7 @@ private:
     std::vector<WeaponMove> moves;
 public:
     // Public Property
-    static const unsigned short TOTAL_PLAYER_WEAPON_TYPES = 9;
+    static const unsigned short TOTAL_PLAYER_WEAPON_TYPES = 10;
     
     // Constructor
     Weapon();

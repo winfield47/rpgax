@@ -180,7 +180,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                     asciiArt = "[O]";
                     name = "Gelatinous Cube";
                     description = "A splendiferous cube of the gelatinous kind!";
-                    weapon = Weapon(goop, floorLevel * floorLevel);
+                    weapon = Weapon(goop, floorLevel);
                     strength = 85;
                     dexterity = 5;
                     intelligence = 0;
@@ -198,7 +198,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 case 0:
                     asciiArt = "\\7\\";
                     name = "Ghoul";
-                    description = "A corpse walking around like it owns the place!";
+                    description = "A corpse walking around like it owns da place!";
                     weapon = Weapon(ghoulweapon, floorLevel);
                     strength = 62;
                     dexterity = 72;
@@ -222,7 +222,7 @@ Enemy::Enemy(EnemyType type, int floorLevel){
                 case 2:
                     asciiArt = "\\i\\";
                     name = "Skeleton";
-                    description = "A spooky, scary skeleton; shivers run down your spine!";
+                    description = "A spooky, scary skeleton!";
                     weapon = Weapon(dagger, floorLevel);
                     strength = 61;
                     dexterity = 66;
@@ -236,51 +236,116 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             }
             break;
         case clergyman:
-            if (rand() % 2 == 0)
-            {
-                asciiArt = "/+\\";
-                name = "Holy Knight";
-                description = "A slightly emaciated paladin!";
-                weapon = Weapon(lightningspear, floorLevel);
-                strength = 63;
-                dexterity = 63;
-                intelligence = 69;
-                faith = 72;
-                armor = 4;
-                resistance = 1;
-            }
-            else
-            {
-                asciiArt = "†O\\";
-                name = "Cleric";
-                description = "A slightly pudgy priest eating rations!";
-                weapon = Weapon(talisman, floorLevel);
-                strength = 64;
-                dexterity = 64;
-                intelligence = 71;
-                faith = 73;
-                armor = 0;
-                resistance = 3;
+            variant = rand() % 2;
+            switch (variant) {
+                case 0:
+                    asciiArt = "/+\\";
+                    name = "Holy Knight";
+                    description = "A slightly emaciated paladin!";
+                    weapon = Weapon(lightningspear, floorLevel);
+                    strength = 63;
+                    dexterity = 63;
+                    intelligence = 69;
+                    faith = 72;
+                    armor = 4;
+                    resistance = 1;
+                    break;
+                case 1:
+                    asciiArt = "†O\\";
+                    name = "Cleric";
+                    description = "A slightly pudgy priest eating rations!";
+                    weapon = Weapon(talisman, floorLevel);
+                    strength = 64;
+                    dexterity = 64;
+                    intelligence = 71;
+                    faith = 73;
+                    armor = 0;
+                    resistance = 3;
+                    break;
+                default:
+                    break;
             }
             break;
-        case ogre:
-            asciiArt = "OGR"; // ¡Ω¡
-            name = "Ogre";
-            description = "A clumsy ogre with a brown shirt on!";
-            weapon = Weapon(giantclub, floorLevel);
-            strength = 85;
-            dexterity = 15;
-            intelligence = 15;
-            faith = 60;
-            armor = 0;
-            resistance = 0;
+        case orc:
+            variant = rand() % 3;
+            switch (variant) {
+                case 0:
+                    asciiArt = "/0\\";
+                    name = "Orc";
+                    description = "A snarling, green-skinned orc!";
+                    weapon = Weapon(zweihander, floorLevel);
+                    strength = 68;
+                    dexterity = 69;
+                    intelligence = 68;
+                    faith = 75;
+                    armor = 4;
+                    resistance = 0;
+                    break;
+                case 1:
+                    asciiArt = "~o7";
+                    name = "Orc Shaman";
+                    description = "A small orc with tribal clothing on!";
+                    weapon = Weapon(shamanstaff, floorLevel);
+                    strength = 65;
+                    dexterity = 71;
+                    intelligence = 71;
+                    faith = 76;
+                    armor = 2;
+                    resistance = 6;
+                    break;
+                case 2:
+                    asciiArt = "/$\\";
+                    name = "Uruk-hai";
+                    description = "A huge, ugly orc with dreads and yellow teeth!";
+                    weapon = Weapon(flail, floorLevel);
+                    strength = 71;
+                    dexterity = 71;
+                    intelligence = 72;
+                    faith = 70;
+                    armor = 2;
+                    resistance = 1;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case giant:
+            variant = rand() % 2;
+            switch (variant) {
+                case 0:
+                    asciiArt = "OGR"; // ¡Ω¡
+                    name = "Ogre";
+                    description = "A clumsy ogre with a brown shirt on!";
+                    weapon = Weapon(giantclub, floorLevel);
+                    strength = 85;
+                    dexterity = 15;
+                    intelligence = 15;
+                    faith = 60;
+                    armor = 0;
+                    resistance = 0;
+                    break;
+                case 1:
+                    asciiArt = "TRL"; // ¡Ω¡
+                    name = "Cave Troll";
+                    description = "A fast troll; its running on all fours!";
+                    weapon = Weapon(unarmed, floorLevel);
+                    strength = 76;
+                    dexterity = 71;
+                    intelligence = 15;
+                    faith = 15;
+                    armor = floorLevel / 3;
+                    resistance = 0;
+                    break;
+                default:
+                    break;
+            }
             break;
         case hallowedarmor:
             asciiArt = "[ ]"; // ¡Ω¡
             name = "Hallowed Armor";
             description = "A empty suit of armor trying to kill you!";
             weapon = Weapon(hallowedarmorweapon, floorLevel);
-            strength = 60;
+            strength = 63;
             dexterity = 71;
             intelligence = 0;
             faith = 0;
