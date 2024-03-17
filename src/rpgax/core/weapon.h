@@ -32,6 +32,7 @@ enum WeaponType
     ghoulweapon,
     giantclub,
     hallowedarmorweapon,
+    wyvern,
     randomized,
     special
 };
@@ -54,6 +55,7 @@ static const std::string weaponTypes[] =
     "Goop",
     "Ghoul",
     "Giant Club",
+    "Wyvern",
     "Armor"
 };
 

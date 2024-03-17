@@ -352,6 +352,18 @@ Enemy::Enemy(EnemyType type, int floorLevel){
             armor = 12 + floorLevel / 2;
             resistance = 8 + floorLevel / 3;
             break;
+        case windwyvern:
+            asciiArt = "~M~"; // ¡Ω¡
+            name = "Wind Wyvern";
+            description = "A tiny drake variant controlling air!";
+            weapon = Weapon(wyvern, floorLevel);
+            strength = 74;
+            dexterity = 72;
+            intelligence = 80;
+            faith = 78;
+            armor = floorLevel / 2;
+            resistance = floorLevel / 3;
+            break;
         default:
             variance = 1;
             asciiArt = "\\ø/";

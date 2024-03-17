@@ -198,6 +198,15 @@ Weapon::Weapon(WeaponType type, int grade){
             moves.push_back(WeaponMove("Pound", 2, dexterity, 0.9));
             moves.push_back(WeaponMove("Slam", 4, strength, 1));
             break;
+        case wyvern:
+            this->damageType = physical;
+            this->baseDamage = 12;
+            this->baseDamage += grade;
+            moves.push_back(WeaponMove("Shriek"));
+            moves.push_back(WeaponMove("Talons", 1, dexterity, 0.8));
+            moves.push_back(WeaponMove("Wind Breath", 2, strength, 0.9));
+            moves.push_back(WeaponMove("Tornado", 4, intelligence, 1.2));
+            break;
     }
     
     // Have weapon moves become unlocked with higher weapon grades (i.e. Spellbook unlocks Oakskin at Grade 2)
