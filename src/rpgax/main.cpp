@@ -13,7 +13,6 @@ int main(){
     clearScreen();
     
     // Initialize the Game
-    // Game rpgax = Game(Player(nomad, "Winfield")); // Testing
     Game rpgax = Game();
     rpgax.play();
     

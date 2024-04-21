@@ -8,6 +8,7 @@
 #include "game.h"
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 
 // Static Properties
 std::string Game::input = "";
@@ -1064,8 +1065,53 @@ void Game::printGameOver(){
 
     )";
     printCharByChar(gameOverLiteral, lightning);
-    getSmartInput("Thanks for playing!");
+    pause();
+    displayLeaderboard();
+    getSmartInput("\nThanks for playing!");
     clearScreen();
+}
+
+// Leaderboard
+void Game::writeToLeaderboard(){
+    // Open a new text file for writing
+    std::ofstream outputFile("Leaderboard", std::ofstream::app);
+
+    // Check if the file is opened successfully
+    if (!outputFile.is_open()) {
+        std::cerr << "Error opening the file!" << std::endl;
+        return;
+    }
+
+    // Write some text to the file
+    outputFile << floor << "F " << getStringForOrigin(player.getOrigin()) << " - "  << player.getName() << std::endl;
+
+    // Close the file
+    outputFile.close();
+}
+void Game::displayLeaderboard(){
+    // Open the file for reading
+    std::ifstream file("Leaderboard");
+
+    // Check if the file was opened successfully
+    if (!file.is_open()) {
+        std::cerr << "Error opening file!" << std::endl;
+        return;
+    }
+    
+    // Leaderboard Menu
+    std::cout << std::endl;
+    printCharByChar("Leaderboard:\n");
+    
+    // Print the Leaderboard
+    std::string line;
+    while (std::getline(file, line)) {
+        std::cout << "    ";
+        printCharByChar(line);
+        std::cout << std::endl;
+    }
+
+    // Close the file
+    file.close();
 }
 
 // Game Loop
@@ -1546,6 +1592,7 @@ void Game::engageInCombat(){
     }
     printCharByChar("\n\nYou died...", slow);
     getSmartInput("");
+    writeToLeaderboard();
     printGameOver();
 }
 void Game::performPlayerMove(){

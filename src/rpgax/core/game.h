@@ -65,6 +65,10 @@ public:
     void printMovesWithFormattingHUD(const Weapon&, const Enemy&);
     void printGameOver();
     
+    // Leaderboard
+    void writeToLeaderboard();
+    void displayLeaderboard();
+    
     // Game Loop
     void play();
     
